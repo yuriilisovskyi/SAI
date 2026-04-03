@@ -58,7 +58,11 @@ _RE_DOC_CLOSE = re.compile(r'\*/')
 
 
 def parse_header(path):
-    """Return list of (attr_name, default_value) tuples from one header file."""
+    """Return list of (attr_name, default_value) tuples from one header file.
+
+    Every SAI_*_ATTR_* enumerator is included.  default_value is an empty
+    string when the attribute has no @default tag.
+    """
 
     results = []
 
@@ -67,7 +71,7 @@ def parse_header(path):
 
     in_comment = False
     current_default = None   # @default value seen in the current doc-comment
-    pending_default = None   # default waiting to be attached to the next attr
+    pending_default = None   # default to attach to the next attribute (None = not set)
 
     for line in lines:
         stripped = line.strip()
@@ -77,24 +81,21 @@ def parse_header(path):
             if _RE_DOC_OPEN.search(line):
                 in_comment = True
                 current_default = None
-                # Check whether the open and close are on the same line
+                # Check whether open and close are on the same line
                 # (single-line /** … */ block) – uncommon but possible.
                 if _RE_DOC_CLOSE.search(line):
                     in_comment = False
-                    # single-line comment: scan for @default on the same line
                     m = _RE_DEFAULT_TAG.search(line)
-                    if m:
-                        pending_default = m.group(1).strip()
+                    pending_default = m.group(1).strip() if m else None
             else:
                 # Outside a comment – look for an attribute enumerator.
                 m = _RE_ATTR_NAME.match(line)
                 if m:
                     attr = m.group(1)
-                    if pending_default is not None:
-                        results.append((attr, pending_default))
-                        pending_default = None
-                    else:
-                        pending_default = None   # attr with no @default
+                    # Always emit the attribute; use empty string when there is
+                    # no @default in the preceding doc-comment.
+                    results.append((attr, pending_default if pending_default is not None else ''))
+                    pending_default = None
                 else:
                     # Any non-blank, non-comment source line that is NOT an
                     # attribute resets the pending default so we don't carry
@@ -150,7 +151,10 @@ def main():
         writer.writerow(['attribute_name', 'default_value'])
         writer.writerows(all_rows)
 
-    print(f'Written {len(all_rows)} attributes with defaults to {args.output}')
+    with_default = sum(1 for _, v in all_rows if v)
+    print(f'Written {len(all_rows)} attributes to {args.output} '
+          f'({with_default} with a @default value, '
+          f'{len(all_rows) - with_default} without)')
 
 
 if __name__ == '__main__':
