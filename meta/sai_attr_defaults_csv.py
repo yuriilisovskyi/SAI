@@ -48,6 +48,12 @@ _RE_ATTR_NAME = re.compile(
     r'^\s*(SAI_\w+_ATTR_\w+)\s*(?:=\s*[^,]+)?\s*,?\s*$'
 )
 
+# Sentinel / range-boundary attributes that are not real attributes:
+# anything ending with _START, _END, _CUSTOM_RANGE_START, or _CUSTOM_RANGE_END.
+_RE_ATTR_SENTINEL = re.compile(
+    r'(?:_CUSTOM_RANGE)?_(?:START|END)$'
+)
+
 # Matches the @default tag inside a Doxygen comment line.
 # Group 1 captures everything after "@default " on that line.
 _RE_DEFAULT_TAG = re.compile(r'@default\s+(.+)')
@@ -92,10 +98,13 @@ def parse_header(path):
                 m = _RE_ATTR_NAME.match(line)
                 if m:
                     attr = m.group(1)
-                    # Always emit the attribute; use empty string when there is
-                    # no @default in the preceding doc-comment.
-                    results.append((attr, pending_default if pending_default is not None else ''))
-                    pending_default = None
+                    if _RE_ATTR_SENTINEL.search(attr):
+                        pending_default = None
+                    else:
+                        # Always emit the attribute; use empty string when there is
+                        # no @default in the preceding doc-comment.
+                        results.append((attr, pending_default if pending_default is not None else ''))
+                        pending_default = None
                 else:
                     # Any non-blank, non-comment source line that is NOT an
                     # attribute resets the pending default so we don't carry
