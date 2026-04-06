@@ -21,12 +21,12 @@
 # @file    sai_attr_defaults_csv.py
 #
 # @brief   Parses SAI headers in inc/ and emits a CSV of attribute names with
-#          their @default metadata values.
+#          their @type and @default metadata values.
 #
 # Usage:   python3 meta/sai_attr_defaults_csv.py
 #          (must be run from the repository root, or pass --inc-dir / --output)
 #
-# Output:  sai_attr_defaults.csv   (two columns: attribute_name, default_value)
+# Output:  sai_attr_defaults.csv   (columns: attribute_name, type, default_value)
 #
 
 import argparse
@@ -54,6 +54,10 @@ _RE_ATTR_SENTINEL = re.compile(
     r'(?:_CUSTOM_RANGE)?_(?:START|END)$'
 )
 
+# Matches the @type tag inside a Doxygen comment line.
+# Group 1 captures everything after "@type " on that line.
+_RE_TYPE_TAG = re.compile(r'@type\s+(.+)')
+
 # Matches the @default tag inside a Doxygen comment line.
 # Group 1 captures everything after "@default " on that line.
 _RE_DEFAULT_TAG = re.compile(r'@default\s+(.+)')
@@ -64,10 +68,11 @@ _RE_DOC_CLOSE = re.compile(r'\*/')
 
 
 def parse_header(path):
-    """Return list of (attr_name, default_value) tuples from one header file.
+    """Return list of (attr_name, type_value, default_value) tuples.
 
-    Every SAI_*_ATTR_* enumerator is included.  default_value is an empty
-    string when the attribute has no @default tag.
+    Every SAI_*_ATTR_* enumerator is included.  type_value and default_value
+    are empty strings when the corresponding tag is absent from the doc-comment.
+    Sentinel range-boundary attributes (_START, _END, etc.) are excluded.
     """
 
     results = []
@@ -76,50 +81,59 @@ def parse_header(path):
         lines = fh.readlines()
 
     in_comment = False
+    current_type    = None   # @type value seen in the current doc-comment
     current_default = None   # @default value seen in the current doc-comment
-    pending_default = None   # default to attach to the next attribute (None = not set)
+    pending_type    = None   # to attach to the next attribute
+    pending_default = None   # to attach to the next attribute
 
     for line in lines:
         stripped = line.strip()
 
-        # --- comment block tracking ---
         if not in_comment:
             if _RE_DOC_OPEN.search(line):
                 in_comment = True
+                current_type    = None
                 current_default = None
-                # Check whether open and close are on the same line
-                # (single-line /** … */ block) – uncommon but possible.
+                # Handle single-line /** … */ blocks.
                 if _RE_DOC_CLOSE.search(line):
                     in_comment = False
-                    m = _RE_DEFAULT_TAG.search(line)
-                    pending_default = m.group(1).strip() if m else None
+                    mt = _RE_TYPE_TAG.search(line)
+                    md = _RE_DEFAULT_TAG.search(line)
+                    pending_type    = mt.group(1).strip() if mt else None
+                    pending_default = md.group(1).strip() if md else None
             else:
-                # Outside a comment – look for an attribute enumerator.
                 m = _RE_ATTR_NAME.match(line)
                 if m:
                     attr = m.group(1)
-                    if _RE_ATTR_SENTINEL.search(attr):
-                        pending_default = None
-                    else:
-                        # Always emit the attribute; use empty string when there is
-                        # no @default in the preceding doc-comment.
-                        results.append((attr, pending_default if pending_default is not None else ''))
-                        pending_default = None
+                    if not _RE_ATTR_SENTINEL.search(attr):
+                        results.append((
+                            attr,
+                            pending_type    if pending_type    is not None else '',
+                            pending_default if pending_default is not None else '',
+                        ))
+                    pending_type    = None
+                    pending_default = None
                 else:
-                    # Any non-blank, non-comment source line that is NOT an
-                    # attribute resets the pending default so we don't carry
-                    # a default across unrelated constructs.
+                    # Non-blank, non-comment source line that is not an attribute
+                    # resets pending state so we don't carry tags across constructs.
                     if stripped and not stripped.startswith('//'):
+                        pending_type    = None
                         pending_default = None
         else:
-            # Inside a /** … */ block
-            m = _RE_DEFAULT_TAG.search(line)
-            if m:
-                current_default = m.group(1).strip()
+            # Inside a /** … */ block – collect tag values.
+            mt = _RE_TYPE_TAG.search(line)
+            if mt:
+                current_type = mt.group(1).strip()
+
+            md = _RE_DEFAULT_TAG.search(line)
+            if md:
+                current_default = md.group(1).strip()
 
             if _RE_DOC_CLOSE.search(line):
-                in_comment = False
+                in_comment      = False
+                pending_type    = current_type
                 pending_default = current_default
+                current_type    = None
                 current_default = None
 
     return results
@@ -157,10 +171,10 @@ def main():
 
     with open(args.output, 'w', newline='', encoding='utf-8') as fh:
         writer = csv.writer(fh)
-        writer.writerow(['attribute_name', 'default_value'])
+        writer.writerow(['attribute_name', 'type', 'default_value'])
         writer.writerows(all_rows)
 
-    with_default = sum(1 for _, v in all_rows if v)
+    with_default = sum(1 for _, _t, v in all_rows if v)
     print(f'Written {len(all_rows)} attributes to {args.output} '
           f'({with_default} with a @default value, '
           f'{len(all_rows) - with_default} without)')
