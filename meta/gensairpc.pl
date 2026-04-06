@@ -378,7 +378,11 @@ sub get_definitions {
     my $i = 0;
 
     # Iterate over files
-    for ( GetSaiXmlFiles($XMLDIR) ) {
+    # Use group XML files (group__*.xml) so that full typedef definitions
+    # (including sai_attribute_value_t which is a union) are available.
+    # The per-header files (sai*_8h.xml) only contain <member> references
+    # without the type details needed by get_struct / assign_attr_types.
+    for ( GetGroupXmlFiles($XMLDIR) ) {
         my $xml = ReadXml($_);
 
         # Iterate over definitions
