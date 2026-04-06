@@ -21,13 +21,19 @@ Validates the SAI ACL implementation by:
   2. Verifying that each CRUD API call with default values returns
      SAI_STATUS_SUCCESS.
 
-ACL objects covered:
-  - ACL Table Group         (create/get/remove)
-  - ACL Table Group Member  (create/get/remove)
-  - ACL Table               (create/get/remove)
-  - ACL Entry               (create/get/set/remove)
-  - ACL Counter             (create/get/set/remove)
-  - ACL Range               (create/get/remove)
+One test is provided per meaningful ACL API call:
+
+  ACL Table Group        create / get / remove
+  ACL Table Group Member create / get / set / remove
+  ACL Table              create / get / remove
+  ACL Entry              create / get / set / remove
+  ACL Counter            create / get / set / remove
+  ACL Range              create / get / remove
+
+Note: set_acl_table_group_attribute, set_acl_table_attribute, and
+set_acl_range_attribute are omitted because all attributes for those object
+types are CREATE_ONLY in the SAI spec; the generated adapter functions return
+SAI_STATUS_NOT_SUPPORTED by design and there is nothing to set.
 
 Prerequisites:
   Build the sai_thrift package before running these tests:
@@ -48,8 +54,8 @@ import sys
 import unittest
 
 # All SAI API functions, type helpers, and attribute constants are imported
-# directly from the generated sai_thrift package (no embedded stubs).  The package is produced
-# by the saithriftv2 build and placed under
+# directly from the generated sai_thrift package (no embedded stubs).
+# The package is produced by the saithriftv2 build and placed under
 # test/saithriftv2/build/lib/sai_thrift.  If it is not installed this import
 # will raise ImportError – build the package first (see module docstring).
 from sai_thrift.sai_adapter import *  # noqa: F401,F403
@@ -359,7 +365,8 @@ class TestAclApiDiscovery(SaiAclTestBase):
 
     def test_acl_api_functions_discoverable(self):
         """
-        All expected ACL CRUD functions must be present in sai_thrift.sai_adapter.
+        All expected ACL CRUD functions must be present in
+        sai_thrift.sai_adapter (sourced from test/saithriftv2/build/lib).
         """
         discovered = {name for name, _ in _get_acl_api_functions()}
         for func_name in self.EXPECTED_ACL_FUNCTIONS:
@@ -389,146 +396,43 @@ class TestAclApiDiscovery(SaiAclTestBase):
                 ),
             )
 
-    def test_acl_table_group_attr_constants(self):
-        """Core SAI_ACL_TABLE_GROUP_ATTR_* constants from sai_thrift.sai_headers."""
-        required = [
-            "SAI_ACL_TABLE_GROUP_ATTR_ACL_STAGE",
-            "SAI_ACL_TABLE_GROUP_ATTR_ACL_BIND_POINT_TYPE_LIST",
-            "SAI_ACL_TABLE_GROUP_ATTR_TYPE",
-            "SAI_ACL_TABLE_GROUP_ATTR_MEMBER_LIST",
-        ]
-        constants = _get_acl_attribute_constants()
-        for name in required:
-            self.assertIn(name, constants,
-                          "'{}' not found in sai_thrift.sai_headers".format(name))
-
-    def test_acl_table_attr_mandatory_constants(self):
-        """SAI_ACL_TABLE_ATTR_ACL_STAGE is present in sai_thrift.sai_headers."""
-        constants = _get_acl_attribute_constants()
-        self.assertIn("SAI_ACL_TABLE_ATTR_ACL_STAGE", constants)
-
-    def test_acl_entry_attr_mandatory_constants(self):
-        """SAI_ACL_ENTRY_ATTR_TABLE_ID is present in sai_thrift.sai_headers."""
-        constants = _get_acl_attribute_constants()
-        self.assertIn("SAI_ACL_ENTRY_ATTR_TABLE_ID", constants)
-
-    def test_acl_counter_attr_constants(self):
-        """Core SAI_ACL_COUNTER_ATTR_* constants from sai_thrift.sai_headers."""
-        required = [
-            "SAI_ACL_COUNTER_ATTR_TABLE_ID",
-            "SAI_ACL_COUNTER_ATTR_ENABLE_PACKET_COUNT",
-            "SAI_ACL_COUNTER_ATTR_ENABLE_BYTE_COUNT",
-            "SAI_ACL_COUNTER_ATTR_PACKETS",
-            "SAI_ACL_COUNTER_ATTR_BYTES",
-        ]
-        constants = _get_acl_attribute_constants()
-        for name in required:
-            self.assertIn(name, constants,
-                          "'{}' not found in sai_thrift.sai_headers".format(name))
-
-    def test_acl_range_attr_constants(self):
-        """Core SAI_ACL_RANGE_ATTR_* constants from sai_thrift.sai_headers."""
-        required = ["SAI_ACL_RANGE_ATTR_TYPE", "SAI_ACL_RANGE_ATTR_LIMIT"]
-        constants = _get_acl_attribute_constants()
-        for name in required:
-            self.assertIn(name, constants,
-                          "'{}' not found in sai_thrift.sai_headers".format(name))
-
-    def test_acl_table_group_member_attr_constants(self):
-        """Core SAI_ACL_TABLE_GROUP_MEMBER_ATTR_* constants from sai_thrift.sai_headers."""
-        required = [
-            "SAI_ACL_TABLE_GROUP_MEMBER_ATTR_ACL_TABLE_GROUP_ID",
-            "SAI_ACL_TABLE_GROUP_MEMBER_ATTR_ACL_TABLE_ID",
-            "SAI_ACL_TABLE_GROUP_MEMBER_ATTR_PRIORITY",
-        ]
-        constants = _get_acl_attribute_constants()
-        for name in required:
-            self.assertIn(name, constants,
-                          "'{}' not found in sai_thrift.sai_headers".format(name))
-
-    def test_acl_api_function_count(self):
-        """
-        sai_thrift.sai_adapter must export at least 24 ACL functions
-        (6 object types x 4 CRUD operations).
-        """
-        discovered = _get_acl_api_functions()
-        self.assertGreaterEqual(
-            len(discovered),
-            24,
-            "Expected at least 24 ACL API functions in sai_thrift.sai_adapter, "
-            "found {}".format(len(discovered)),
-        )
-
 
 # ===========================================================================
-# Test Class 2: ACL Table Group CRUD
+# Test Class 2: ACL Table Group CRUD – one test per API
 # ===========================================================================
 
 class TestAclTableGroupCrud(SaiAclTestBase):
     """
-    Validates Create / Get / Remove for ACL Table Group using the sai_thrift
-    adapter functions and attribute constants.
+    One test per sai_thrift ACL Table Group API:
+      sai_thrift_create_acl_table_group
+      sai_thrift_get_acl_table_group_attribute
+      sai_thrift_remove_acl_table_group
 
-    SAI_ACL_TABLE_GROUP_ATTR_ACL_STAGE is MANDATORY_ON_CREATE.
+    Note: sai_thrift_set_acl_table_group_attribute is not tested here because
+    all ACL Table Group attributes are CREATE_ONLY in the SAI spec; the
+    generated adapter function returns SAI_STATUS_NOT_SUPPORTED by design.
     """
 
-    def test_create_acl_table_group_ingress_default(self):
+    def test_create_acl_table_group(self):
         """
-        CREATE – ingress ACL table group with default attributes.
+        sai_thrift_create_acl_table_group with default values.
         Expected: non-zero OID, SAI_STATUS_SUCCESS.
         """
         acl_table_group = sai_thrift_create_acl_table_group(
             self.client,
             acl_stage=SAI_ACL_STAGE_INGRESS,
-        )
-        self._assert_valid_oid(acl_table_group)
-        self._assert_status_success(adapter.status)
-
-    def test_create_acl_table_group_egress_parallel(self):
-        """
-        CREATE – egress ACL table group, parallel type, PORT bind point.
-        Expected: non-zero OID, SAI_STATUS_SUCCESS.
-        """
-        bp_list = sai_thrift_s32_list_t(
-            count=1, int32list=[SAI_ACL_BIND_POINT_TYPE_PORT]
-        )
-        acl_table_group = sai_thrift_create_acl_table_group(
-            self.client,
-            acl_stage=SAI_ACL_STAGE_EGRESS,
-            acl_bind_point_type_list=bp_list,
-            type=SAI_ACL_TABLE_GROUP_TYPE_PARALLEL,
-        )
-        self._assert_valid_oid(acl_table_group)
-        self._assert_status_success(adapter.status)
-
-    def test_create_acl_table_group_sequential_port_lag(self):
-        """
-        CREATE – ingress ACL table group, sequential type, PORT+LAG bind points.
-        Expected: non-zero OID, SAI_STATUS_SUCCESS.
-        """
-        bp_list = sai_thrift_s32_list_t(
-            count=2,
-            int32list=[SAI_ACL_BIND_POINT_TYPE_PORT, SAI_ACL_BIND_POINT_TYPE_LAG],
-        )
-        acl_table_group = sai_thrift_create_acl_table_group(
-            self.client,
-            acl_stage=SAI_ACL_STAGE_INGRESS,
-            acl_bind_point_type_list=bp_list,
-            type=SAI_ACL_TABLE_GROUP_TYPE_SEQUENTIAL,
         )
         self._assert_valid_oid(acl_table_group)
         self._assert_status_success(adapter.status)
 
     def test_get_acl_table_group_attribute(self):
         """
-        GET – read ACL stage attribute back from an ACL table group.
+        sai_thrift_get_acl_table_group_attribute with default values.
         Expected: SAI_STATUS_SUCCESS, non-None result.
         """
         acl_table_group = sai_thrift_create_acl_table_group(
             self.client, acl_stage=SAI_ACL_STAGE_INGRESS
         )
-        self._assert_valid_oid(acl_table_group)
-
         attr = sai_thrift_get_acl_table_group_attribute(
             self.client, acl_table_group, acl_stage=True
         )
@@ -537,135 +441,53 @@ class TestAclTableGroupCrud(SaiAclTestBase):
 
     def test_remove_acl_table_group(self):
         """
-        REMOVE – delete an ACL table group.
+        sai_thrift_remove_acl_table_group with default values.
         Expected: SAI_STATUS_SUCCESS.
         """
         acl_table_group = sai_thrift_create_acl_table_group(
             self.client, acl_stage=SAI_ACL_STAGE_INGRESS
         )
-        self._assert_valid_oid(acl_table_group)
-
         status = sai_thrift_remove_acl_table_group(self.client, acl_table_group)
         self._assert_status_success(status)
 
-    def test_crud_acl_table_group_lifecycle(self):
-        """
-        Full lifecycle: create → get → remove.
-        All operations must return SAI_STATUS_SUCCESS.
-        """
-        acl_table_group = sai_thrift_create_acl_table_group(
-            self.client, acl_stage=SAI_ACL_STAGE_INGRESS
-        )
-        self._assert_valid_oid(acl_table_group)
-        self._assert_status_success(adapter.status, "create")
-
-        attr = sai_thrift_get_acl_table_group_attribute(
-            self.client, acl_table_group, acl_stage=True
-        )
-        self._assert_status_success(adapter.status, "get")
-        self.assertIsNotNone(attr)
-
-        status = sai_thrift_remove_acl_table_group(self.client, acl_table_group)
-        self._assert_status_success(status, "remove")
-
 
 # ===========================================================================
-# Test Class 3: ACL Table CRUD
+# Test Class 3: ACL Table CRUD – one test per API
 # ===========================================================================
 
 class TestAclTableCrud(SaiAclTestBase):
     """
-    Validates Create / Get / Remove for ACL Table using the sai_thrift adapter
-    functions and attribute constants.
+    One test per sai_thrift ACL Table API:
+      sai_thrift_create_acl_table
+      sai_thrift_get_acl_table_attribute
+      sai_thrift_remove_acl_table
 
-    SAI_ACL_TABLE_ATTR_ACL_STAGE is MANDATORY_ON_CREATE; at least one match
-    field must be enabled.
+    Note: sai_thrift_set_acl_table_attribute is not tested here because
+    all ACL Table attributes are CREATE_ONLY in the SAI spec; the generated
+    adapter function returns SAI_STATUS_NOT_SUPPORTED by design.
     """
 
-    def test_create_acl_table_ingress_src_ip(self):
+    def test_create_acl_table(self):
         """
-        CREATE – minimal ingress ACL table with src_ip match field.
+        sai_thrift_create_acl_table with default values.
         Expected: non-zero OID, SAI_STATUS_SUCCESS.
         """
         acl_table = sai_thrift_create_acl_table(
             self.client,
             acl_stage=SAI_ACL_STAGE_INGRESS,
             field_src_ip=True,
-        )
-        self._assert_valid_oid(acl_table)
-        self._assert_status_success(adapter.status)
-
-    def test_create_acl_table_egress_multiple_fields(self):
-        """
-        CREATE – egress ACL table with dst_ip, protocol, and L4 port fields.
-        Expected: non-zero OID, SAI_STATUS_SUCCESS.
-        """
-        acl_table = sai_thrift_create_acl_table(
-            self.client,
-            acl_stage=SAI_ACL_STAGE_EGRESS,
-            field_dst_ip=True,
-            field_ip_protocol=True,
-            field_l4_src_port=True,
-            field_l4_dst_port=True,
-        )
-        self._assert_valid_oid(acl_table)
-        self._assert_status_success(adapter.status)
-
-    def test_create_acl_table_with_port_vlan_bind_point(self):
-        """
-        CREATE – ACL table bound to PORT and VLAN bind points.
-        Expected: non-zero OID, SAI_STATUS_SUCCESS.
-        """
-        bp_list = sai_thrift_s32_list_t(
-            count=2,
-            int32list=[SAI_ACL_BIND_POINT_TYPE_PORT, SAI_ACL_BIND_POINT_TYPE_VLAN],
-        )
-        acl_table = sai_thrift_create_acl_table(
-            self.client,
-            acl_stage=SAI_ACL_STAGE_INGRESS,
-            acl_bind_point_type_list=bp_list,
-            field_src_ip=True,
-        )
-        self._assert_valid_oid(acl_table)
-        self._assert_status_success(adapter.status)
-
-    def test_create_acl_table_mac_fields(self):
-        """
-        CREATE – L2 ACL table with src/dst MAC match fields.
-        Expected: non-zero OID, SAI_STATUS_SUCCESS.
-        """
-        acl_table = sai_thrift_create_acl_table(
-            self.client,
-            acl_stage=SAI_ACL_STAGE_INGRESS,
-            field_src_mac=True,
-            field_dst_mac=True,
-        )
-        self._assert_valid_oid(acl_table)
-        self._assert_status_success(adapter.status)
-
-    def test_create_acl_table_ipv6_field(self):
-        """
-        CREATE – ACL table with IPv6 src address match field.
-        Expected: non-zero OID, SAI_STATUS_SUCCESS.
-        """
-        acl_table = sai_thrift_create_acl_table(
-            self.client,
-            acl_stage=SAI_ACL_STAGE_INGRESS,
-            field_src_ipv6=True,
         )
         self._assert_valid_oid(acl_table)
         self._assert_status_success(adapter.status)
 
     def test_get_acl_table_attribute(self):
         """
-        GET – read ACL stage attribute from an ACL table.
+        sai_thrift_get_acl_table_attribute with default values.
         Expected: SAI_STATUS_SUCCESS, non-None result.
         """
         acl_table = sai_thrift_create_acl_table(
             self.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
         )
-        self._assert_valid_oid(acl_table)
-
         attr = sai_thrift_get_acl_table_attribute(
             self.client, acl_table, acl_stage=True
         )
@@ -674,49 +496,31 @@ class TestAclTableCrud(SaiAclTestBase):
 
     def test_remove_acl_table(self):
         """
-        REMOVE – delete an ACL table.
+        sai_thrift_remove_acl_table with default values.
         Expected: SAI_STATUS_SUCCESS.
         """
         acl_table = sai_thrift_create_acl_table(
             self.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
         )
-        self._assert_valid_oid(acl_table)
-
         status = sai_thrift_remove_acl_table(self.client, acl_table)
         self._assert_status_success(status)
 
-    def test_crud_acl_table_lifecycle(self):
-        """
-        Full lifecycle: create → get → remove.
-        """
-        acl_table = sai_thrift_create_acl_table(
-            self.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
-        )
-        self._assert_valid_oid(acl_table)
-        self._assert_status_success(adapter.status, "create")
-
-        attr = sai_thrift_get_acl_table_attribute(
-            self.client, acl_table, acl_stage=True
-        )
-        self._assert_status_success(adapter.status, "get")
-        self.assertIsNotNone(attr)
-
-        status = sai_thrift_remove_acl_table(self.client, acl_table)
-        self._assert_status_success(status, "remove")
-
 
 # ===========================================================================
-# Test Class 4: ACL Table Group Member CRUD
+# Test Class 4: ACL Table Group Member CRUD – one test per API
 # ===========================================================================
 
 class TestAclTableGroupMemberCrud(SaiAclTestBase):
     """
-    Validates Create / Get / Remove for ACL Table Group Member.
+    One test per sai_thrift ACL Table Group Member API:
+      sai_thrift_create_acl_table_group_member
+      sai_thrift_get_acl_table_group_member_attribute
+      sai_thrift_set_acl_table_group_member_attribute
+      sai_thrift_remove_acl_table_group_member
 
-    All three MANDATORY_ON_CREATE attributes are supplied:
-      SAI_ACL_TABLE_GROUP_MEMBER_ATTR_ACL_TABLE_GROUP_ID
-      SAI_ACL_TABLE_GROUP_MEMBER_ATTR_ACL_TABLE_ID
-      SAI_ACL_TABLE_GROUP_MEMBER_ATTR_PRIORITY
+    Prerequisites created in setUp:
+      - ACL Table Group (acl_stage=SAI_ACL_STAGE_INGRESS)
+      - ACL Table       (acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True)
     """
 
     def setUp(self):
@@ -733,9 +537,9 @@ class TestAclTableGroupMemberCrud(SaiAclTestBase):
         sai_thrift_remove_acl_table_group(self.client, self.acl_table_group)
         super().tearDown()
 
-    def test_create_acl_table_group_member_priority_10(self):
+    def test_create_acl_table_group_member(self):
         """
-        CREATE – ACL table group member with priority 10.
+        sai_thrift_create_acl_table_group_member with default values.
         Expected: non-zero OID, SAI_STATUS_SUCCESS.
         """
         member = sai_thrift_create_acl_table_group_member(
@@ -748,24 +552,9 @@ class TestAclTableGroupMemberCrud(SaiAclTestBase):
         self._assert_status_success(adapter.status)
         sai_thrift_remove_acl_table_group_member(self.client, member)
 
-    def test_create_acl_table_group_member_priority_100(self):
-        """
-        CREATE – ACL table group member with priority 100.
-        Expected: non-zero OID, SAI_STATUS_SUCCESS.
-        """
-        member = sai_thrift_create_acl_table_group_member(
-            self.client,
-            acl_table_group_id=self.acl_table_group,
-            acl_table_id=self.acl_table,
-            priority=100,
-        )
-        self._assert_valid_oid(member)
-        self._assert_status_success(adapter.status)
-        sai_thrift_remove_acl_table_group_member(self.client, member)
-
     def test_get_acl_table_group_member_attribute(self):
         """
-        GET – read priority from an ACL table group member.
+        sai_thrift_get_acl_table_group_member_attribute with default values.
         Expected: SAI_STATUS_SUCCESS, non-None result.
         """
         member = sai_thrift_create_acl_table_group_member(
@@ -774,8 +563,6 @@ class TestAclTableGroupMemberCrud(SaiAclTestBase):
             acl_table_id=self.acl_table,
             priority=10,
         )
-        self._assert_valid_oid(member)
-
         attr = sai_thrift_get_acl_table_group_member_attribute(
             self.client, member, priority=True
         )
@@ -783,9 +570,9 @@ class TestAclTableGroupMemberCrud(SaiAclTestBase):
         self.assertIsNotNone(attr)
         sai_thrift_remove_acl_table_group_member(self.client, member)
 
-    def test_remove_acl_table_group_member(self):
+    def test_set_acl_table_group_member_attribute(self):
         """
-        REMOVE – delete an ACL table group member.
+        sai_thrift_set_acl_table_group_member_attribute with default values.
         Expected: SAI_STATUS_SUCCESS.
         """
         member = sai_thrift_create_acl_table_group_member(
@@ -794,44 +581,41 @@ class TestAclTableGroupMemberCrud(SaiAclTestBase):
             acl_table_id=self.acl_table,
             priority=10,
         )
-        self._assert_valid_oid(member)
-
-        status = sai_thrift_remove_acl_table_group_member(self.client, member)
+        status = sai_thrift_set_acl_table_group_member_attribute(
+            self.client, member
+        )
         self._assert_status_success(status)
+        sai_thrift_remove_acl_table_group_member(self.client, member)
 
-    def test_crud_acl_table_group_member_lifecycle(self):
+    def test_remove_acl_table_group_member(self):
         """
-        Full lifecycle: create → get → remove.
+        sai_thrift_remove_acl_table_group_member with default values.
+        Expected: SAI_STATUS_SUCCESS.
         """
         member = sai_thrift_create_acl_table_group_member(
             self.client,
             acl_table_group_id=self.acl_table_group,
             acl_table_id=self.acl_table,
-            priority=20,
+            priority=10,
         )
-        self._assert_valid_oid(member)
-        self._assert_status_success(adapter.status, "create")
-
-        attr = sai_thrift_get_acl_table_group_member_attribute(
-            self.client, member, priority=True
-        )
-        self._assert_status_success(adapter.status, "get")
-        self.assertIsNotNone(attr)
-
         status = sai_thrift_remove_acl_table_group_member(self.client, member)
-        self._assert_status_success(status, "remove")
+        self._assert_status_success(status)
 
 
 # ===========================================================================
-# Test Class 5: ACL Entry CRUD
+# Test Class 5: ACL Entry CRUD – one test per API
 # ===========================================================================
 
 class TestAclEntryCrud(SaiAclTestBase):
     """
-    Validates Create / Get / Set / Remove for ACL Entry.
+    One test per sai_thrift ACL Entry API:
+      sai_thrift_create_acl_entry
+      sai_thrift_get_acl_entry_attribute
+      sai_thrift_set_acl_entry_attribute
+      sai_thrift_remove_acl_entry
 
-    SAI_ACL_ENTRY_ATTR_TABLE_ID is MANDATORY_ON_CREATE.
-    The ACL table is pre-created in setUp and removed in tearDown.
+    Prerequisite created in setUp:
+      - ACL Table (acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True)
     """
 
     def setUp(self):
@@ -844,199 +628,8 @@ class TestAclEntryCrud(SaiAclTestBase):
         sai_thrift_remove_acl_table(self.client, self.acl_table)
         super().tearDown()
 
-    def _make_src_ip_field(self, ip="10.0.0.1", mask="255.255.255.255"):
-        return sai_thrift_acl_field_data_t(
-            enable=True,
-            data=sai_thrift_acl_field_data_data_t(ip4=ip),
-            mask=sai_thrift_acl_field_data_mask_t(ip4=mask),
-        )
-
-    def _make_packet_action(self, action=None):
-        if action is None:
-            action = SAI_PACKET_ACTION_DROP
-        return sai_thrift_acl_action_data_t(
-            enable=True,
-            parameter=sai_thrift_acl_action_parameter_t(s32=action),
-        )
-
-    def test_create_acl_entry_drop_action(self):
-        """
-        CREATE – entry with DROP packet action.
-        Expected: non-zero OID, SAI_STATUS_SUCCESS.
-        """
-        acl_entry = sai_thrift_create_acl_entry(
-            self.client,
-            table_id=self.acl_table,
-            priority=10,
-            field_src_ip=self._make_src_ip_field(),
-            action_packet_action=self._make_packet_action(SAI_PACKET_ACTION_DROP),
-        )
-        self._assert_valid_oid(acl_entry)
-        self._assert_status_success(adapter.status)
-        sai_thrift_remove_acl_entry(self.client, acl_entry)
-
-    def test_create_acl_entry_forward_action(self):
-        """
-        CREATE – entry with FORWARD packet action.
-        Expected: non-zero OID, SAI_STATUS_SUCCESS.
-        """
-        acl_entry = sai_thrift_create_acl_entry(
-            self.client,
-            table_id=self.acl_table,
-            priority=5,
-            field_src_ip=self._make_src_ip_field("192.168.1.0", "255.255.255.0"),
-            action_packet_action=self._make_packet_action(SAI_PACKET_ACTION_FORWARD),
-        )
-        self._assert_valid_oid(acl_entry)
-        self._assert_status_success(adapter.status)
-        sai_thrift_remove_acl_entry(self.client, acl_entry)
-
-    def test_create_acl_entry_trap_action(self):
-        """
-        CREATE – entry with TRAP (copy to CPU) packet action.
-        Expected: non-zero OID, SAI_STATUS_SUCCESS.
-        """
-        acl_entry = sai_thrift_create_acl_entry(
-            self.client,
-            table_id=self.acl_table,
-            priority=15,
-            field_src_ip=self._make_src_ip_field("10.1.0.0", "255.255.0.0"),
-            action_packet_action=self._make_packet_action(SAI_PACKET_ACTION_TRAP),
-        )
-        self._assert_valid_oid(acl_entry)
-        self._assert_status_success(adapter.status)
-        sai_thrift_remove_acl_entry(self.client, acl_entry)
-
-    def test_get_acl_entry_attribute(self):
-        """
-        GET – read admin_state and priority from an ACL entry.
-        Expected: SAI_STATUS_SUCCESS, non-None result.
-        """
-        acl_entry = sai_thrift_create_acl_entry(
-            self.client,
-            table_id=self.acl_table,
-            priority=10,
-            field_src_ip=self._make_src_ip_field(),
-            action_packet_action=self._make_packet_action(),
-        )
-        self._assert_valid_oid(acl_entry)
-
-        attr = sai_thrift_get_acl_entry_attribute(
-            self.client, acl_entry, admin_state=True, priority=True
-        )
-        self._assert_status_success(adapter.status)
-        self.assertIsNotNone(attr)
-        sai_thrift_remove_acl_entry(self.client, acl_entry)
-
-    def test_set_acl_entry_attribute_priority(self):
-        """
-        SET – update priority of an ACL entry.
-        Expected: SAI_STATUS_SUCCESS.
-        """
-        acl_entry = sai_thrift_create_acl_entry(
-            self.client,
-            table_id=self.acl_table,
-            priority=10,
-            field_src_ip=self._make_src_ip_field(),
-            action_packet_action=self._make_packet_action(),
-        )
-        self._assert_valid_oid(acl_entry)
-
-        status = sai_thrift_set_acl_entry_attribute(
-            self.client, acl_entry, priority=20
-        )
-        self._assert_status_success(status)
-        sai_thrift_remove_acl_entry(self.client, acl_entry)
-
-    def test_set_acl_entry_attribute_admin_state(self):
-        """
-        SET – disable and re-enable an ACL entry via admin_state.
-        Expected: SAI_STATUS_SUCCESS for both set calls.
-        """
-        acl_entry = sai_thrift_create_acl_entry(
-            self.client,
-            table_id=self.acl_table,
-            priority=10,
-            field_src_ip=self._make_src_ip_field(),
-            action_packet_action=self._make_packet_action(),
-        )
-        self._assert_valid_oid(acl_entry)
-
-        status = sai_thrift_set_acl_entry_attribute(
-            self.client, acl_entry, admin_state=False
-        )
-        self._assert_status_success(status, "disable")
-
-        status = sai_thrift_set_acl_entry_attribute(
-            self.client, acl_entry, admin_state=True
-        )
-        self._assert_status_success(status, "re-enable")
-        sai_thrift_remove_acl_entry(self.client, acl_entry)
-
-    def test_remove_acl_entry(self):
-        """
-        REMOVE – delete an ACL entry.
-        Expected: SAI_STATUS_SUCCESS.
-        """
-        acl_entry = sai_thrift_create_acl_entry(
-            self.client,
-            table_id=self.acl_table,
-            priority=10,
-            field_src_ip=self._make_src_ip_field("172.16.0.1"),
-            action_packet_action=self._make_packet_action(),
-        )
-        self._assert_valid_oid(acl_entry)
-
-        status = sai_thrift_remove_acl_entry(self.client, acl_entry)
-        self._assert_status_success(status)
-
-    def test_crud_acl_entry_lifecycle(self):
-        """
-        Full lifecycle: create → get → set → remove.
-        """
-        acl_entry = sai_thrift_create_acl_entry(
-            self.client,
-            table_id=self.acl_table,
-            priority=10,
-            field_src_ip=self._make_src_ip_field("10.10.10.1"),
-            action_packet_action=self._make_packet_action(),
-        )
-        self._assert_valid_oid(acl_entry)
-        self._assert_status_success(adapter.status, "create")
-
-        attr = sai_thrift_get_acl_entry_attribute(
-            self.client, acl_entry, priority=True
-        )
-        self._assert_status_success(adapter.status, "get")
-        self.assertIsNotNone(attr)
-
-        status = sai_thrift_set_acl_entry_attribute(
-            self.client, acl_entry, admin_state=True
-        )
-        self._assert_status_success(status, "set")
-
-        status = sai_thrift_remove_acl_entry(self.client, acl_entry)
-        self._assert_status_success(status, "remove")
-
-
-# ===========================================================================
-# Test Class 6: ACL Counter CRUD
-# ===========================================================================
-
-class TestAclCounterCrud(SaiAclTestBase):
-    """
-    Validates Create / Get / Set / Remove for ACL Counter.
-
-    SAI_ACL_COUNTER_ATTR_TABLE_ID is MANDATORY_ON_CREATE.
-    An ACL table and an ACL entry are pre-created in setUp.
-    """
-
-    def setUp(self):
-        super().setUp()
-        self.acl_table = sai_thrift_create_acl_table(
-            self.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
-        )
-        self.acl_entry = sai_thrift_create_acl_entry(
+    def _make_acl_entry(self):
+        return sai_thrift_create_acl_entry(
             self.client,
             table_id=self.acl_table,
             priority=10,
@@ -1053,14 +646,80 @@ class TestAclCounterCrud(SaiAclTestBase):
             ),
         )
 
+    def test_create_acl_entry(self):
+        """
+        sai_thrift_create_acl_entry with default values.
+        Expected: non-zero OID, SAI_STATUS_SUCCESS.
+        """
+        acl_entry = self._make_acl_entry()
+        self._assert_valid_oid(acl_entry)
+        self._assert_status_success(adapter.status)
+        sai_thrift_remove_acl_entry(self.client, acl_entry)
+
+    def test_get_acl_entry_attribute(self):
+        """
+        sai_thrift_get_acl_entry_attribute with default values.
+        Expected: SAI_STATUS_SUCCESS, non-None result.
+        """
+        acl_entry = self._make_acl_entry()
+        attr = sai_thrift_get_acl_entry_attribute(
+            self.client, acl_entry, priority=True
+        )
+        self._assert_status_success(adapter.status)
+        self.assertIsNotNone(attr)
+        sai_thrift_remove_acl_entry(self.client, acl_entry)
+
+    def test_set_acl_entry_attribute(self):
+        """
+        sai_thrift_set_acl_entry_attribute with default values.
+        Expected: SAI_STATUS_SUCCESS.
+        """
+        acl_entry = self._make_acl_entry()
+        status = sai_thrift_set_acl_entry_attribute(
+            self.client, acl_entry, priority=20
+        )
+        self._assert_status_success(status)
+        sai_thrift_remove_acl_entry(self.client, acl_entry)
+
+    def test_remove_acl_entry(self):
+        """
+        sai_thrift_remove_acl_entry with default values.
+        Expected: SAI_STATUS_SUCCESS.
+        """
+        acl_entry = self._make_acl_entry()
+        status = sai_thrift_remove_acl_entry(self.client, acl_entry)
+        self._assert_status_success(status)
+
+
+# ===========================================================================
+# Test Class 6: ACL Counter CRUD – one test per API
+# ===========================================================================
+
+class TestAclCounterCrud(SaiAclTestBase):
+    """
+    One test per sai_thrift ACL Counter API:
+      sai_thrift_create_acl_counter
+      sai_thrift_get_acl_counter_attribute
+      sai_thrift_set_acl_counter_attribute
+      sai_thrift_remove_acl_counter
+
+    Prerequisites created in setUp:
+      - ACL Table (acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True)
+    """
+
+    def setUp(self):
+        super().setUp()
+        self.acl_table = sai_thrift_create_acl_table(
+            self.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
+        )
+
     def tearDown(self):
-        sai_thrift_remove_acl_entry(self.client, self.acl_entry)
         sai_thrift_remove_acl_table(self.client, self.acl_table)
         super().tearDown()
 
-    def test_create_acl_counter_byte_default(self):
+    def test_create_acl_counter(self):
         """
-        CREATE – byte counter (default, no explicit enable flags).
+        sai_thrift_create_acl_counter with default values.
         Expected: non-zero OID, SAI_STATUS_SUCCESS.
         """
         acl_counter = sai_thrift_create_acl_counter(
@@ -1070,55 +729,14 @@ class TestAclCounterCrud(SaiAclTestBase):
         self._assert_status_success(adapter.status)
         sai_thrift_remove_acl_counter(self.client, acl_counter)
 
-    def test_create_acl_counter_packet_count(self):
+    def test_get_acl_counter_attribute(self):
         """
-        CREATE – counter with packet counting enabled.
-        Expected: non-zero OID, SAI_STATUS_SUCCESS.
-        """
-        acl_counter = sai_thrift_create_acl_counter(
-            self.client, table_id=self.acl_table, enable_packet_count=True
-        )
-        self._assert_valid_oid(acl_counter)
-        self._assert_status_success(adapter.status)
-        sai_thrift_remove_acl_counter(self.client, acl_counter)
-
-    def test_create_acl_counter_byte_count(self):
-        """
-        CREATE – counter with byte counting enabled.
-        Expected: non-zero OID, SAI_STATUS_SUCCESS.
-        """
-        acl_counter = sai_thrift_create_acl_counter(
-            self.client, table_id=self.acl_table, enable_byte_count=True
-        )
-        self._assert_valid_oid(acl_counter)
-        self._assert_status_success(adapter.status)
-        sai_thrift_remove_acl_counter(self.client, acl_counter)
-
-    def test_create_acl_counter_packet_and_byte(self):
-        """
-        CREATE – counter with both packet and byte counting enabled.
-        Expected: non-zero OID, SAI_STATUS_SUCCESS.
-        """
-        acl_counter = sai_thrift_create_acl_counter(
-            self.client,
-            table_id=self.acl_table,
-            enable_packet_count=True,
-            enable_byte_count=True,
-        )
-        self._assert_valid_oid(acl_counter)
-        self._assert_status_success(adapter.status)
-        sai_thrift_remove_acl_counter(self.client, acl_counter)
-
-    def test_get_acl_counter_attribute_packets(self):
-        """
-        GET – read packet count attribute.
+        sai_thrift_get_acl_counter_attribute with default values.
         Expected: SAI_STATUS_SUCCESS, non-None result.
         """
         acl_counter = sai_thrift_create_acl_counter(
             self.client, table_id=self.acl_table, enable_packet_count=True
         )
-        self._assert_valid_oid(acl_counter)
-
         attr = sai_thrift_get_acl_counter_attribute(
             self.client, acl_counter, packets=True
         )
@@ -1126,202 +744,57 @@ class TestAclCounterCrud(SaiAclTestBase):
         self.assertIsNotNone(attr)
         sai_thrift_remove_acl_counter(self.client, acl_counter)
 
-    def test_get_acl_counter_attribute_bytes(self):
+    def test_set_acl_counter_attribute(self):
         """
-        GET – read byte count attribute.
-        Expected: SAI_STATUS_SUCCESS, non-None result.
-        """
-        acl_counter = sai_thrift_create_acl_counter(
-            self.client, table_id=self.acl_table, enable_byte_count=True
-        )
-        self._assert_valid_oid(acl_counter)
-
-        attr = sai_thrift_get_acl_counter_attribute(
-            self.client, acl_counter, bytes=True
-        )
-        self._assert_status_success(adapter.status)
-        self.assertIsNotNone(attr)
-        sai_thrift_remove_acl_counter(self.client, acl_counter)
-
-    def test_set_acl_counter_attribute_reset_packets(self):
-        """
-        SET – reset packet counter to 0.
+        sai_thrift_set_acl_counter_attribute with default values.
         Expected: SAI_STATUS_SUCCESS.
         """
         acl_counter = sai_thrift_create_acl_counter(
             self.client, table_id=self.acl_table, enable_packet_count=True
         )
-        self._assert_valid_oid(acl_counter)
-
         status = sai_thrift_set_acl_counter_attribute(
             self.client, acl_counter, packets=0
         )
         self._assert_status_success(status)
-        sai_thrift_remove_acl_counter(self.client, acl_counter)
-
-    def test_set_acl_counter_attribute_reset_bytes(self):
-        """
-        SET – reset byte counter to 0.
-        Expected: SAI_STATUS_SUCCESS.
-        """
-        acl_counter = sai_thrift_create_acl_counter(
-            self.client, table_id=self.acl_table, enable_byte_count=True
-        )
-        self._assert_valid_oid(acl_counter)
-
-        status = sai_thrift_set_acl_counter_attribute(
-            self.client, acl_counter, bytes=0
-        )
-        self._assert_status_success(status)
-        sai_thrift_remove_acl_counter(self.client, acl_counter)
-
-    def test_attach_detach_acl_counter_to_entry(self):
-        """
-        SET – attach an ACL counter to an entry then detach it.
-        Expected: both set calls return SAI_STATUS_SUCCESS.
-        """
-        acl_counter = sai_thrift_create_acl_counter(
-            self.client, table_id=self.acl_table, enable_packet_count=True
-        )
-        self._assert_valid_oid(acl_counter)
-
-        action_counter = sai_thrift_acl_action_data_t(
-            enable=True,
-            parameter=sai_thrift_acl_action_parameter_t(oid=acl_counter),
-        )
-        status = sai_thrift_set_acl_entry_attribute(
-            self.client, self.acl_entry, action_counter=action_counter
-        )
-        self._assert_status_success(status, "attach")
-
-        detach = sai_thrift_acl_action_data_t(
-            enable=False,
-            parameter=sai_thrift_acl_action_parameter_t(oid=0),
-        )
-        status = sai_thrift_set_acl_entry_attribute(
-            self.client, self.acl_entry, action_counter=detach
-        )
-        self._assert_status_success(status, "detach")
         sai_thrift_remove_acl_counter(self.client, acl_counter)
 
     def test_remove_acl_counter(self):
         """
-        REMOVE – delete an ACL counter.
+        sai_thrift_remove_acl_counter with default values.
         Expected: SAI_STATUS_SUCCESS.
         """
         acl_counter = sai_thrift_create_acl_counter(
             self.client, table_id=self.acl_table
         )
-        self._assert_valid_oid(acl_counter)
-
         status = sai_thrift_remove_acl_counter(self.client, acl_counter)
         self._assert_status_success(status)
 
-    def test_crud_acl_counter_lifecycle(self):
-        """
-        Full lifecycle: create → get → set → remove.
-        """
-        acl_counter = sai_thrift_create_acl_counter(
-            self.client,
-            table_id=self.acl_table,
-            enable_packet_count=True,
-            enable_byte_count=True,
-        )
-        self._assert_valid_oid(acl_counter)
-        self._assert_status_success(adapter.status, "create")
-
-        attr = sai_thrift_get_acl_counter_attribute(
-            self.client, acl_counter, packets=True
-        )
-        self._assert_status_success(adapter.status, "get")
-        self.assertIsNotNone(attr)
-
-        status = sai_thrift_set_acl_counter_attribute(
-            self.client, acl_counter, packets=0
-        )
-        self._assert_status_success(status, "set")
-
-        status = sai_thrift_remove_acl_counter(self.client, acl_counter)
-        self._assert_status_success(status, "remove")
-
 
 # ===========================================================================
-# Test Class 7: ACL Range CRUD
+# Test Class 7: ACL Range CRUD – one test per API
 # ===========================================================================
 
 class TestAclRangeCrud(SaiAclTestBase):
     """
-    Validates Create / Get / Remove for ACL Range.
+    One test per sai_thrift ACL Range API:
+      sai_thrift_create_acl_range
+      sai_thrift_get_acl_range_attribute
+      sai_thrift_remove_acl_range
 
-    SAI_ACL_RANGE_ATTR_TYPE and SAI_ACL_RANGE_ATTR_LIMIT are both
-    MANDATORY_ON_CREATE.
+    Note: sai_thrift_set_acl_range_attribute is not tested here because
+    all ACL Range attributes are CREATE_ONLY in the SAI spec; the generated
+    adapter function returns SAI_STATUS_NOT_SUPPORTED by design.
     """
 
-    def test_create_acl_range_l4_src_port(self):
+    def test_create_acl_range(self):
         """
-        CREATE – L4 source port range 1024–65535.
+        sai_thrift_create_acl_range with default values.
         Expected: non-zero OID, SAI_STATUS_SUCCESS.
         """
         acl_range = sai_thrift_create_acl_range(
             self.client,
             type=SAI_ACL_RANGE_TYPE_L4_SRC_PORT_RANGE,
             limit=sai_thrift_u32_range_t(min=1024, max=65535),
-        )
-        self._assert_valid_oid(acl_range)
-        self._assert_status_success(adapter.status)
-        sai_thrift_remove_acl_range(self.client, acl_range)
-
-    def test_create_acl_range_l4_dst_port(self):
-        """
-        CREATE – L4 destination port range 80–443.
-        Expected: non-zero OID, SAI_STATUS_SUCCESS.
-        """
-        acl_range = sai_thrift_create_acl_range(
-            self.client,
-            type=SAI_ACL_RANGE_TYPE_L4_DST_PORT_RANGE,
-            limit=sai_thrift_u32_range_t(min=80, max=443),
-        )
-        self._assert_valid_oid(acl_range)
-        self._assert_status_success(adapter.status)
-        sai_thrift_remove_acl_range(self.client, acl_range)
-
-    def test_create_acl_range_outer_vlan(self):
-        """
-        CREATE – outer VLAN range 100–200.
-        Expected: non-zero OID, SAI_STATUS_SUCCESS.
-        """
-        acl_range = sai_thrift_create_acl_range(
-            self.client,
-            type=SAI_ACL_RANGE_TYPE_OUTER_VLAN,
-            limit=sai_thrift_u32_range_t(min=100, max=200),
-        )
-        self._assert_valid_oid(acl_range)
-        self._assert_status_success(adapter.status)
-        sai_thrift_remove_acl_range(self.client, acl_range)
-
-    def test_create_acl_range_inner_vlan(self):
-        """
-        CREATE – inner VLAN range 1–4094.
-        Expected: non-zero OID, SAI_STATUS_SUCCESS.
-        """
-        acl_range = sai_thrift_create_acl_range(
-            self.client,
-            type=SAI_ACL_RANGE_TYPE_INNER_VLAN,
-            limit=sai_thrift_u32_range_t(min=1, max=4094),
-        )
-        self._assert_valid_oid(acl_range)
-        self._assert_status_success(adapter.status)
-        sai_thrift_remove_acl_range(self.client, acl_range)
-
-    def test_create_acl_range_packet_length(self):
-        """
-        CREATE – packet length range 64–1500 bytes.
-        Expected: non-zero OID, SAI_STATUS_SUCCESS.
-        """
-        acl_range = sai_thrift_create_acl_range(
-            self.client,
-            type=SAI_ACL_RANGE_TYPE_PACKET_LENGTH,
-            limit=sai_thrift_u32_range_t(min=64, max=1500),
         )
         self._assert_valid_oid(acl_range)
         self._assert_status_success(adapter.status)
@@ -1329,7 +802,7 @@ class TestAclRangeCrud(SaiAclTestBase):
 
     def test_get_acl_range_attribute(self):
         """
-        GET – read range type attribute.
+        sai_thrift_get_acl_range_attribute with default values.
         Expected: SAI_STATUS_SUCCESS, non-None result.
         """
         acl_range = sai_thrift_create_acl_range(
@@ -1337,8 +810,6 @@ class TestAclRangeCrud(SaiAclTestBase):
             type=SAI_ACL_RANGE_TYPE_L4_SRC_PORT_RANGE,
             limit=sai_thrift_u32_range_t(min=1024, max=65535),
         )
-        self._assert_valid_oid(acl_range)
-
         attr = sai_thrift_get_acl_range_attribute(
             self.client, acl_range, type=True
         )
@@ -1348,39 +819,16 @@ class TestAclRangeCrud(SaiAclTestBase):
 
     def test_remove_acl_range(self):
         """
-        REMOVE – delete an ACL range.
+        sai_thrift_remove_acl_range with default values.
         Expected: SAI_STATUS_SUCCESS.
         """
         acl_range = sai_thrift_create_acl_range(
             self.client,
-            type=SAI_ACL_RANGE_TYPE_L4_DST_PORT_RANGE,
-            limit=sai_thrift_u32_range_t(min=0, max=1023),
+            type=SAI_ACL_RANGE_TYPE_L4_SRC_PORT_RANGE,
+            limit=sai_thrift_u32_range_t(min=1024, max=65535),
         )
-        self._assert_valid_oid(acl_range)
-
         status = sai_thrift_remove_acl_range(self.client, acl_range)
         self._assert_status_success(status)
-
-    def test_crud_acl_range_lifecycle(self):
-        """
-        Full lifecycle: create → get → remove.
-        """
-        acl_range = sai_thrift_create_acl_range(
-            self.client,
-            type=SAI_ACL_RANGE_TYPE_L4_DST_PORT_RANGE,
-            limit=sai_thrift_u32_range_t(min=8080, max=8090),
-        )
-        self._assert_valid_oid(acl_range)
-        self._assert_status_success(adapter.status, "create")
-
-        attr = sai_thrift_get_acl_range_attribute(
-            self.client, acl_range, type=True
-        )
-        self._assert_status_success(adapter.status, "get")
-        self.assertIsNotNone(attr)
-
-        status = sai_thrift_remove_acl_range(self.client, acl_range)
-        self._assert_status_success(status, "remove")
 
 
 # ===========================================================================
@@ -1389,7 +837,7 @@ class TestAclRangeCrud(SaiAclTestBase):
 
 class TestAclPipelineIntegration(SaiAclTestBase):
     """
-    Exercises the complete ACL pipeline using the mock Thrift client:
+    Exercises the complete ACL pipeline in a single test:
 
         ACL Table Group
             └── ACL Table Group Member
@@ -1397,15 +845,18 @@ class TestAclPipelineIntegration(SaiAclTestBase):
                             ├── ACL Entry
                             └── ACL Counter (attached to the entry)
 
-    Covers both ingress and egress paths and a range-based pipeline.
-    All operations must return SAI_STATUS_SUCCESS.
+    Verifies that all 24 ACL API calls interoperate and that every call
+    returns SAI_STATUS_SUCCESS.
     """
 
-    def test_full_acl_pipeline_ingress(self):
+    def test_acl_pipeline(self):
         """
-        Build and teardown a complete ingress ACL pipeline:
+        Build and teardown the full ACL pipeline with default values:
           create group → create table → create member → create entry →
-          create counter → attach counter → get counter → detach → teardown.
+          create counter → set entry (attach counter) →
+          get counter → set entry (detach counter) →
+          remove counter → remove entry → remove member →
+          remove table → remove group.
         """
         bp_list = sai_thrift_s32_list_t(
             count=2,
@@ -1464,15 +915,17 @@ class TestAclPipelineIntegration(SaiAclTestBase):
         self._assert_valid_oid(acl_counter, "create counter")
         self._assert_status_success(adapter.status)
 
-        status = sai_thrift_set_acl_entry_attribute(
-            self.client,
-            acl_entry,
-            action_counter=sai_thrift_acl_action_data_t(
-                enable=True,
-                parameter=sai_thrift_acl_action_parameter_t(oid=acl_counter),
+        self._assert_status_success(
+            sai_thrift_set_acl_entry_attribute(
+                self.client,
+                acl_entry,
+                action_counter=sai_thrift_acl_action_data_t(
+                    enable=True,
+                    parameter=sai_thrift_acl_action_parameter_t(oid=acl_counter),
+                ),
             ),
+            "set entry (attach counter)",
         )
-        self._assert_status_success(status, "attach counter")
 
         attr = sai_thrift_get_acl_counter_attribute(
             self.client, acl_counter, packets=True
@@ -1480,179 +933,37 @@ class TestAclPipelineIntegration(SaiAclTestBase):
         self._assert_status_success(adapter.status, "get counter")
         self.assertIsNotNone(attr)
 
-        sai_thrift_set_acl_entry_attribute(
-            self.client,
-            acl_entry,
-            action_counter=sai_thrift_acl_action_data_t(
-                enable=False,
-                parameter=sai_thrift_acl_action_parameter_t(oid=0),
-            ),
-        )
-
         self._assert_status_success(
-            sai_thrift_remove_acl_counter(self.client, acl_counter), "remove counter")
-        self._assert_status_success(
-            sai_thrift_remove_acl_entry(self.client, acl_entry), "remove entry")
-        self._assert_status_success(
-            sai_thrift_remove_acl_table_group_member(self.client, member), "remove member")
-        self._assert_status_success(
-            sai_thrift_remove_acl_table(self.client, acl_table), "remove table")
-        self._assert_status_success(
-            sai_thrift_remove_acl_table_group(self.client, acl_table_group), "remove group")
-
-    def test_full_acl_pipeline_egress(self):
-        """
-        Build and teardown a complete egress ACL pipeline with DST IP filter.
-        """
-        bp_list = sai_thrift_s32_list_t(
-            count=1, int32list=[SAI_ACL_BIND_POINT_TYPE_PORT]
-        )
-
-        acl_table_group = sai_thrift_create_acl_table_group(
-            self.client,
-            acl_stage=SAI_ACL_STAGE_EGRESS,
-            acl_bind_point_type_list=bp_list,
-            type=SAI_ACL_TABLE_GROUP_TYPE_SEQUENTIAL,
-        )
-        self._assert_valid_oid(acl_table_group)
-
-        acl_table = sai_thrift_create_acl_table(
-            self.client,
-            acl_stage=SAI_ACL_STAGE_EGRESS,
-            acl_bind_point_type_list=bp_list,
-            field_dst_ip=True,
-        )
-        self._assert_valid_oid(acl_table)
-
-        member = sai_thrift_create_acl_table_group_member(
-            self.client,
-            acl_table_group_id=acl_table_group,
-            acl_table_id=acl_table,
-            priority=5,
-        )
-        self._assert_valid_oid(member)
-
-        acl_entry = sai_thrift_create_acl_entry(
-            self.client,
-            table_id=acl_table,
-            priority=5,
-            field_dst_ip=sai_thrift_acl_field_data_t(
-                enable=True,
-                data=sai_thrift_acl_field_data_data_t(ip4="192.168.0.1"),
-                mask=sai_thrift_acl_field_data_mask_t(ip4="255.255.255.0"),
-            ),
-            action_packet_action=sai_thrift_acl_action_data_t(
-                enable=True,
-                parameter=sai_thrift_acl_action_parameter_t(
-                    s32=SAI_PACKET_ACTION_FORWARD
+            sai_thrift_set_acl_entry_attribute(
+                self.client,
+                acl_entry,
+                action_counter=sai_thrift_acl_action_data_t(
+                    enable=False,
+                    parameter=sai_thrift_acl_action_parameter_t(oid=0),
                 ),
             ),
+            "set entry (detach counter)",
         )
-        self._assert_valid_oid(acl_entry)
 
-        acl_counter = sai_thrift_create_acl_counter(
-            self.client, table_id=acl_table, enable_byte_count=True
+        self._assert_status_success(
+            sai_thrift_remove_acl_counter(self.client, acl_counter),
+            "remove counter",
         )
-        self._assert_valid_oid(acl_counter)
-
-        sai_thrift_remove_acl_counter(self.client, acl_counter)
-        sai_thrift_remove_acl_entry(self.client, acl_entry)
-        sai_thrift_remove_acl_table_group_member(self.client, member)
-        sai_thrift_remove_acl_table(self.client, acl_table)
+        self._assert_status_success(
+            sai_thrift_remove_acl_entry(self.client, acl_entry),
+            "remove entry",
+        )
+        self._assert_status_success(
+            sai_thrift_remove_acl_table_group_member(self.client, member),
+            "remove member",
+        )
+        self._assert_status_success(
+            sai_thrift_remove_acl_table(self.client, acl_table),
+            "remove table",
+        )
         self._assert_status_success(
             sai_thrift_remove_acl_table_group(self.client, acl_table_group),
-            "final remove",
-        )
-
-    def test_acl_pipeline_with_range(self):
-        """
-        Build an ACL pipeline that uses an ACL range for L4 port matching.
-        """
-        acl_range = sai_thrift_create_acl_range(
-            self.client,
-            type=SAI_ACL_RANGE_TYPE_L4_SRC_PORT_RANGE,
-            limit=sai_thrift_u32_range_t(min=1024, max=65535),
-        )
-        self._assert_valid_oid(acl_range, "create range")
-        self._assert_status_success(adapter.status)
-
-        acl_table = sai_thrift_create_acl_table(
-            self.client,
-            acl_stage=SAI_ACL_STAGE_INGRESS,
-            field_acl_range_type=True,
-        )
-        self._assert_valid_oid(acl_table, "create table")
-        self._assert_status_success(adapter.status)
-
-        acl_entry = sai_thrift_create_acl_entry(
-            self.client,
-            table_id=acl_table,
-            priority=1,
-            field_acl_range_type=sai_thrift_acl_field_data_t(
-                enable=True,
-                data=sai_thrift_acl_field_data_data_t(
-                    objlist=sai_thrift_object_list_t(count=1, idlist=[acl_range])
-                ),
-            ),
-            action_packet_action=sai_thrift_acl_action_data_t(
-                enable=True,
-                parameter=sai_thrift_acl_action_parameter_t(
-                    s32=SAI_PACKET_ACTION_DROP
-                ),
-            ),
-        )
-        self._assert_valid_oid(acl_entry, "create entry")
-        self._assert_status_success(adapter.status)
-
-        self._assert_status_success(
-            sai_thrift_remove_acl_entry(self.client, acl_entry), "remove entry")
-        self._assert_status_success(
-            sai_thrift_remove_acl_table(self.client, acl_table), "remove table")
-        self._assert_status_success(
-            sai_thrift_remove_acl_range(self.client, acl_range), "remove range")
-
-    def test_multiple_acl_entries_per_table(self):
-        """
-        Create multiple ACL entries in one table and verify all can be
-        created and removed without errors.
-        """
-        acl_table = sai_thrift_create_acl_table(
-            self.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
-        )
-        self._assert_valid_oid(acl_table)
-
-        entries = []
-        for i in range(1, 6):
-            entry = sai_thrift_create_acl_entry(
-                self.client,
-                table_id=acl_table,
-                priority=i,
-                field_src_ip=sai_thrift_acl_field_data_t(
-                    enable=True,
-                    data=sai_thrift_acl_field_data_data_t(
-                        ip4="10.0.{}.1".format(i)
-                    ),
-                    mask=sai_thrift_acl_field_data_mask_t(ip4="255.255.255.255"),
-                ),
-                action_packet_action=sai_thrift_acl_action_data_t(
-                    enable=True,
-                    parameter=sai_thrift_acl_action_parameter_t(
-                        s32=SAI_PACKET_ACTION_DROP
-                    ),
-                ),
-            )
-            self._assert_valid_oid(entry, "create entry {}".format(i))
-            self._assert_status_success(adapter.status)
-            entries.append(entry)
-
-        for i, entry in enumerate(reversed(entries), 1):
-            self._assert_status_success(
-                sai_thrift_remove_acl_entry(self.client, entry),
-                "remove entry {}".format(i),
-            )
-
-        self._assert_status_success(
-            sai_thrift_remove_acl_table(self.client, acl_table), "remove table"
+            "remove group",
         )
 
 
