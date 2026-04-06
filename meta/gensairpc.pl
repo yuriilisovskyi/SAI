@@ -47,6 +47,7 @@ use lib catdir( dirname( rel2abs(__FILE__) ), 'rpc' );
 use Utils::Format;
 use Utils;
 
+use SAI::Type;
 use SAI::Function::Argument;
 use SAI::Struct::Member;
 use SAI::Function;
@@ -54,7 +55,6 @@ use SAI::Typedef;
 use SAI::Struct;
 use SAI::Attrs;
 use SAI::Stats;
-use SAI::Type;
 
 # Avoid warnings related to given/when
 no if $] >= 5.018, warnings => 'experimental::smartmatch';
