@@ -21,9 +21,11 @@ Validates the SAI ACL implementation by:
   2. Verifying that each CRUD API call with default values returns
      SAI_STATUS_SUCCESS against a running SAI implementation.
 
-One test per ACL API.  Within each test class the SAI object is created
-once by the create test and reused by the get / set / remove tests.
-The only assertion in every test is that the API returns SAI_STATUS_SUCCESS.
+Each test class inherits from ThriftInterface (ptf/sai_base_test.py) which
+sets up the Thrift RPC connection via setUp/tearDown.  Each class defines a
+runTest method that calls create, get, set (where applicable), and remove
+helper methods in sequence.  The only assertion in every helper is that the
+API returns SAI_STATUS_SUCCESS.
 
 Note: set_acl_table_group_attribute, set_acl_table_attribute, and
 set_acl_range_attribute are omitted because all attributes for those object
@@ -37,24 +39,17 @@ Prerequisites:
        cd test/saithriftv2 && python3 setup.py install
 
   2. Start the SAI RPC server (saiserver) with a SAI library loaded.
-     By default the tests connect to localhost:9092.
-     Override with the THRIFT_SERVER environment variable:
-       export THRIFT_SERVER=<host>
 
 Run with:
-    python3 -m pytest ptf/utest/sai_acl_unit_test.py -v
+    ptf --test-dir ptf/utest sai_acl_unit_test
 or:
-    python3 -m unittest discover -s ptf/utest -p sai_acl_unit_test.py
+    python3 -m pytest ptf/utest/sai_acl_unit_test.py -v
 """
 
 import inspect
-import os
 import sys
-import unittest
 
-from thrift.transport import TSocket
-from thrift.transport import TTransport
-from thrift.protocol import TBinaryProtocol
+from sai_base_test import ThriftInterface
 
 # All SAI API functions, type helpers, and attribute constants are imported
 # directly from the generated sai_thrift package (no embedded stubs).
@@ -63,10 +58,7 @@ from thrift.protocol import TBinaryProtocol
 # will raise ImportError – build the package first (see module docstring).
 from sai_thrift.sai_adapter import *  # noqa: F401,F403
 from sai_thrift.sai_headers import *  # noqa: F401,F403
-from sai_thrift import sai_rpc
 import sai_thrift.sai_adapter as adapter
-
-THRIFT_PORT = 9092
 
 
 # ---------------------------------------------------------------------------
@@ -126,36 +118,10 @@ def _get_acl_attribute_constants():
 
 
 # ---------------------------------------------------------------------------
-# Base class shared by all SAI ACL test classes that call the RPC server
+# Shared status assertion mixin
 # ---------------------------------------------------------------------------
 
-class SaiAclTestBase(unittest.TestCase):
-    """
-    Opens a Thrift connection to the SAI RPC server in setUp and closes it
-    in tearDown, following the same pattern as ptf/sai_base_test.py.
-
-    The server address is taken from the THRIFT_SERVER environment variable,
-    defaulting to 'localhost'.
-
-    Attributes:
-        client    – sai_rpc.Client connected to the SAI RPC server
-        transport – Thrift transport (closed in tearDown)
-    """
-
-    def setUp(self):
-        super().setUp()
-        server = os.environ.get('THRIFT_SERVER', 'localhost')
-        transport = TSocket.TSocket(server, THRIFT_PORT)
-        transport = TTransport.TBufferedTransport(transport)
-        protocol = TBinaryProtocol.TBinaryProtocol(transport)
-        self.client = sai_rpc.Client(protocol)
-        self.transport = transport
-        self.transport.open()
-
-    def tearDown(self):
-        self.transport.close()
-        super().tearDown()
-
+class _SaiAclAssertMixin:
     def _assert_status_success(self, status, msg=""):
         self.assertEqual(
             status,
@@ -166,16 +132,12 @@ class SaiAclTestBase(unittest.TestCase):
 
 # ===========================================================================
 # Test Class 1: Discover ACL APIs and attributes from sai_thrift
-# (introspects Python modules only; no SAI server connection required)
 # ===========================================================================
 
-class TestAclApiDiscovery(unittest.TestCase):
+class TestAclApiDiscovery(ThriftInterface):
     """
     Verifies that sai_thrift exposes the expected set of SAI ACL API functions
-    and attribute constants.
-
-    All symbols are discovered at runtime from the installed sai_thrift package
-    (test/saithriftv2/build/lib/sai_thrift) – no hard-coded fallback values.
+    and attribute constants (sourced from test/saithriftv2/build/lib/sai_thrift).
     """
 
     EXPECTED_ACL_FUNCTIONS = [
@@ -214,209 +176,189 @@ class TestAclApiDiscovery(unittest.TestCase):
         "SAI_ACL_RANGE_ATTR_",
     ]
 
-    def test_acl_api_functions_discoverable(self):
-        """
-        All expected ACL CRUD functions must be present in
-        sai_thrift.sai_adapter (sourced from test/saithriftv2/build/lib).
-        """
+    def runTest(self):
+        self.verify_acl_api_functions()
+        self.verify_acl_attribute_constants()
+
+    def verify_acl_api_functions(self):
+        """All expected ACL CRUD functions must be present in sai_thrift.sai_adapter."""
         discovered = {name for name, _ in _get_acl_api_functions()}
         for func_name in self.EXPECTED_ACL_FUNCTIONS:
             self.assertIn(
                 func_name,
                 discovered,
                 "ACL API function '{}' not found in sai_thrift.sai_adapter. "
-                "Discovered ACL functions: {}".format(
-                    func_name, sorted(discovered)
-                ),
+                "Discovered ACL functions: {}".format(func_name, sorted(discovered)),
             )
 
-    def test_acl_attribute_constants_discoverable(self):
-        """
-        At least one attribute constant must exist per expected prefix
-        (sourced from sai_thrift.sai_headers).
-        """
+    def verify_acl_attribute_constants(self):
+        """At least one attribute constant must exist per expected prefix."""
         constants = _get_acl_attribute_constants()
         for prefix in self.EXPECTED_ATTR_PREFIXES:
             matching = [k for k in constants if k.startswith(prefix)]
             self.assertTrue(
                 len(matching) > 0,
                 "No attribute constants with prefix '{}' found in "
-                "sai_thrift.sai_headers. "
-                "Available ACL constants: {}".format(
+                "sai_thrift.sai_headers. Available ACL constants: {}".format(
                     prefix, sorted(constants.keys())
                 ),
             )
 
 
 # ===========================================================================
-# Test Class 2: ACL Table Group CRUD – one test per API
+# Test Class 2: ACL Table Group CRUD
 # ===========================================================================
 
-class TestAclTableGroupCrud(SaiAclTestBase):
+class TestAclTableGroupCrud(_SaiAclAssertMixin, ThriftInterface):
     """
-    One test per sai_thrift ACL Table Group API.
-    The object created by test_01 is reused by test_02 and removed by test_03.
-    Only SAI_STATUS_SUCCESS is verified in each test.
+    Validates create / get / remove for ACL Table Group.
+    runTest calls each operation in sequence using a single object.
+    Only SAI_STATUS_SUCCESS is verified in each step.
     """
 
-    acl_table_group = None
+    def runTest(self):
+        acl_table_group = self.create_acl_table_group()
+        self.get_acl_table_group_attribute(acl_table_group)
+        self.remove_acl_table_group(acl_table_group)
 
-    def test_01_create_acl_table_group(self):
-        TestAclTableGroupCrud.acl_table_group = sai_thrift_create_acl_table_group(
+    def create_acl_table_group(self):
+        acl_table_group = sai_thrift_create_acl_table_group(
             self.client,
             acl_stage=SAI_ACL_STAGE_INGRESS,
         )
         self._assert_status_success(adapter.status)
+        return acl_table_group
 
-    def test_02_get_acl_table_group_attribute(self):
+    def get_acl_table_group_attribute(self, acl_table_group):
         sai_thrift_get_acl_table_group_attribute(
-            self.client, self.__class__.acl_table_group, acl_stage=True
+            self.client, acl_table_group, acl_stage=True
         )
         self._assert_status_success(adapter.status)
 
-    def test_03_remove_acl_table_group(self):
-        status = sai_thrift_remove_acl_table_group(
-            self.client, self.__class__.acl_table_group
-        )
+    def remove_acl_table_group(self, acl_table_group):
+        status = sai_thrift_remove_acl_table_group(self.client, acl_table_group)
         self._assert_status_success(status)
-        TestAclTableGroupCrud.acl_table_group = None
 
 
 # ===========================================================================
-# Test Class 3: ACL Table CRUD – one test per API
+# Test Class 3: ACL Table CRUD
 # ===========================================================================
 
-class TestAclTableCrud(SaiAclTestBase):
+class TestAclTableCrud(_SaiAclAssertMixin, ThriftInterface):
     """
-    One test per sai_thrift ACL Table API.
-    The object created by test_01 is reused by test_02 and removed by test_03.
-    Only SAI_STATUS_SUCCESS is verified in each test.
+    Validates create / get / remove for ACL Table.
+    runTest calls each operation in sequence using a single object.
+    Only SAI_STATUS_SUCCESS is verified in each step.
     """
 
-    acl_table = None
+    def runTest(self):
+        acl_table = self.create_acl_table()
+        self.get_acl_table_attribute(acl_table)
+        self.remove_acl_table(acl_table)
 
-    def test_01_create_acl_table(self):
-        TestAclTableCrud.acl_table = sai_thrift_create_acl_table(
+    def create_acl_table(self):
+        acl_table = sai_thrift_create_acl_table(
             self.client,
             acl_stage=SAI_ACL_STAGE_INGRESS,
             field_src_ip=True,
         )
         self._assert_status_success(adapter.status)
+        return acl_table
 
-    def test_02_get_acl_table_attribute(self):
+    def get_acl_table_attribute(self, acl_table):
         sai_thrift_get_acl_table_attribute(
-            self.client, self.__class__.acl_table, acl_stage=True
+            self.client, acl_table, acl_stage=True
         )
         self._assert_status_success(adapter.status)
 
-    def test_03_remove_acl_table(self):
-        status = sai_thrift_remove_acl_table(
-            self.client, self.__class__.acl_table
-        )
+    def remove_acl_table(self, acl_table):
+        status = sai_thrift_remove_acl_table(self.client, acl_table)
         self._assert_status_success(status)
-        TestAclTableCrud.acl_table = None
 
 
 # ===========================================================================
-# Test Class 4: ACL Table Group Member CRUD – one test per API
+# Test Class 4: ACL Table Group Member CRUD
 # ===========================================================================
 
-class TestAclTableGroupMemberCrud(SaiAclTestBase):
+class TestAclTableGroupMemberCrud(_SaiAclAssertMixin, ThriftInterface):
     """
-    One test per sai_thrift ACL Table Group Member API.
-    Prerequisites (acl_table_group, acl_table) are lazy-created in setUp on
-    the first test and cleaned up in tearDown after the remove test runs.
-    The member object created by test_01 is reused by test_02/03 and
-    removed by test_04.
-    Only SAI_STATUS_SUCCESS is verified in each test.
+    Validates create / get / set / remove for ACL Table Group Member.
+    runTest creates the prerequisite ACL table group and table, then calls
+    each member operation in sequence using a single object.
+    Only SAI_STATUS_SUCCESS is verified in each step.
     """
 
-    acl_table_group = None
-    acl_table = None
-    member = None
+    def runTest(self):
+        acl_table_group = sai_thrift_create_acl_table_group(
+            self.client, acl_stage=SAI_ACL_STAGE_INGRESS
+        )
+        acl_table = sai_thrift_create_acl_table(
+            self.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
+        )
 
-    def setUp(self):
-        super().setUp()
-        if self.__class__.acl_table_group is None:
-            self.__class__.acl_table_group = sai_thrift_create_acl_table_group(
-                self.client, acl_stage=SAI_ACL_STAGE_INGRESS
-            )
-        if self.__class__.acl_table is None:
-            self.__class__.acl_table = sai_thrift_create_acl_table(
-                self.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
-            )
+        member = self.create_acl_table_group_member(acl_table_group, acl_table)
+        self.get_acl_table_group_member_attribute(member)
+        self.set_acl_table_group_member_attribute(member)
+        self.remove_acl_table_group_member(member)
 
-    def tearDown(self):
-        if self.__class__.member is None and self.__class__.acl_table is not None:
-            sai_thrift_remove_acl_table(self.client, self.__class__.acl_table)
-            self.__class__.acl_table = None
-            sai_thrift_remove_acl_table_group(self.client, self.__class__.acl_table_group)
-            self.__class__.acl_table_group = None
-        super().tearDown()
+        sai_thrift_remove_acl_table(self.client, acl_table)
+        sai_thrift_remove_acl_table_group(self.client, acl_table_group)
 
-    def test_01_create_acl_table_group_member(self):
-        TestAclTableGroupMemberCrud.member = sai_thrift_create_acl_table_group_member(
+    def create_acl_table_group_member(self, acl_table_group, acl_table):
+        member = sai_thrift_create_acl_table_group_member(
             self.client,
-            acl_table_group_id=self.__class__.acl_table_group,
-            acl_table_id=self.__class__.acl_table,
+            acl_table_group_id=acl_table_group,
+            acl_table_id=acl_table,
             priority=10,
         )
         self._assert_status_success(adapter.status)
+        return member
 
-    def test_02_get_acl_table_group_member_attribute(self):
+    def get_acl_table_group_member_attribute(self, member):
         sai_thrift_get_acl_table_group_member_attribute(
-            self.client, self.__class__.member, priority=True
+            self.client, member, priority=True
         )
         self._assert_status_success(adapter.status)
 
-    def test_03_set_acl_table_group_member_attribute(self):
+    def set_acl_table_group_member_attribute(self, member):
         status = sai_thrift_set_acl_table_group_member_attribute(
-            self.client, self.__class__.member
+            self.client, member
         )
         self._assert_status_success(status)
 
-    def test_04_remove_acl_table_group_member(self):
-        status = sai_thrift_remove_acl_table_group_member(
-            self.client, self.__class__.member
-        )
+    def remove_acl_table_group_member(self, member):
+        status = sai_thrift_remove_acl_table_group_member(self.client, member)
         self._assert_status_success(status)
-        TestAclTableGroupMemberCrud.member = None
 
 
 # ===========================================================================
-# Test Class 5: ACL Entry CRUD – one test per API
+# Test Class 5: ACL Entry CRUD
 # ===========================================================================
 
-class TestAclEntryCrud(SaiAclTestBase):
+class TestAclEntryCrud(_SaiAclAssertMixin, ThriftInterface):
     """
-    One test per sai_thrift ACL Entry API.
-    The ACL table prerequisite is lazy-created in setUp on the first test and
-    cleaned up in tearDown after the remove test runs.
-    The entry object created by test_01 is reused by test_02/03 and
-    removed by test_04.
-    Only SAI_STATUS_SUCCESS is verified in each test.
+    Validates create / get / set / remove for ACL Entry.
+    runTest creates the prerequisite ACL table, then calls each entry operation
+    in sequence using a single object.
+    Only SAI_STATUS_SUCCESS is verified in each step.
     """
 
-    acl_table = None
-    acl_entry = None
+    def runTest(self):
+        acl_table = sai_thrift_create_acl_table(
+            self.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
+        )
 
-    def setUp(self):
-        super().setUp()
-        if self.__class__.acl_table is None:
-            self.__class__.acl_table = sai_thrift_create_acl_table(
-                self.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
-            )
+        acl_entry = self.create_acl_entry(acl_table)
+        self.get_acl_entry_attribute(acl_entry)
+        self.set_acl_entry_attribute(acl_entry)
+        self.remove_acl_entry(acl_entry)
 
-    def tearDown(self):
-        if self.__class__.acl_entry is None and self.__class__.acl_table is not None:
-            sai_thrift_remove_acl_table(self.client, self.__class__.acl_table)
-            self.__class__.acl_table = None
-        super().tearDown()
+        sai_thrift_remove_acl_table(self.client, acl_table)
 
-    def test_01_create_acl_entry(self):
-        TestAclEntryCrud.acl_entry = sai_thrift_create_acl_entry(
+    def create_acl_entry(self, acl_table):
+        acl_entry = sai_thrift_create_acl_entry(
             self.client,
-            table_id=self.__class__.acl_table,
+            table_id=acl_table,
             priority=10,
             field_src_ip=sai_thrift_acl_field_data_t(
                 enable=True,
@@ -431,125 +373,116 @@ class TestAclEntryCrud(SaiAclTestBase):
             ),
         )
         self._assert_status_success(adapter.status)
+        return acl_entry
 
-    def test_02_get_acl_entry_attribute(self):
+    def get_acl_entry_attribute(self, acl_entry):
         sai_thrift_get_acl_entry_attribute(
-            self.client, self.__class__.acl_entry, priority=True
+            self.client, acl_entry, priority=True
         )
         self._assert_status_success(adapter.status)
 
-    def test_03_set_acl_entry_attribute(self):
+    def set_acl_entry_attribute(self, acl_entry):
         status = sai_thrift_set_acl_entry_attribute(
-            self.client, self.__class__.acl_entry, priority=20
+            self.client, acl_entry, priority=20
         )
         self._assert_status_success(status)
 
-    def test_04_remove_acl_entry(self):
-        status = sai_thrift_remove_acl_entry(
-            self.client, self.__class__.acl_entry
-        )
+    def remove_acl_entry(self, acl_entry):
+        status = sai_thrift_remove_acl_entry(self.client, acl_entry)
         self._assert_status_success(status)
-        TestAclEntryCrud.acl_entry = None
 
 
 # ===========================================================================
-# Test Class 6: ACL Counter CRUD – one test per API
+# Test Class 6: ACL Counter CRUD
 # ===========================================================================
 
-class TestAclCounterCrud(SaiAclTestBase):
+class TestAclCounterCrud(_SaiAclAssertMixin, ThriftInterface):
     """
-    One test per sai_thrift ACL Counter API.
-    The ACL table prerequisite is lazy-created in setUp on the first test and
-    cleaned up in tearDown after the remove test runs.
-    The counter object created by test_01 is reused by test_02/03 and
-    removed by test_04.
-    Only SAI_STATUS_SUCCESS is verified in each test.
+    Validates create / get / set / remove for ACL Counter.
+    runTest creates the prerequisite ACL table, then calls each counter
+    operation in sequence using a single object.
+    Only SAI_STATUS_SUCCESS is verified in each step.
     """
 
-    acl_table = None
-    acl_counter = None
+    def runTest(self):
+        acl_table = sai_thrift_create_acl_table(
+            self.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
+        )
 
-    def setUp(self):
-        super().setUp()
-        if self.__class__.acl_table is None:
-            self.__class__.acl_table = sai_thrift_create_acl_table(
-                self.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
-            )
+        acl_counter = self.create_acl_counter(acl_table)
+        self.get_acl_counter_attribute(acl_counter)
+        self.set_acl_counter_attribute(acl_counter)
+        self.remove_acl_counter(acl_counter)
 
-    def tearDown(self):
-        if self.__class__.acl_counter is None and self.__class__.acl_table is not None:
-            sai_thrift_remove_acl_table(self.client, self.__class__.acl_table)
-            self.__class__.acl_table = None
-        super().tearDown()
+        sai_thrift_remove_acl_table(self.client, acl_table)
 
-    def test_01_create_acl_counter(self):
-        TestAclCounterCrud.acl_counter = sai_thrift_create_acl_counter(
-            self.client, table_id=self.__class__.acl_table, enable_packet_count=True
+    def create_acl_counter(self, acl_table):
+        acl_counter = sai_thrift_create_acl_counter(
+            self.client, table_id=acl_table, enable_packet_count=True
         )
         self._assert_status_success(adapter.status)
+        return acl_counter
 
-    def test_02_get_acl_counter_attribute(self):
+    def get_acl_counter_attribute(self, acl_counter):
         sai_thrift_get_acl_counter_attribute(
-            self.client, self.__class__.acl_counter, packets=True
+            self.client, acl_counter, packets=True
         )
         self._assert_status_success(adapter.status)
 
-    def test_03_set_acl_counter_attribute(self):
+    def set_acl_counter_attribute(self, acl_counter):
         status = sai_thrift_set_acl_counter_attribute(
-            self.client, self.__class__.acl_counter, packets=0
+            self.client, acl_counter, packets=0
         )
         self._assert_status_success(status)
 
-    def test_04_remove_acl_counter(self):
-        status = sai_thrift_remove_acl_counter(
-            self.client, self.__class__.acl_counter
-        )
+    def remove_acl_counter(self, acl_counter):
+        status = sai_thrift_remove_acl_counter(self.client, acl_counter)
         self._assert_status_success(status)
-        TestAclCounterCrud.acl_counter = None
 
 
 # ===========================================================================
-# Test Class 7: ACL Range CRUD – one test per API
+# Test Class 7: ACL Range CRUD
 # ===========================================================================
 
-class TestAclRangeCrud(SaiAclTestBase):
+class TestAclRangeCrud(_SaiAclAssertMixin, ThriftInterface):
     """
-    One test per sai_thrift ACL Range API.
-    The object created by test_01 is reused by test_02 and removed by test_03.
-    Only SAI_STATUS_SUCCESS is verified in each test.
+    Validates create / get / remove for ACL Range.
+    runTest calls each operation in sequence using a single object.
+    Only SAI_STATUS_SUCCESS is verified in each step.
     """
 
-    acl_range = None
+    def runTest(self):
+        acl_range = self.create_acl_range()
+        self.get_acl_range_attribute(acl_range)
+        self.remove_acl_range(acl_range)
 
-    def test_01_create_acl_range(self):
-        TestAclRangeCrud.acl_range = sai_thrift_create_acl_range(
+    def create_acl_range(self):
+        acl_range = sai_thrift_create_acl_range(
             self.client,
             type=SAI_ACL_RANGE_TYPE_L4_SRC_PORT_RANGE,
             limit=sai_thrift_u32_range_t(min=1024, max=65535),
         )
         self._assert_status_success(adapter.status)
+        return acl_range
 
-    def test_02_get_acl_range_attribute(self):
+    def get_acl_range_attribute(self, acl_range):
         sai_thrift_get_acl_range_attribute(
-            self.client, self.__class__.acl_range, type=True
+            self.client, acl_range, type=True
         )
         self._assert_status_success(adapter.status)
 
-    def test_03_remove_acl_range(self):
-        status = sai_thrift_remove_acl_range(
-            self.client, self.__class__.acl_range
-        )
+    def remove_acl_range(self, acl_range):
+        status = sai_thrift_remove_acl_range(self.client, acl_range)
         self._assert_status_success(status)
-        TestAclRangeCrud.acl_range = None
 
 
 # ===========================================================================
 # Test Class 8: Full ACL pipeline integration
 # ===========================================================================
 
-class TestAclPipelineIntegration(SaiAclTestBase):
+class TestAclPipelineIntegration(_SaiAclAssertMixin, ThriftInterface):
     """
-    Exercises the complete ACL pipeline in a single test:
+    Exercises the complete ACL pipeline in a single runTest:
 
         ACL Table Group
             └── ACL Table Group Member
@@ -560,15 +493,7 @@ class TestAclPipelineIntegration(SaiAclTestBase):
     Only SAI_STATUS_SUCCESS is verified for each API call.
     """
 
-    def test_acl_pipeline(self):
-        """
-        Build and teardown the full ACL pipeline:
-          create group → create table → create member → create entry →
-          create counter → set entry (attach counter) →
-          get counter → set entry (detach counter) →
-          remove counter → remove entry → remove member →
-          remove table → remove group.
-        """
+    def runTest(self):
         bp_list = sai_thrift_s32_list_t(
             count=2,
             int32list=[SAI_ACL_BIND_POINT_TYPE_PORT, SAI_ACL_BIND_POINT_TYPE_LAG],
@@ -670,7 +595,3 @@ class TestAclPipelineIntegration(SaiAclTestBase):
             sai_thrift_remove_acl_table_group(self.client, acl_table_group),
             "remove group",
         )
-
-
-if __name__ == "__main__":
-    unittest.main()
