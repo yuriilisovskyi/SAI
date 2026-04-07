@@ -131,32 +131,30 @@ def _get_acl_attribute_constants():
 
 class SaiAclTestBase(unittest.TestCase):
     """
-    Opens a single Thrift connection to the SAI RPC server for the entire
-    test class (setUpClass / tearDownClass) so that all tests within a class
-    share the same connection and the same pre-created SAI objects.
+    Opens a Thrift connection to the SAI RPC server in setUp and closes it
+    in tearDown, following the same pattern as ptf/sai_base_test.py.
 
     The server address is taken from the THRIFT_SERVER environment variable,
     defaulting to 'localhost'.
+
+    Attributes:
+        client    – sai_rpc.Client connected to the SAI RPC server
+        transport – Thrift transport (closed in tearDown)
     """
 
-    client = None
-    transport = None
-
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUp(self):
+        super().setUp()
         server = os.environ.get('THRIFT_SERVER', 'localhost')
         transport = TSocket.TSocket(server, THRIFT_PORT)
         transport = TTransport.TBufferedTransport(transport)
         protocol = TBinaryProtocol.TBinaryProtocol(transport)
-        cls.client = sai_rpc.Client(protocol)
-        cls.transport = transport
-        cls.transport.open()
+        self.client = sai_rpc.Client(protocol)
+        self.transport = transport
+        self.transport.open()
 
-    @classmethod
-    def tearDownClass(cls):
-        cls.transport.close()
-        super().tearDownClass()
+    def tearDown(self):
+        self.transport.close()
+        super().tearDown()
 
     def _assert_status_success(self, status, msg=""):
         self.assertEqual(
@@ -281,6 +279,7 @@ class TestAclTableGroupCrud(SaiAclTestBase):
             self.client, self.__class__.acl_table_group
         )
         self._assert_status_success(status)
+        TestAclTableGroupCrud.acl_table_group = None
 
 
 # ===========================================================================
@@ -315,6 +314,7 @@ class TestAclTableCrud(SaiAclTestBase):
             self.client, self.__class__.acl_table
         )
         self._assert_status_success(status)
+        TestAclTableCrud.acl_table = None
 
 
 # ===========================================================================
@@ -324,7 +324,8 @@ class TestAclTableCrud(SaiAclTestBase):
 class TestAclTableGroupMemberCrud(SaiAclTestBase):
     """
     One test per sai_thrift ACL Table Group Member API.
-    Prerequisites (acl_table_group, acl_table) are created once in setUpClass.
+    Prerequisites (acl_table_group, acl_table) are lazy-created in setUp on
+    the first test and cleaned up in tearDown after the remove test runs.
     The member object created by test_01 is reused by test_02/03 and
     removed by test_04.
     Only SAI_STATUS_SUCCESS is verified in each test.
@@ -334,23 +335,24 @@ class TestAclTableGroupMemberCrud(SaiAclTestBase):
     acl_table = None
     member = None
 
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        cls.acl_table_group = sai_thrift_create_acl_table_group(
-            cls.client, acl_stage=SAI_ACL_STAGE_INGRESS
-        )
-        cls.acl_table = sai_thrift_create_acl_table(
-            cls.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
-        )
+    def setUp(self):
+        super().setUp()
+        if self.__class__.acl_table_group is None:
+            self.__class__.acl_table_group = sai_thrift_create_acl_table_group(
+                self.client, acl_stage=SAI_ACL_STAGE_INGRESS
+            )
+        if self.__class__.acl_table is None:
+            self.__class__.acl_table = sai_thrift_create_acl_table(
+                self.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
+            )
 
-    @classmethod
-    def tearDownClass(cls):
-        if cls.member is not None:
-            sai_thrift_remove_acl_table_group_member(cls.client, cls.member)
-        sai_thrift_remove_acl_table(cls.client, cls.acl_table)
-        sai_thrift_remove_acl_table_group(cls.client, cls.acl_table_group)
-        super().tearDownClass()
+    def tearDown(self):
+        if self.__class__.member is None and self.__class__.acl_table is not None:
+            sai_thrift_remove_acl_table(self.client, self.__class__.acl_table)
+            self.__class__.acl_table = None
+            sai_thrift_remove_acl_table_group(self.client, self.__class__.acl_table_group)
+            self.__class__.acl_table_group = None
+        super().tearDown()
 
     def test_01_create_acl_table_group_member(self):
         TestAclTableGroupMemberCrud.member = sai_thrift_create_acl_table_group_member(
@@ -388,7 +390,8 @@ class TestAclTableGroupMemberCrud(SaiAclTestBase):
 class TestAclEntryCrud(SaiAclTestBase):
     """
     One test per sai_thrift ACL Entry API.
-    The ACL table prerequisite is created once in setUpClass.
+    The ACL table prerequisite is lazy-created in setUp on the first test and
+    cleaned up in tearDown after the remove test runs.
     The entry object created by test_01 is reused by test_02/03 and
     removed by test_04.
     Only SAI_STATUS_SUCCESS is verified in each test.
@@ -397,19 +400,18 @@ class TestAclEntryCrud(SaiAclTestBase):
     acl_table = None
     acl_entry = None
 
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        cls.acl_table = sai_thrift_create_acl_table(
-            cls.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
-        )
+    def setUp(self):
+        super().setUp()
+        if self.__class__.acl_table is None:
+            self.__class__.acl_table = sai_thrift_create_acl_table(
+                self.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
+            )
 
-    @classmethod
-    def tearDownClass(cls):
-        if cls.acl_entry is not None:
-            sai_thrift_remove_acl_entry(cls.client, cls.acl_entry)
-        sai_thrift_remove_acl_table(cls.client, cls.acl_table)
-        super().tearDownClass()
+    def tearDown(self):
+        if self.__class__.acl_entry is None and self.__class__.acl_table is not None:
+            sai_thrift_remove_acl_table(self.client, self.__class__.acl_table)
+            self.__class__.acl_table = None
+        super().tearDown()
 
     def test_01_create_acl_entry(self):
         TestAclEntryCrud.acl_entry = sai_thrift_create_acl_entry(
@@ -457,7 +459,8 @@ class TestAclEntryCrud(SaiAclTestBase):
 class TestAclCounterCrud(SaiAclTestBase):
     """
     One test per sai_thrift ACL Counter API.
-    The ACL table prerequisite is created once in setUpClass.
+    The ACL table prerequisite is lazy-created in setUp on the first test and
+    cleaned up in tearDown after the remove test runs.
     The counter object created by test_01 is reused by test_02/03 and
     removed by test_04.
     Only SAI_STATUS_SUCCESS is verified in each test.
@@ -466,19 +469,18 @@ class TestAclCounterCrud(SaiAclTestBase):
     acl_table = None
     acl_counter = None
 
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        cls.acl_table = sai_thrift_create_acl_table(
-            cls.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
-        )
+    def setUp(self):
+        super().setUp()
+        if self.__class__.acl_table is None:
+            self.__class__.acl_table = sai_thrift_create_acl_table(
+                self.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
+            )
 
-    @classmethod
-    def tearDownClass(cls):
-        if cls.acl_counter is not None:
-            sai_thrift_remove_acl_counter(cls.client, cls.acl_counter)
-        sai_thrift_remove_acl_table(cls.client, cls.acl_table)
-        super().tearDownClass()
+    def tearDown(self):
+        if self.__class__.acl_counter is None and self.__class__.acl_table is not None:
+            sai_thrift_remove_acl_table(self.client, self.__class__.acl_table)
+            self.__class__.acl_table = None
+        super().tearDown()
 
     def test_01_create_acl_counter(self):
         TestAclCounterCrud.acl_counter = sai_thrift_create_acl_counter(
@@ -538,6 +540,7 @@ class TestAclRangeCrud(SaiAclTestBase):
             self.client, self.__class__.acl_range
         )
         self._assert_status_success(status)
+        TestAclRangeCrud.acl_range = None
 
 
 # ===========================================================================
