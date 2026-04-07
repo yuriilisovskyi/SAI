@@ -21,7 +21,9 @@
 # @file    sai_attr_defaults_csv.py
 #
 # @brief   Parses SAI headers in inc/ and emits a CSV of attribute names with
-#          their @type and @default metadata values.
+#          their @type and @default metadata values.  For enum-typed attributes
+#          that carry no explicit @default, the first enumerator of the type is
+#          used as the default value.
 #
 # Usage:   python3 meta/sai_attr_defaults_csv.py
 #          (must be run from the repository root, or pass --inc-dir / --output)
@@ -65,6 +67,73 @@ _RE_DEFAULT_TAG = re.compile(r'@default\s+(.+)')
 # Lines that open or close a Doxygen block.
 _RE_DOC_OPEN  = re.compile(r'/\*\*')
 _RE_DOC_CLOSE = re.compile(r'\*/')
+
+# Matches a "typedef enum _sai_foo_t" opening line; group 1 = internal name.
+_RE_ENUM_OPEN = re.compile(r'typedef\s+enum\s+(_sai_\w+)\s*$')
+
+# Matches a "} sai_foo_t;" closing line; group 1 = public typedef name.
+_RE_ENUM_CLOSE = re.compile(r'^\s*\}\s*(sai_\w+)\s*;')
+
+# Matches an enumerator line (may have initializer, must not be a comment).
+# Group 1 = enumerator name.
+_RE_ENUMERATOR = re.compile(r'^\s*(SAI_[A-Z0-9_]+)\s*(?:=\s*[^,/]+)?\s*,')
+
+
+def build_enum_first_value_map(headers):
+    """Return dict mapping each SAI enum typedef name to its first enumerator.
+
+    Scans every header file for  typedef enum _sai_foo_t { ... } sai_foo_t;
+    blocks and records the first enumerator (skipping comment lines).
+    """
+
+    enum_map = {}   # sai_foo_t -> 'SAI_FOO_FIRST_VALUE'
+
+    for path in headers:
+        with open(path, encoding='utf-8', errors='replace') as fh:
+            lines = fh.readlines()
+
+        in_enum       = False
+        first_value   = None   # first enumerator seen in current block
+        in_block_comment = False
+
+        for line in lines:
+            stripped = line.strip()
+
+            # Track block comments so we ignore enumerator-like text inside them.
+            if not in_block_comment:
+                if '/*' in line:
+                    in_block_comment = True
+                    if '*/' in line:
+                        in_block_comment = False
+                    continue
+            else:
+                if '*/' in line:
+                    in_block_comment = False
+                continue
+
+            if stripped.startswith('//'):
+                continue
+
+            if not in_enum:
+                if _RE_ENUM_OPEN.search(line):
+                    in_enum     = True
+                    first_value = None
+            else:
+                # Look for the closing "} sai_foo_t;" before checking enumerators
+                # so a closing line like "} sai_foo_t;" is never mistaken for one.
+                m_close = _RE_ENUM_CLOSE.match(line)
+                if m_close:
+                    typedef_name = m_close.group(1)
+                    if first_value is not None:
+                        enum_map[typedef_name] = first_value
+                    in_enum     = False
+                    first_value = None
+                elif first_value is None:
+                    m_enum = _RE_ENUMERATOR.match(line)
+                    if m_enum:
+                        first_value = m_enum.group(1)
+
+    return enum_map
 
 
 def parse_header(path):
@@ -164,20 +233,31 @@ def main():
     if not headers:
         sys.exit(f'ERROR: no sai*.h files found in {inc_dir}')
 
+    enum_first = build_enum_first_value_map(headers)
+
     all_rows = []
     for hdr in headers:
         rows = parse_header(hdr)
         all_rows.extend(rows)
 
+    # For enum-typed attributes with no @default, fill in the first enumerator.
+    # The @type field may be a plain enum name ("sai_foo_t") or a list type
+    # ("sai_s32_list_t sai_foo_t").  Only plain enum types get the fallback.
+    filled_rows = []
+    for attr, type_str, default in all_rows:
+        if not default and type_str in enum_first:
+            default = enum_first[type_str]
+        filled_rows.append((attr, type_str, default))
+
     with open(args.output, 'w', newline='', encoding='utf-8') as fh:
         writer = csv.writer(fh)
         writer.writerow(['attribute_name', 'type', 'default_value'])
-        writer.writerows(all_rows)
+        writer.writerows(filled_rows)
 
-    with_default = sum(1 for _, _t, v in all_rows if v)
-    print(f'Written {len(all_rows)} attributes to {args.output} '
+    with_default = sum(1 for _, _t, v in filled_rows if v)
+    print(f'Written {len(filled_rows)} attributes to {args.output} '
           f'({with_default} with a @default value, '
-          f'{len(all_rows) - with_default} without)')
+          f'{len(filled_rows) - with_default} without)')
 
 
 if __name__ == '__main__':
