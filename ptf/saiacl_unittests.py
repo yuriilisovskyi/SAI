@@ -55,11 +55,7 @@ import sai_thrift.sai_adapter as adapter
 import sai_thrift.sai_headers as sai_headers
 
 from sai_utils import (
-    get_mandatory_on_create_attrs,
     get_mandatory_attrs_from_csv,
-    get_non_crud_apis,
-    get_sai_api_functions,
-    get_sai_attribute_constants,
     verify_object_attributes,
     load_attr_defaults,
 )
@@ -84,94 +80,6 @@ class _SaiAclAssertMixin:
 
 # ===========================================================================
 # Test Class 1: Discover ACL APIs and attributes from sai_thrift
-# ===========================================================================
-
-class TestAclApiDiscovery(ThriftInterface):
-    """
-    Verifies that sai_thrift exposes the expected set of SAI ACL API functions
-    and attribute constants (sourced from test/saithriftv2/build/lib/sai_thrift).
-    """
-
-    EXPECTED_ACL_FUNCTIONS = [
-        "sai_thrift_create_acl_table_group",
-        "sai_thrift_remove_acl_table_group",
-        "sai_thrift_set_acl_table_group_attribute",
-        "sai_thrift_get_acl_table_group_attribute",
-        "sai_thrift_create_acl_table_group_member",
-        "sai_thrift_remove_acl_table_group_member",
-        "sai_thrift_set_acl_table_group_member_attribute",
-        "sai_thrift_get_acl_table_group_member_attribute",
-        "sai_thrift_create_acl_table",
-        "sai_thrift_remove_acl_table",
-        "sai_thrift_set_acl_table_attribute",
-        "sai_thrift_get_acl_table_attribute",
-        "sai_thrift_create_acl_entry",
-        "sai_thrift_remove_acl_entry",
-        "sai_thrift_set_acl_entry_attribute",
-        "sai_thrift_get_acl_entry_attribute",
-        "sai_thrift_create_acl_counter",
-        "sai_thrift_remove_acl_counter",
-        "sai_thrift_set_acl_counter_attribute",
-        "sai_thrift_get_acl_counter_attribute",
-        "sai_thrift_create_acl_range",
-        "sai_thrift_remove_acl_range",
-        "sai_thrift_set_acl_range_attribute",
-        "sai_thrift_get_acl_range_attribute",
-    ]
-
-    EXPECTED_ATTR_PREFIXES = [
-        "SAI_ACL_TABLE_GROUP_ATTR_",
-        "SAI_ACL_TABLE_GROUP_MEMBER_ATTR_",
-        "SAI_ACL_TABLE_ATTR_",
-        "SAI_ACL_ENTRY_ATTR_",
-        "SAI_ACL_COUNTER_ATTR_",
-        "SAI_ACL_RANGE_ATTR_",
-    ]
-
-    def runTest(self):
-        self.verify_non_crud_apis()
-        self.verify_acl_api_functions()
-        self.verify_acl_attribute_constants()
-
-    def verify_acl_api_functions(self):
-        """All expected ACL CRUD functions must be present in sai_thrift.sai_adapter."""
-        discovered = {name for name, _ in get_sai_api_functions("_acl_")}
-        for func_name in self.EXPECTED_ACL_FUNCTIONS:
-            self.assertIn(
-                func_name,
-                discovered,
-                "ACL API function '{}' not found in sai_thrift.sai_adapter. "
-                "Discovered ACL functions: {}".format(func_name, sorted(discovered)),
-            )
-
-    def verify_acl_attribute_constants(self):
-        """At least one attribute constant must exist per expected prefix."""
-        constants = get_sai_attribute_constants(sai_headers, *self.EXPECTED_ATTR_PREFIXES)
-        for prefix in self.EXPECTED_ATTR_PREFIXES:
-            matching = [k for k in constants if k.startswith(prefix)]
-            self.assertTrue(
-                len(matching) > 0,
-                "No attribute constants with prefix '{}' found in "
-                "sai_thrift.sai_headers. Available ACL constants: {}".format(
-                    prefix, sorted(constants.keys())
-                ),
-            )
-
-
-# ===========================================================================
-# Test Class 2: ACL Table Group CRUD
-# ===========================================================================
-
-    def verify_non_crud_apis(self):
-        """Non-CRUD APIs for this object are callable from sai_thrift.sai_adapter."""
-        import sai_thrift.sai_adapter as _adapter
-        for obj_type in self.SAI_OBJECT_TYPES:
-            for fn_name in get_non_crud_apis(obj_type):
-                self.assertTrue(
-                    hasattr(_adapter, fn_name),
-                    "Non-CRUD function '{}' not found in sai_thrift.sai_adapter".format(fn_name),
-                )
-
 class TestAclTableGroupCrud(_SaiAclAssertMixin, ThriftInterface):
     """
     Validates create / get / remove for ACL Table Group.

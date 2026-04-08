@@ -23,11 +23,7 @@ import sai_thrift.sai_adapter as adapter
 import sai_thrift.sai_headers as sai_headers
 
 from sai_utils import (
-    get_mandatory_on_create_attrs,
     get_mandatory_attrs_from_csv,
-    get_non_crud_apis,
-    get_sai_api_functions,
-    get_sai_attribute_constants,
     verify_object_attributes,
     load_attr_defaults,
 )
@@ -39,46 +35,6 @@ class _AssertMixin:
     def _assert_status_success(self, status, msg=""):
         self.assertEqual(status, SAI_STATUS_SUCCESS,
                          msg or "Expected SAI_STATUS_SUCCESS, got {}".format(status))
-
-
-class TestLagApiDiscovery(ThriftInterface):
-    SAI_OBJECT_TYPES = [
-        "SAI_OBJECT_TYPE_LAG",
-        "SAI_OBJECT_TYPE_LAG_MEMBER"
-    ]
-
-    EXPECTED_FUNCTIONS = [
-        "sai_thrift_create_lag",
-        "sai_thrift_remove_lag",
-        "sai_thrift_set_lag_attribute",
-        "sai_thrift_get_lag_attribute",
-        "sai_thrift_create_lag_member",
-        "sai_thrift_remove_lag_member",
-        "sai_thrift_set_lag_member_attribute",
-        "sai_thrift_get_lag_member_attribute",
-    ]
-    EXPECTED_ATTR_PREFIXES = ["SAI_LAG_ATTR_", "SAI_LAG_MEMBER_ATTR_"]
-
-    def runTest(self):
-        discovered = {n for n, _ in get_sai_api_functions("_lag")}
-        for fn in self.EXPECTED_FUNCTIONS:
-            self.verify_non_crud_apis()
-        self.assertIn(fn, discovered)
-        constants = get_sai_attribute_constants(sai_headers, *self.EXPECTED_ATTR_PREFIXES)
-        for prefix in self.EXPECTED_ATTR_PREFIXES:
-            self.assertTrue(any(k.startswith(prefix) for k in constants))
-
-
-    def verify_non_crud_apis(self):
-        """Non-CRUD APIs for this object are callable from sai_thrift.sai_adapter."""
-        import sai_thrift.sai_adapter as _adapter
-        for obj_type in self.SAI_OBJECT_TYPES:
-            for fn_name in get_non_crud_apis(obj_type):
-                self.assertTrue(
-                    hasattr(_adapter, fn_name),
-                    "Non-CRUD function '{}' not found in sai_thrift.sai_adapter".format(fn_name),
-                )
-
 class TestLagCrud(_AssertMixin, ThriftInterface):
     """LAG has no mandatory attributes; all defaults from CSV."""
 

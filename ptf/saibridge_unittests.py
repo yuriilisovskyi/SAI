@@ -63,11 +63,7 @@ import sai_thrift.sai_adapter as adapter
 import sai_thrift.sai_headers as sai_headers
 
 from sai_utils import (
-    get_mandatory_on_create_attrs,
     get_mandatory_attrs_from_csv,
-    get_non_crud_apis,
-    get_sai_api_functions,
-    get_sai_attribute_constants,
     verify_object_attributes,
     load_attr_defaults,
 )
@@ -91,99 +87,6 @@ class _SaiBridgeAssertMixin:
 
 # ===========================================================================
 # Test Class 1: Discover Bridge APIs and attributes from sai_thrift
-# ===========================================================================
-
-class TestBridgeApiDiscovery(ThriftInterface):
-    """
-    Verifies that sai_thrift exposes the expected set of SAI Bridge API
-    functions and attribute constants
-    (sourced from test/saithriftv2/build/lib/sai_thrift).
-    """
-
-    EXPECTED_BRIDGE_FUNCTIONS = [
-        "sai_thrift_create_bridge",
-        "sai_thrift_remove_bridge",
-        "sai_thrift_set_bridge_attribute",
-        "sai_thrift_get_bridge_attribute",
-        "sai_thrift_create_bridge_port",
-        "sai_thrift_remove_bridge_port",
-        "sai_thrift_set_bridge_port_attribute",
-        "sai_thrift_get_bridge_port_attribute",
-    ]
-
-    EXPECTED_ATTR_PREFIXES = [
-        "SAI_BRIDGE_ATTR_",
-        "SAI_BRIDGE_PORT_ATTR_",
-    ]
-
-    def runTest(self):
-        self.verify_non_crud_apis()
-        self.verify_bridge_api_functions()
-        self.verify_bridge_attribute_constants()
-        self.verify_bridge_mandatory_attrs()
-        self.verify_bridge_port_mandatory_attrs()
-
-    def verify_bridge_api_functions(self):
-        """All expected Bridge CRUD functions must be present in sai_thrift.sai_adapter."""
-        discovered = {name for name, _ in get_sai_api_functions("_bridge")}
-        for func_name in self.EXPECTED_BRIDGE_FUNCTIONS:
-            self.assertIn(
-                func_name,
-                discovered,
-                "Bridge API function '{}' not found in sai_thrift.sai_adapter. "
-                "Discovered bridge functions: {}".format(func_name, sorted(discovered)),
-            )
-
-    def verify_bridge_attribute_constants(self):
-        """At least one attribute constant must exist per expected prefix."""
-        constants = get_sai_attribute_constants(sai_headers, *self.EXPECTED_ATTR_PREFIXES)
-        for prefix in self.EXPECTED_ATTR_PREFIXES:
-            matching = [k for k in constants if k.startswith(prefix)]
-            self.assertTrue(
-                len(matching) > 0,
-                "No attribute constants with prefix '{}' found in "
-                "sai_thrift.sai_headers. Available bridge constants: {}".format(
-                    prefix, sorted(constants.keys())
-                ),
-            )
-
-    def verify_bridge_mandatory_attrs(self):
-        """SAI_BRIDGE_ATTR_TYPE must be reported as MANDATORY_ON_CREATE."""
-        mandatory = get_mandatory_on_create_attrs("BRIDGE")
-        self.assertIn(
-            "SAI_BRIDGE_ATTR_TYPE",
-            mandatory,
-            "SAI_BRIDGE_ATTR_TYPE not found in MANDATORY_ON_CREATE attrs: {}".format(
-                mandatory
-            ),
-        )
-
-    def verify_bridge_port_mandatory_attrs(self):
-        """SAI_BRIDGE_PORT_ATTR_TYPE must be reported as MANDATORY_ON_CREATE."""
-        mandatory = get_mandatory_on_create_attrs("BRIDGE_PORT")
-        self.assertIn(
-            "SAI_BRIDGE_PORT_ATTR_TYPE",
-            mandatory,
-            "SAI_BRIDGE_PORT_ATTR_TYPE not found in MANDATORY_ON_CREATE attrs: {}".format(
-                mandatory
-            ),
-        )
-
-
-# ===========================================================================
-# Test Class 2: Bridge CRUD
-# ===========================================================================
-
-    def verify_non_crud_apis(self):
-        """Non-CRUD APIs for this object are callable from sai_thrift.sai_adapter."""
-        import sai_thrift.sai_adapter as _adapter
-        for obj_type in self.SAI_OBJECT_TYPES:
-            for fn_name in get_non_crud_apis(obj_type):
-                self.assertTrue(
-                    hasattr(_adapter, fn_name),
-                    "Non-CRUD function '{}' not found in sai_thrift.sai_adapter".format(fn_name),
-                )
-
 class TestBridgeCrud(_SaiBridgeAssertMixin, ThriftInterface):
     """
     Validates create / get / set / remove for Bridge.

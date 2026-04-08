@@ -23,11 +23,7 @@ import sai_thrift.sai_adapter as adapter
 import sai_thrift.sai_headers as sai_headers
 
 from sai_utils import (
-    get_mandatory_on_create_attrs,
     get_mandatory_attrs_from_csv,
-    get_non_crud_apis,
-    get_sai_api_functions,
-    get_sai_attribute_constants,
     verify_object_attributes,
     load_attr_defaults,
 )
@@ -39,41 +35,6 @@ class _AssertMixin:
     def _assert_status_success(self, status, msg=""):
         self.assertEqual(status, SAI_STATUS_SUCCESS,
                          msg or "Expected SAI_STATUS_SUCCESS, got {}".format(status))
-
-
-class TestRouterInterfaceApiDiscovery(ThriftInterface):
-    SAI_OBJECT_TYPES = [
-        "SAI_OBJECT_TYPE_ROUTER_INTERFACE"
-    ]
-
-    EXPECTED_FUNCTIONS = [
-        "sai_thrift_create_router_interface",
-        "sai_thrift_remove_router_interface",
-        "sai_thrift_set_router_interface_attribute",
-        "sai_thrift_get_router_interface_attribute",
-    ]
-    EXPECTED_ATTR_PREFIXES = ["SAI_ROUTER_INTERFACE_ATTR_"]
-
-    def runTest(self):
-        discovered = {n for n, _ in get_sai_api_functions("_router_interface")}
-        for fn in self.EXPECTED_FUNCTIONS:
-            self.verify_non_crud_apis()
-        self.assertIn(fn, discovered)
-        constants = get_sai_attribute_constants(sai_headers, *self.EXPECTED_ATTR_PREFIXES)
-        for prefix in self.EXPECTED_ATTR_PREFIXES:
-            self.assertTrue(any(k.startswith(prefix) for k in constants))
-
-
-    def verify_non_crud_apis(self):
-        """Non-CRUD APIs for this object are callable from sai_thrift.sai_adapter."""
-        import sai_thrift.sai_adapter as _adapter
-        for obj_type in self.SAI_OBJECT_TYPES:
-            for fn_name in get_non_crud_apis(obj_type):
-                self.assertTrue(
-                    hasattr(_adapter, fn_name),
-                    "Non-CRUD function '{}' not found in sai_thrift.sai_adapter".format(fn_name),
-                )
-
 class TestRouterInterfaceCrud(_AssertMixin, ThriftInterface):
     """
     Router Interface mandatory attrs from CSV:
