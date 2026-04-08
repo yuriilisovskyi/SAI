@@ -533,6 +533,74 @@ def restore_api_error_code():
 
 
 # ---------------------------------------------------------------------------
+# SAI API list helper  (sai_api_list.csv)
+# ---------------------------------------------------------------------------
+
+# Path to the SAI API list CSV at the repository root.
+_SAI_API_LIST_CSV = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "sai_api_list.csv",
+)
+
+# SAI API names that are CRUD operations – excluded from non-CRUD queries.
+_CRUD_API_KEYWORDS = frozenset([
+    "create", "remove", "set_", "get_", "bulk_create", "bulk_remove",
+    "bulk_set", "bulk_get",
+])
+
+
+def get_non_crud_apis(sai_object_type, csv_path=_SAI_API_LIST_CSV):
+    """
+    Return a list of Python Thrift function names for non-CRUD APIs
+    (e.g. get_stats, clear_stats, flush) available for *sai_object_type*,
+    as listed in ``sai_api_list.csv``.
+
+    Only rows whose ``Python Thrift function`` column is non-empty are
+    returned.  CRUD operations (create / remove / set_*_attribute /
+    get_*_attribute and bulk variants) are excluded.
+
+    Args:
+        sai_object_type (str): SAI object type string as it appears in the
+            CSV ``SAI object`` column, e.g. ``"SAI_OBJECT_TYPE_PORT"``.
+        csv_path (str): Path to ``sai_api_list.csv``.
+            Defaults to the repository root copy.
+
+    Returns:
+        list[str]: Sorted list of Thrift function names, e.g.
+        ``["sai_thrift_clear_port_all_stats", "sai_thrift_get_port_stats"]``.
+
+    Example::
+
+        get_non_crud_apis("SAI_OBJECT_TYPE_PORT")
+        # -> ["sai_thrift_clear_port_all_stats", "sai_thrift_get_port_stats"]
+
+        get_non_crud_apis("SAI_OBJECT_TYPE_VLAN")
+        # -> ["sai_thrift_get_vlan_stats"]
+    """
+    results = []
+    with open(csv_path, newline="") as fh:
+        reader = csv.DictReader(fh)
+        for row in reader:
+            if row["SAI object"] != sai_object_type:
+                continue
+            thrift_fn = row.get("Python Thrift function", "").strip()
+            if not thrift_fn:
+                continue
+            # Exclude CRUD operations.
+            api_name = row["SAI API"]
+            if any(api_name.startswith(kw) or ("_" + kw) in api_name
+                   for kw in ("create_", "remove_", "set_", "get_",
+                               "bulk_create", "bulk_remove",
+                               "bulk_set", "bulk_get")):
+                # Allow get_stats, get_*_stats, clear_*, flush_* through.
+                if not any(kw in api_name for kw in
+                           ("_stats", "clear_", "flush_", "availability")):
+                    continue
+            results.append(thrift_fn)
+    return sorted(set(results))
+
+
+# ---------------------------------------------------------------------------
 # SAI attribute metadata helpers
 # ---------------------------------------------------------------------------
 

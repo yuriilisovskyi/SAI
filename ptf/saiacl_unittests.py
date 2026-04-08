@@ -57,6 +57,7 @@ import sai_thrift.sai_headers as sai_headers
 from sai_utils import (
     get_mandatory_on_create_attrs,
     get_mandatory_attrs_from_csv,
+    get_non_crud_apis,
     get_sai_api_functions,
     get_sai_attribute_constants,
     verify_object_attributes,
@@ -128,6 +129,7 @@ class TestAclApiDiscovery(ThriftInterface):
     ]
 
     def runTest(self):
+        self.verify_non_crud_apis()
         self.verify_acl_api_functions()
         self.verify_acl_attribute_constants()
 
@@ -159,6 +161,16 @@ class TestAclApiDiscovery(ThriftInterface):
 # ===========================================================================
 # Test Class 2: ACL Table Group CRUD
 # ===========================================================================
+
+    def verify_non_crud_apis(self):
+        """Non-CRUD APIs for this object are callable from sai_thrift.sai_adapter."""
+        import sai_thrift.sai_adapter as _adapter
+        for obj_type in self.SAI_OBJECT_TYPES:
+            for fn_name in get_non_crud_apis(obj_type):
+                self.assertTrue(
+                    hasattr(_adapter, fn_name),
+                    "Non-CRUD function '{}' not found in sai_thrift.sai_adapter".format(fn_name),
+                )
 
 class TestAclTableGroupCrud(_SaiAclAssertMixin, ThriftInterface):
     """

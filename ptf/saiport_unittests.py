@@ -25,6 +25,7 @@ import sai_thrift.sai_headers as sai_headers
 from sai_utils import (
     get_mandatory_on_create_attrs,
     get_mandatory_attrs_from_csv,
+    get_non_crud_apis,
     get_sai_api_functions,
     get_sai_attribute_constants,
     verify_object_attributes,
@@ -41,6 +42,10 @@ class _AssertMixin:
 
 
 class TestPortApiDiscovery(ThriftInterface):
+    SAI_OBJECT_TYPES = [
+        "SAI_OBJECT_TYPE_PORT"
+    ]
+
     EXPECTED_FUNCTIONS = [
         "sai_thrift_create_port",
         "sai_thrift_remove_port",
@@ -52,11 +57,22 @@ class TestPortApiDiscovery(ThriftInterface):
     def runTest(self):
         discovered = {n for n, _ in get_sai_api_functions("_port")}
         for fn in self.EXPECTED_FUNCTIONS:
-            self.assertIn(fn, discovered)
+            self.verify_non_crud_apis()
+        self.assertIn(fn, discovered)
         constants = get_sai_attribute_constants(sai_headers, *self.EXPECTED_ATTR_PREFIXES)
         for prefix in self.EXPECTED_ATTR_PREFIXES:
             self.assertTrue(any(k.startswith(prefix) for k in constants))
 
+
+    def verify_non_crud_apis(self):
+        """Non-CRUD APIs for this object are callable from sai_thrift.sai_adapter."""
+        import sai_thrift.sai_adapter as _adapter
+        for obj_type in self.SAI_OBJECT_TYPES:
+            for fn_name in get_non_crud_apis(obj_type):
+                self.assertTrue(
+                    hasattr(_adapter, fn_name),
+                    "Non-CRUD function '{}' not found in sai_thrift.sai_adapter".format(fn_name),
+                )
 
 class TestPortCrud(_AssertMixin, ThriftInterface):
     """
@@ -125,4 +141,50 @@ class TestPortCrud(_AssertMixin, ThriftInterface):
 
     def remove_port(self, port):
         status = sai_thrift_remove_port(self.client, port)
+        self._assert_status_success(status)
+
+
+class TestPortNonCrudApis(_AssertMixin, ThriftInterface):
+    """
+    Validates non-CRUD Port APIs discovered from sai_api_list.csv:
+      sai_thrift_get_port_stats       – get port counters
+      sai_thrift_clear_port_all_stats – clear all port counters
+    Uses the first active port on the switch.
+    """
+
+    # Non-CRUD APIs for SAI_OBJECT_TYPE_PORT from sai_api_list.csv
+    NON_CRUD_APIS = get_non_crud_apis("SAI_OBJECT_TYPE_PORT")
+
+    def runTest(self):
+        attr = sai_thrift_get_switch_attribute(
+            self.client, number_of_active_ports=True
+        )
+        num_ports = attr["number_of_active_ports"]
+        attr = sai_thrift_get_switch_attribute(
+            self.client,
+            port_list=sai_thrift_object_list_t(idlist=[], count=num_ports),
+        )
+        port_id = attr["port_list"].idlist[0]
+
+        for fn_name in self.NON_CRUD_APIS:
+            self.assertIn(
+                fn_name,
+                globals(),
+                "Non-CRUD function '{}' not found in sai_thrift".format(fn_name),
+            )
+
+        self.test_get_port_stats(port_id)
+        self.test_clear_port_all_stats(port_id)
+
+    def test_get_port_stats(self, port_id):
+        """sai_thrift_get_port_stats – expected SAI_STATUS_SUCCESS."""
+        counter_ids = sai_thrift_s32_list_t(
+            count=1, int32list=[SAI_PORT_STAT_IF_IN_OCTETS]
+        )
+        sai_thrift_get_port_stats(self.client, port_id, counter_ids)
+        self._assert_status_success(adapter.status)
+
+    def test_clear_port_all_stats(self, port_id):
+        """sai_thrift_clear_port_all_stats – expected SAI_STATUS_SUCCESS."""
+        status = sai_thrift_clear_port_all_stats(self.client, port_id)
         self._assert_status_success(status)
