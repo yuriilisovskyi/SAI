@@ -664,10 +664,9 @@ def check_attr_default(test_case, attr_name, type_str, default_str, actual):
     ``bool``                                    ``== True`` / ``== False``
     ``sai_uint*_t`` / ``sai_int*_t``            ``== int(default_str)``
     ``sai_object_id_t`` + ``SAI_NULL_OBJECT_ID``  ``== SAI_NULL_OBJECT_ID``
-    enum types                                  ``== globals()[default_str]``
-    list types + ``"empty"``                    ``count == 0``
-    ``sai_acl_field_data_t`` + ``"disabled"``   ``enable == False``
-    ``sai_acl_action_data_t`` + ``"disabled"``  ``enable == False``
+    any ``sai_*_t`` + ``SAI_*`` default         ``== getattr(sai_headers, default_str)``
+    ``sai_object_list_t`` / ``sai_s32_list_t*`` + ``"empty"``  ``count == 0``
+    any type + ``"disabled"``                   ``enable == False``
     ``char``                                    ``== ""``
     empty ``default_str``                       skipped (no default in CSV)
     ==========================================  ================================
@@ -712,15 +711,11 @@ def check_attr_default(test_case, attr_name, type_str, default_str, actual):
             )
         return
 
-    enum_types = {
-        "sai_acl_stage_t",
-        "sai_acl_table_group_type_t",
-        "sai_acl_table_chain_group_type_t",
-        "sai_acl_table_chain_group_stage_t",
-        "sai_acl_range_type_t",
-        "sai_acl_table_match_type_t",
-    }
-    if type_str in enum_types:
+    # Any sai_*_t type whose default is a SAI_* constant name is treated as
+    # an enum.  This covers all feature-specific enum types generically
+    # (ACL, bridge, port, etc.) without maintaining a hard-coded whitelist.
+    if type_str.startswith("sai_") and type_str.endswith("_t") \
+            and default_str.startswith("SAI_"):
         expected = getattr(_headers, default_str, None)
         if expected is None:
             return
@@ -732,13 +727,9 @@ def check_attr_default(test_case, attr_name, type_str, default_str, actual):
         )
         return
 
-    list_types = {
-        "sai_object_list_t",
-        "sai_s32_list_t sai_acl_bind_point_type_t",
-        "sai_s32_list_t sai_acl_action_type_t",
-        "sai_s32_list_t sai_acl_range_type_t",
-    }
-    if type_str in list_types and default_str == "empty":
+    if default_str == "empty" and (
+        type_str == "sai_object_list_t" or type_str.startswith("sai_s32_list_t")
+    ):
         test_case.assertEqual(
             actual.count, 0,
             "{}: expected empty list (count=0), got count={}".format(
