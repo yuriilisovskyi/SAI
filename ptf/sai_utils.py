@@ -606,32 +606,73 @@ def get_mandatory_on_create_attrs(object_type_name, xml_dir=_SAI_XML_DIR):
 def load_attr_defaults(csv_path=_SAI_ATTR_DEFAULTS_CSV):
     """
     Parse ``sai_attr_defaults.csv`` and return a dict:
-        ``{ attribute_name: (type_str, default_str) }``
+        ``{ attribute_name: (type_str, default_str, mandatory) }``
 
-    Rows with an empty ``default_value`` are included with ``default_str = ""``.
+    The ``mandatory`` field is ``True`` when the CSV ``mandatory`` column is
+    ``"True"``; ``False`` otherwise.  Rows with an empty ``default_value`` are
+    included with ``default_str = ""``.
 
     Args:
         csv_path (str): Path to the CSV file.
             Defaults to ``sai_attr_defaults.csv`` at the repository root.
 
     Returns:
-        dict: Mapping of attribute name to ``(type_str, default_str)`` tuple.
+        dict: Mapping of attribute name to ``(type_str, default_str, mandatory)``
+        tuple.
     """
     defaults = {}
     with open(csv_path, newline="") as fh:
         reader = csv.DictReader(fh)
         for row in reader:
+            mandatory = row.get("mandatory", "False").strip() == "True"
             defaults[row["attribute_name"]] = (
                 row["type"],
                 row["default_value"],
+                mandatory,
             )
     return defaults
 
 
+def get_mandatory_attrs_from_csv(attr_prefix, attr_defaults=None):
+    """
+    Return a list of attribute constant names that are marked mandatory
+    (``mandatory == True``) in ``sai_attr_defaults.csv`` for the given
+    *attr_prefix*.
+
+    This reads the ``mandatory`` column that is populated from the
+    ``MANDATORY_ON_CREATE`` flag in the SAI header ``@flags`` annotation by
+    ``meta/sai_attr_defaults_csv.py``.
+
+    Args:
+        attr_prefix (str): Attribute name prefix, e.g. ``"SAI_ACL_TABLE_ATTR_"``.
+        attr_defaults (dict, optional): Pre-loaded defaults from
+            :func:`load_attr_defaults`.  Loaded from CSV if ``None``.
+
+    Returns:
+        list[str]: Sorted list of mandatory attribute constant names.
+
+    Example::
+
+        get_mandatory_attrs_from_csv("SAI_ACL_TABLE_GROUP_ATTR_")
+        # -> ["SAI_ACL_TABLE_GROUP_ATTR_ACL_STAGE"]
+
+        get_mandatory_attrs_from_csv("SAI_ACL_RANGE_ATTR_")
+        # -> ["SAI_ACL_RANGE_ATTR_LIMIT", "SAI_ACL_RANGE_ATTR_TYPE"]
+    """
+    if attr_defaults is None:
+        attr_defaults = load_attr_defaults()
+    return sorted(
+        name
+        for name, (_, _, mandatory) in attr_defaults.items()
+        if name.startswith(attr_prefix) and mandatory
+    )
+
+
 def get_object_attr_defaults(attr_prefix, attr_defaults=None):
     """
-    Return ``{attr_name: (type_str, default_str)}`` for all attributes whose
-    name starts with *attr_prefix* (e.g. ``"SAI_ACL_TABLE_GROUP_ATTR_"``).
+    Return ``{attr_name: (type_str, default_str, mandatory)}`` for all
+    attributes whose name starts with *attr_prefix*
+    (e.g. ``"SAI_ACL_TABLE_GROUP_ATTR_"``).
 
     Args:
         attr_prefix (str): Attribute name prefix to filter by.
@@ -784,7 +825,7 @@ def verify_object_attributes(test_case, get_fn, oid, attr_prefix,
     sig = inspect.signature(get_fn)
 
     request_kwargs = {}
-    for attr_name, (type_str, _default_str) in object_defaults.items():
+    for attr_name, (type_str, _default_str, _mandatory) in object_defaults.items():
         kwarg = attr_name[len(attr_prefix):].lower()
         if kwarg not in sig.parameters:
             continue
@@ -811,7 +852,7 @@ def verify_object_attributes(test_case, get_fn, oid, attr_prefix,
     if attrs is None:
         return attrs
 
-    for attr_name, (type_str, default_str) in object_defaults.items():
+    for attr_name, (type_str, default_str, _mandatory) in object_defaults.items():
         if attr_name in attrs:
             check_attr_default(
                 test_case, attr_name, type_str, default_str, attrs[attr_name]

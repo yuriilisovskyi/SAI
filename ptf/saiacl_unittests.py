@@ -56,10 +56,16 @@ import sai_thrift.sai_headers as sai_headers
 
 from sai_utils import (
     get_mandatory_on_create_attrs,
+    get_mandatory_attrs_from_csv,
     get_sai_api_functions,
     get_sai_attribute_constants,
     verify_object_attributes,
+    load_attr_defaults,
 )
+
+
+# Pre-load attribute defaults once at import time.
+_ATTR_DEFAULTS = load_attr_defaults()
 
 
 # ---------------------------------------------------------------------------
@@ -168,9 +174,19 @@ class TestAclTableGroupCrud(_SaiAclAssertMixin, ThriftInterface):
         self.remove_acl_table_group(acl_table_group)
 
     def create_acl_table_group(self):
+        # Mandatory attrs from CSV: SAI_ACL_TABLE_GROUP_ATTR_ACL_STAGE
+        # Default value: SAI_ACL_STAGE_INGRESS
+        mandatory = get_mandatory_attrs_from_csv(
+            "SAI_ACL_TABLE_GROUP_ATTR_", _ATTR_DEFAULTS
+        )
+        kwargs = {}
+        for attr in mandatory:
+            _type, default, _m = _ATTR_DEFAULTS[attr]
+            kwarg = attr[len("SAI_ACL_TABLE_GROUP_ATTR_"):].lower()
+            if default:
+                kwargs[kwarg] = getattr(sai_headers, default, default)
         acl_table_group = sai_thrift_create_acl_table_group(
-            self.client,
-            acl_stage=SAI_ACL_STAGE_INGRESS,
+            self.client, **kwargs
         )
         self._assert_status_success(adapter.status)
         return acl_table_group
@@ -206,11 +222,21 @@ class TestAclTableCrud(_SaiAclAssertMixin, ThriftInterface):
         self.remove_acl_table(acl_table)
 
     def create_acl_table(self):
-        acl_table = sai_thrift_create_acl_table(
-            self.client,
-            acl_stage=SAI_ACL_STAGE_INGRESS,
-            field_src_ip=True,
+        # Mandatory attrs from CSV: SAI_ACL_TABLE_ATTR_ACL_STAGE
+        # Default value: SAI_ACL_STAGE_INGRESS
+        # At least one match field is also required by the SAI spec;
+        # field_src_ip is added as the minimal match field.
+        mandatory = get_mandatory_attrs_from_csv(
+            "SAI_ACL_TABLE_ATTR_", _ATTR_DEFAULTS
         )
+        kwargs = {}
+        for attr in mandatory:
+            _type, default, _m = _ATTR_DEFAULTS[attr]
+            kwarg = attr[len("SAI_ACL_TABLE_ATTR_"):].lower()
+            if default:
+                kwargs[kwarg] = getattr(sai_headers, default, default)
+        kwargs["field_src_ip"] = True
+        acl_table = sai_thrift_create_acl_table(self.client, **kwargs)
         self._assert_status_success(adapter.status)
         return acl_table
 
@@ -240,12 +266,31 @@ class TestAclTableGroupMemberCrud(_SaiAclAssertMixin, ThriftInterface):
     """
 
     def runTest(self):
+        # Create prerequisites using CSV mandatory attributes.
+        grp_kwargs = {
+            attr[len("SAI_ACL_TABLE_GROUP_ATTR_"):].lower():
+                getattr(sai_headers, default, default)
+            for attr in get_mandatory_attrs_from_csv(
+                "SAI_ACL_TABLE_GROUP_ATTR_", _ATTR_DEFAULTS
+            )
+            for _, default, _ in [_ATTR_DEFAULTS[attr]]
+            if default
+        }
         acl_table_group = sai_thrift_create_acl_table_group(
-            self.client, acl_stage=SAI_ACL_STAGE_INGRESS
+            self.client, **grp_kwargs
         )
-        acl_table = sai_thrift_create_acl_table(
-            self.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
-        )
+
+        tbl_kwargs = {
+            attr[len("SAI_ACL_TABLE_ATTR_"):].lower():
+                getattr(sai_headers, default, default)
+            for attr in get_mandatory_attrs_from_csv(
+                "SAI_ACL_TABLE_ATTR_", _ATTR_DEFAULTS
+            )
+            for _, default, _ in [_ATTR_DEFAULTS[attr]]
+            if default
+        }
+        tbl_kwargs["field_src_ip"] = True
+        acl_table = sai_thrift_create_acl_table(self.client, **tbl_kwargs)
 
         member = self.create_acl_table_group_member(acl_table_group, acl_table)
         self.get_acl_table_group_member_attribute(member)
@@ -256,11 +301,27 @@ class TestAclTableGroupMemberCrud(_SaiAclAssertMixin, ThriftInterface):
         sai_thrift_remove_acl_table_group(self.client, acl_table_group)
 
     def create_acl_table_group_member(self, acl_table_group, acl_table):
+        # Mandatory attrs from CSV:
+        #   SAI_ACL_TABLE_GROUP_MEMBER_ATTR_ACL_TABLE_GROUP_ID (OID, no default)
+        #   SAI_ACL_TABLE_GROUP_MEMBER_ATTR_ACL_TABLE_ID       (OID, no default)
+        #   SAI_ACL_TABLE_GROUP_MEMBER_ATTR_PRIORITY           (uint32, no default)
+        # OID attrs have no CSV default and are supplied by the caller;
+        # priority has no CSV default so a value of 10 is used.
+        mandatory = get_mandatory_attrs_from_csv(
+            "SAI_ACL_TABLE_GROUP_MEMBER_ATTR_", _ATTR_DEFAULTS
+        )
+        kwargs = {}
+        for attr in mandatory:
+            _type, default, _m = _ATTR_DEFAULTS[attr]
+            kwarg = attr[len("SAI_ACL_TABLE_GROUP_MEMBER_ATTR_"):].lower()
+            if default:
+                kwargs[kwarg] = getattr(sai_headers, default, default)
+        # Supply runtime OID values for attrs with no CSV default.
+        kwargs["acl_table_group_id"] = acl_table_group
+        kwargs["acl_table_id"] = acl_table
+        kwargs.setdefault("priority", 10)
         member = sai_thrift_create_acl_table_group_member(
-            self.client,
-            acl_table_group_id=acl_table_group,
-            acl_table_id=acl_table,
-            priority=10,
+            self.client, **kwargs
         )
         self._assert_status_success(adapter.status)
         return member
@@ -297,9 +358,17 @@ class TestAclEntryCrud(_SaiAclAssertMixin, ThriftInterface):
     """
 
     def runTest(self):
-        acl_table = sai_thrift_create_acl_table(
-            self.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
-        )
+        tbl_kwargs = {
+            attr[len("SAI_ACL_TABLE_ATTR_"):].lower():
+                getattr(sai_headers, default, default)
+            for attr in get_mandatory_attrs_from_csv(
+                "SAI_ACL_TABLE_ATTR_", _ATTR_DEFAULTS
+            )
+            for _, default, _ in [_ATTR_DEFAULTS[attr]]
+            if default
+        }
+        tbl_kwargs["field_src_ip"] = True
+        acl_table = sai_thrift_create_acl_table(self.client, **tbl_kwargs)
 
         acl_entry = self.create_acl_entry(acl_table)
         self.get_acl_entry_attribute(acl_entry)
@@ -309,21 +378,34 @@ class TestAclEntryCrud(_SaiAclAssertMixin, ThriftInterface):
         sai_thrift_remove_acl_table(self.client, acl_table)
 
     def create_acl_entry(self, acl_table):
-        acl_entry = sai_thrift_create_acl_entry(
-            self.client,
-            table_id=acl_table,
-            field_src_ip=sai_thrift_acl_field_data_t(
-                enable=True,
-                data=sai_thrift_acl_field_data_data_t(ip4="10.0.0.1"),
-                mask=sai_thrift_acl_field_data_mask_t(ip4="255.255.255.255"),
-            ),
-            action_packet_action=sai_thrift_acl_action_data_t(
-                enable=True,
-                parameter=sai_thrift_acl_action_parameter_t(
-                    s32=SAI_PACKET_ACTION_DROP
-                ),
+        # Mandatory attrs from CSV:
+        #   SAI_ACL_ENTRY_ATTR_TABLE_ID  (OID, no default)
+        # At least one match field is required by the SAI spec;
+        # field_src_ip with a DROP action is added as the minimal entry.
+        mandatory = get_mandatory_attrs_from_csv(
+            "SAI_ACL_ENTRY_ATTR_", _ATTR_DEFAULTS
+        )
+        kwargs = {}
+        for attr in mandatory:
+            _type, default, _m = _ATTR_DEFAULTS[attr]
+            kwarg = attr[len("SAI_ACL_ENTRY_ATTR_"):].lower()
+            if default:
+                kwargs[kwarg] = getattr(sai_headers, default, default)
+        # Supply OID for table_id (no CSV default).
+        kwargs["table_id"] = acl_table
+        # Add minimal match field and action.
+        kwargs["field_src_ip"] = sai_thrift_acl_field_data_t(
+            enable=True,
+            data=sai_thrift_acl_field_data_data_t(ip4="10.0.0.1"),
+            mask=sai_thrift_acl_field_data_mask_t(ip4="255.255.255.255"),
+        )
+        kwargs["action_packet_action"] = sai_thrift_acl_action_data_t(
+            enable=True,
+            parameter=sai_thrift_acl_action_parameter_t(
+                s32=SAI_PACKET_ACTION_DROP
             ),
         )
+        acl_entry = sai_thrift_create_acl_entry(self.client, **kwargs)
         self._assert_status_success(adapter.status)
         return acl_entry
 
@@ -359,9 +441,17 @@ class TestAclCounterCrud(_SaiAclAssertMixin, ThriftInterface):
     """
 
     def runTest(self):
-        acl_table = sai_thrift_create_acl_table(
-            self.client, acl_stage=SAI_ACL_STAGE_INGRESS, field_src_ip=True
-        )
+        tbl_kwargs = {
+            attr[len("SAI_ACL_TABLE_ATTR_"):].lower():
+                getattr(sai_headers, default, default)
+            for attr in get_mandatory_attrs_from_csv(
+                "SAI_ACL_TABLE_ATTR_", _ATTR_DEFAULTS
+            )
+            for _, default, _ in [_ATTR_DEFAULTS[attr]]
+            if default
+        }
+        tbl_kwargs["field_src_ip"] = True
+        acl_table = sai_thrift_create_acl_table(self.client, **tbl_kwargs)
 
         acl_counter = self.create_acl_counter(acl_table)
         self.get_acl_counter_attribute(acl_counter)
@@ -371,9 +461,19 @@ class TestAclCounterCrud(_SaiAclAssertMixin, ThriftInterface):
         sai_thrift_remove_acl_table(self.client, acl_table)
 
     def create_acl_counter(self, acl_table):
-        acl_counter = sai_thrift_create_acl_counter(
-            self.client, table_id=acl_table
+        # Mandatory attrs from CSV:
+        #   SAI_ACL_COUNTER_ATTR_TABLE_ID  (OID, no default)
+        mandatory = get_mandatory_attrs_from_csv(
+            "SAI_ACL_COUNTER_ATTR_", _ATTR_DEFAULTS
         )
+        kwargs = {}
+        for attr in mandatory:
+            _type, default, _m = _ATTR_DEFAULTS[attr]
+            kwarg = attr[len("SAI_ACL_COUNTER_ATTR_"):].lower()
+            if default:
+                kwargs[kwarg] = getattr(sai_headers, default, default)
+        kwargs["table_id"] = acl_table
+        acl_counter = sai_thrift_create_acl_counter(self.client, **kwargs)
         self._assert_status_success(adapter.status)
         return acl_counter
 
@@ -414,11 +514,21 @@ class TestAclRangeCrud(_SaiAclAssertMixin, ThriftInterface):
         self.remove_acl_range(acl_range)
 
     def create_acl_range(self):
-        acl_range = sai_thrift_create_acl_range(
-            self.client,
-            type=SAI_ACL_RANGE_TYPE_L4_SRC_PORT_RANGE,
-            limit=sai_thrift_u32_range_t(min=1024, max=65535),
+        # Mandatory attrs from CSV:
+        #   SAI_ACL_RANGE_ATTR_TYPE   (enum, default SAI_ACL_RANGE_TYPE_L4_SRC_PORT_RANGE)
+        #   SAI_ACL_RANGE_ATTR_LIMIT  (sai_u32_range_t, no default)
+        mandatory = get_mandatory_attrs_from_csv(
+            "SAI_ACL_RANGE_ATTR_", _ATTR_DEFAULTS
         )
+        kwargs = {}
+        for attr in mandatory:
+            _type, default, _m = _ATTR_DEFAULTS[attr]
+            kwarg = attr[len("SAI_ACL_RANGE_ATTR_"):].lower()
+            if default:
+                kwargs[kwarg] = getattr(sai_headers, default, default)
+        # Supply limit (no CSV default).
+        kwargs["limit"] = sai_thrift_u32_range_t(min=1024, max=65535)
+        acl_range = sai_thrift_create_acl_range(self.client, **kwargs)
         self._assert_status_success(adapter.status)
         return acl_range
 
