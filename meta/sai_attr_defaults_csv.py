@@ -60,6 +60,10 @@ _RE_ATTR_SENTINEL = re.compile(
 # Group 1 captures everything after "@type " on that line.
 _RE_TYPE_TAG = re.compile(r'@type\s+(.+)')
 
+# Matches the @flags tag inside a Doxygen comment line.
+# Group 1 captures everything after "@flags " on that line.
+_RE_FLAGS_TAG = re.compile(r'@flags\s+(.+)')
+
 # Matches the @default tag inside a Doxygen comment line.
 # Group 1 captures everything after "@default " on that line.
 _RE_DEFAULT_TAG = re.compile(r'@default\s+(.+)')
@@ -137,10 +141,10 @@ def build_enum_first_value_map(headers):
 
 
 def parse_header(path):
-    """Return list of (attr_name, type_value, default_value) tuples.
+    """Return list of (attr_name, type_value, flags_value, default_value) tuples.
 
-    Every SAI_*_ATTR_* enumerator is included.  type_value and default_value
-    are empty strings when the corresponding tag is absent from the doc-comment.
+    Every SAI_*_ATTR_* enumerator is included.  type_value, flags_value and
+    default_value are empty strings when the corresponding tag is absent.
     Sentinel range-boundary attributes (_START, _END, etc.) are excluded.
     """
 
@@ -149,26 +153,31 @@ def parse_header(path):
     with open(path, encoding='utf-8', errors='replace') as fh:
         lines = fh.readlines()
 
-    in_comment = False
-    current_type    = None   # @type value seen in the current doc-comment
-    current_default = None   # @default value seen in the current doc-comment
-    pending_type    = None   # to attach to the next attribute
-    pending_default = None   # to attach to the next attribute
+    in_comment      = False
+    current_type    = None
+    current_flags   = None
+    current_default = None
+    pending_type    = None
+    pending_flags   = None
+    pending_default = None
 
     for line in lines:
         stripped = line.strip()
 
         if not in_comment:
             if _RE_DOC_OPEN.search(line):
-                in_comment = True
+                in_comment      = True
                 current_type    = None
+                current_flags   = None
                 current_default = None
                 # Handle single-line /** … */ blocks.
                 if _RE_DOC_CLOSE.search(line):
                     in_comment = False
                     mt = _RE_TYPE_TAG.search(line)
+                    mf = _RE_FLAGS_TAG.search(line)
                     md = _RE_DEFAULT_TAG.search(line)
                     pending_type    = mt.group(1).strip() if mt else None
+                    pending_flags   = mf.group(1).strip() if mf else None
                     pending_default = md.group(1).strip() if md else None
             else:
                 m = _RE_ATTR_NAME.match(line)
@@ -178,21 +187,28 @@ def parse_header(path):
                         results.append((
                             attr,
                             pending_type    if pending_type    is not None else '',
+                            pending_flags   if pending_flags   is not None else '',
                             pending_default if pending_default is not None else '',
                         ))
                     pending_type    = None
+                    pending_flags   = None
                     pending_default = None
                 else:
                     # Non-blank, non-comment source line that is not an attribute
                     # resets pending state so we don't carry tags across constructs.
                     if stripped and not stripped.startswith('//'):
                         pending_type    = None
+                        pending_flags   = None
                         pending_default = None
         else:
             # Inside a /** … */ block – collect tag values.
             mt = _RE_TYPE_TAG.search(line)
             if mt:
                 current_type = mt.group(1).strip()
+
+            mf = _RE_FLAGS_TAG.search(line)
+            if mf:
+                current_flags = mf.group(1).strip()
 
             md = _RE_DEFAULT_TAG.search(line)
             if md:
@@ -201,8 +217,10 @@ def parse_header(path):
             if _RE_DOC_CLOSE.search(line):
                 in_comment      = False
                 pending_type    = current_type
+                pending_flags   = current_flags
                 pending_default = current_default
                 current_type    = None
+                current_flags   = None
                 current_default = None
 
     return results
@@ -244,17 +262,18 @@ def main():
     # The @type field may be a plain enum name ("sai_foo_t") or a list type
     # ("sai_s32_list_t sai_foo_t").  Only plain enum types get the fallback.
     filled_rows = []
-    for attr, type_str, default in all_rows:
+    for attr, type_str, flags_str, default in all_rows:
         if not default and type_str in enum_first:
             default = enum_first[type_str]
-        filled_rows.append((attr, type_str, default))
+        mandatory = 'True' if 'MANDATORY_ON_CREATE' in flags_str else 'False'
+        filled_rows.append((attr, type_str, default, mandatory))
 
     with open(args.output, 'w', newline='', encoding='utf-8') as fh:
         writer = csv.writer(fh)
-        writer.writerow(['attribute_name', 'type', 'default_value'])
+        writer.writerow(['attribute_name', 'type', 'default_value', 'mandatory'])
         writer.writerows(filled_rows)
 
-    with_default = sum(1 for _, _t, v in filled_rows if v)
+    with_default = sum(1 for _, _t, v, _m in filled_rows if v)
     print(f'Written {len(filled_rows)} attributes to {args.output} '
           f'({with_default} with a @default value, '
           f'{len(filled_rows) - with_default} without)')
