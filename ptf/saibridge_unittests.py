@@ -174,11 +174,13 @@ class TestBridgeApiDiscovery(ThriftInterface):
 
 class TestBridgeCrud(_SaiBridgeAssertMixin, ThriftInterface):
     """
-    Validates create / get / set / remove for Bridge (SAI_BRIDGE_TYPE_1D).
+    Validates create / get / set / remove for Bridge.
+    Mandatory attributes are created with their CSV default values so that
+    get can verify the returned values match those same defaults.
     get iterates all SAI_BRIDGE_ATTR_* attributes from sai_attr_defaults.csv
     and validates each returned value against its defined default.
 
-    Mandatory-on-create: SAI_BRIDGE_ATTR_TYPE
+    Mandatory-on-create: SAI_BRIDGE_ATTR_TYPE (default: SAI_BRIDGE_TYPE_1Q)
     """
 
     def runTest(self):
@@ -188,9 +190,8 @@ class TestBridgeCrud(_SaiBridgeAssertMixin, ThriftInterface):
         self.remove_bridge(bridge)
 
     def create_bridge(self):
-        # Mandatory attrs from CSV: SAI_BRIDGE_ATTR_TYPE
-        # Default value: SAI_BRIDGE_TYPE_1Q
-        # Override to SAI_BRIDGE_TYPE_1D to create a configurable bridge.
+        # Build kwargs from CSV mandatory attributes using their default values.
+        # SAI_BRIDGE_ATTR_TYPE default is SAI_BRIDGE_TYPE_1Q.
         mandatory = get_mandatory_attrs_from_csv(
             "SAI_BRIDGE_ATTR_", _ATTR_DEFAULTS
         )
@@ -200,7 +201,6 @@ class TestBridgeCrud(_SaiBridgeAssertMixin, ThriftInterface):
             kwarg = attr[len("SAI_BRIDGE_ATTR_"):].lower()
             if default:
                 kwargs[kwarg] = getattr(sai_headers, default, default)
-        kwargs["type"] = SAI_BRIDGE_TYPE_1D
         bridge = sai_thrift_create_bridge(self.client, **kwargs)
         self._assert_status_success(adapter.status)
         return bridge
@@ -230,27 +230,21 @@ class TestBridgeCrud(_SaiBridgeAssertMixin, ThriftInterface):
 
 class TestBridgePortCrud(_SaiBridgeAssertMixin, ThriftInterface):
     """
-    Validates create / get / set / remove for Bridge Port
-    (SAI_BRIDGE_PORT_TYPE_PORT).
+    Validates create / get / set / remove for Bridge Port.
+    Mandatory attributes are created with their CSV default values.
     get iterates all SAI_BRIDGE_PORT_ATTR_* attributes from
     sai_attr_defaults.csv and validates each returned value against its
     defined default.
 
-    Mandatory-on-create for TYPE=PORT:
-      SAI_BRIDGE_PORT_ATTR_TYPE
-      SAI_BRIDGE_PORT_ATTR_PORT_ID  (conditional: TYPE == PORT or SUB_PORT)
+    Mandatory-on-create (TYPE == SAI_BRIDGE_PORT_TYPE_PORT, the CSV default):
+      SAI_BRIDGE_PORT_ATTR_TYPE     (default: SAI_BRIDGE_PORT_TYPE_PORT)
+      SAI_BRIDGE_PORT_ATTR_PORT_ID  (OID, no default – supplied at runtime)
 
-    Prerequisites created in runTest:
-      - A 1D Bridge to host the bridge port
-      - The first active switch port (obtained via SAI_SWITCH_ATTR_PORT_LIST)
+    Prerequisite: first active switch port retrieved via SAI_SWITCH_ATTR_PORT_LIST.
     """
 
     def runTest(self):
-        # Retrieve switch id and first active port to use as PORT_ID
-        switch_id = sai_thrift_create_switch(
-            self.client, init_switch=True, src_mac_address="00:77:66:55:44:00"
-        )
-
+        # Retrieve first active port to use as PORT_ID.
         attr = sai_thrift_get_switch_attribute(
             self.client, number_of_active_ports=True
         )
@@ -262,24 +256,18 @@ class TestBridgePortCrud(_SaiBridgeAssertMixin, ThriftInterface):
         )
         port_id = attr["port_list"].idlist[0]
 
-        bridge = sai_thrift_create_bridge(
-            self.client, type=SAI_BRIDGE_TYPE_1D
-        )
-
-        bridge_port = self.create_bridge_port(bridge, port_id)
+        bridge_port = self.create_bridge_port(port_id)
         self.get_bridge_port_attribute(bridge_port)
         self.set_bridge_port_attribute(bridge_port)
         self.remove_bridge_port(bridge_port)
 
-        sai_thrift_remove_bridge(self.client, bridge)
-
-    def create_bridge_port(self, bridge, port_id):
-        # Mandatory attrs from CSV for SAI_BRIDGE_PORT_TYPE_PORT:
-        #   SAI_BRIDGE_PORT_ATTR_TYPE     (enum, default SAI_BRIDGE_PORT_TYPE_PORT)
-        #   SAI_BRIDGE_PORT_ATTR_PORT_ID  (OID, conditional on TYPE=PORT, no default)
-        # Other mandatory attrs (BRIDGE_ID, VLAN_ID, RIF_ID, TUNNEL_ID,
-        # BRIDGE_PORT_NEXT_HOP_GROUP_ID) are conditional on other TYPE values
-        # and are not required for TYPE=PORT.
+    def create_bridge_port(self, port_id):
+        # Build kwargs from CSV mandatory attributes using their default values.
+        # Attributes with no CSV default (OID types) are supplied at runtime.
+        # For TYPE=SAI_BRIDGE_PORT_TYPE_PORT (the default), only TYPE and
+        # PORT_ID are required; other conditionally-mandatory attrs
+        # (BRIDGE_ID, VLAN_ID, RIF_ID, TUNNEL_ID, NEXT_HOP_GROUP_ID)
+        # apply to other TYPE values and are omitted.
         mandatory = get_mandatory_attrs_from_csv(
             "SAI_BRIDGE_PORT_ATTR_", _ATTR_DEFAULTS
         )
@@ -289,9 +277,8 @@ class TestBridgePortCrud(_SaiBridgeAssertMixin, ThriftInterface):
             kwarg = attr[len("SAI_BRIDGE_PORT_ATTR_"):].lower()
             if default:
                 kwargs[kwarg] = getattr(sai_headers, default, default)
-        # Supply runtime values for OID attrs with no CSV default.
+        # Supply port_id (mandatory OID with no CSV default).
         kwargs["port_id"] = port_id
-        kwargs["bridge_id"] = bridge
         bridge_port = sai_thrift_create_bridge_port(self.client, **kwargs)
         self._assert_status_success(adapter.status)
         return bridge_port

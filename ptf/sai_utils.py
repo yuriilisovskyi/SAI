@@ -852,13 +852,7 @@ def verify_object_attributes(test_case, get_fn, oid, attr_prefix,
     if attrs is None:
         return attrs
 
-    for attr_name, (type_str, default_str, mandatory) in object_defaults.items():
-        # Skip mandatory attributes: they are always set explicitly during
-        # create, so the returned value reflects the caller's choice, not
-        # the CSV default.  Only non-mandatory attributes are guaranteed
-        # to carry their default value after creation.
-        if mandatory:
-            continue
+    for attr_name, (type_str, default_str, _mandatory) in object_defaults.items():
         if attr_name in attrs:
             check_attr_default(
                 test_case, attr_name, type_str, default_str, attrs[attr_name]
