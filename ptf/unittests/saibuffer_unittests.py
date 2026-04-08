@@ -66,6 +66,13 @@ class TestBufferPoolNonCrudApis(_AssertMixin, ThriftInterface):
 
 class TestBufferProfileCrud(_AssertMixin, ThriftInterface):
     """
+import os as _os
+import sys as _sys
+# Add ptf/ to sys.path so sai_base_test and sai_utils can be found when
+# this file is run from ptf/unittests/.
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), ".."))
+
+
     Buffer Profile mandatory attrs from CSV:
       SAI_BUFFER_PROFILE_ATTR_POOL_ID               (OID, no default)
       SAI_BUFFER_PROFILE_ATTR_RESERVED_BUFFER_SIZE  (uint64, no default – 0)

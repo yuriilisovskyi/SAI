@@ -13,8 +13,15 @@
 # limitations under the License.
 
 """
-SAI PTFv2 Unit Tests for Neighbor feature (saineighbor.h)
+SAI PTFv2 Unit Tests for Route feature (sairoute.h)
 """
+
+import os as _os
+import sys as _sys
+# Add ptf/ to sys.path so sai_base_test and sai_utils can be found when
+# this file is run from ptf/unittests/.
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), ".."))
+
 
 from sai_base_test import ThriftInterface
 from sai_thrift.sai_adapter import *  # noqa: F401,F403
@@ -35,12 +42,11 @@ class _AssertMixin:
     def _assert_status_success(self, status, msg=""):
         self.assertEqual(status, SAI_STATUS_SUCCESS,
                          msg or "Expected SAI_STATUS_SUCCESS, got {}".format(status))
-class TestNeighborEntryCrud(_AssertMixin, ThriftInterface):
+class TestRouteEntryCrud(_AssertMixin, ThriftInterface):
     """
-    Neighbor Entry uses a struct key (rif_id, ip_address), not an OID.
-    Mandatory attrs from CSV:
-      SAI_NEIGHBOR_ENTRY_ATTR_DST_MAC_ADDRESS (mac, no default – use test value)
-    Prerequisites: virtual router, router interface.
+    Route Entry uses a struct key (vr_id, destination).
+    No mandatory attrs from CSV (all are optional with defaults).
+    Prerequisites: virtual router, router interface, next hop.
     """
 
     def runTest(self):
@@ -63,51 +69,54 @@ class TestNeighborEntryCrud(_AssertMixin, ThriftInterface):
             port_id=port_id,
         )
 
-        neighbor_entry = sai_thrift_neighbor_entry_t(
-            rif_id=rif,
-            ip_address=sai_thrift_ip_address_t(
+        nh = sai_thrift_create_next_hop(
+            self.client,
+            type=SAI_NEXT_HOP_TYPE_IP,
+            ip=sai_thrift_ip_address_t(
                 addr_family=SAI_IP_ADDR_FAMILY_IPV4,
                 addr=sai_thrift_ip_addr_t(ip4="10.0.0.1"),
             ),
+            router_interface_id=rif,
         )
 
-        self.create_neighbor_entry(neighbor_entry)
-        self.get_neighbor_entry_attribute(neighbor_entry)
-        self.set_neighbor_entry_attribute(neighbor_entry)
-        self.remove_neighbor_entry(neighbor_entry)
+        route_entry = sai_thrift_route_entry_t(
+            vr_id=vr,
+            destination=sai_thrift_ip_prefix_t(
+                addr_family=SAI_IP_ADDR_FAMILY_IPV4,
+                addr=sai_thrift_ip_addr_t(ip4="192.168.1.0"),
+                mask=sai_thrift_ip_addr_t(ip4="255.255.255.0"),
+            ),
+        )
 
+        self.create_route_entry(route_entry, nh)
+        self.get_route_entry_attribute(route_entry)
+        self.set_route_entry_attribute(route_entry)
+        self.remove_route_entry(route_entry)
+
+        sai_thrift_remove_next_hop(self.client, nh)
         sai_thrift_remove_router_interface(self.client, rif)
         sai_thrift_remove_virtual_router(self.client, vr)
 
-    def create_neighbor_entry(self, neighbor_entry):
-        mandatory = get_mandatory_attrs_from_csv(
-            "SAI_NEIGHBOR_ENTRY_ATTR_", _ATTR_DEFAULTS
-        )
-        kwargs = {}
-        for attr in mandatory:
-            _t, default, _m = _ATTR_DEFAULTS[attr]
-            kwarg = attr[len("SAI_NEIGHBOR_ENTRY_ATTR_"):].lower()
-            if default:
-                kwargs[kwarg] = getattr(sai_headers, default, default)
-        # dst_mac_address has no CSV default – supply a test value.
-        kwargs["dst_mac_address"] = "00:11:22:33:44:55"
-        status = sai_thrift_create_neighbor_entry(
-            self.client, neighbor_entry, **kwargs
+    def create_route_entry(self, route_entry, nh):
+        # No mandatory attrs from CSV; supply next_hop_id as it's needed
+        # to create a useful route (otherwise packet_action default=DROP is used).
+        status = sai_thrift_create_route_entry(
+            self.client, route_entry, next_hop_id=nh
         )
         self._assert_status_success(status)
 
-    def get_neighbor_entry_attribute(self, neighbor_entry):
+    def get_route_entry_attribute(self, route_entry):
         verify_object_attributes(
-            self, sai_thrift_get_neighbor_entry_attribute,
-            neighbor_entry, "SAI_NEIGHBOR_ENTRY_ATTR_",
+            self, sai_thrift_get_route_entry_attribute,
+            route_entry, "SAI_ROUTE_ENTRY_ATTR_",
         )
 
-    def set_neighbor_entry_attribute(self, neighbor_entry):
-        status = sai_thrift_set_neighbor_entry_attribute(
-            self.client, neighbor_entry, no_host_route=False
+    def set_route_entry_attribute(self, route_entry):
+        status = sai_thrift_set_route_entry_attribute(
+            self.client, route_entry, packet_action=SAI_PACKET_ACTION_FORWARD
         )
         self._assert_status_success(status)
 
-    def remove_neighbor_entry(self, neighbor_entry):
-        status = sai_thrift_remove_neighbor_entry(self.client, neighbor_entry)
+    def remove_route_entry(self, route_entry):
+        status = sai_thrift_remove_route_entry(self.client, route_entry)
         self._assert_status_success(status)

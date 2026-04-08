@@ -32,6 +32,13 @@ class _AssertMixin:
 
 class TestMirrorSessionCrud(_AssertMixin, ThriftInterface):
     """
+import os as _os
+import sys as _sys
+# Add ptf/ to sys.path so sai_base_test and sai_utils can be found when
+# this file is run from ptf/unittests/.
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), ".."))
+
+
     Mirror Session mandatory attrs from CSV (TYPE=LOCAL, the CSV default):
       SAI_MIRROR_SESSION_ATTR_TYPE         (default: SAI_MIRROR_SESSION_TYPE_LOCAL)
       SAI_MIRROR_SESSION_ATTR_MONITOR_PORT (OID, no default – use first active port)

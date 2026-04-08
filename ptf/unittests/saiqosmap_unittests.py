@@ -32,6 +32,13 @@ class _AssertMixin:
 
 class TestQosMapCrud(_AssertMixin, ThriftInterface):
     """
+import os as _os
+import sys as _sys
+# Add ptf/ to sys.path so sai_base_test and sai_utils can be found when
+# this file is run from ptf/unittests/.
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), ".."))
+
+
     QoS Map mandatory attrs from CSV:
       SAI_QOS_MAP_ATTR_TYPE              (default: SAI_QOS_MAP_TYPE_DOT1P_TO_TC)
       SAI_QOS_MAP_ATTR_MAP_TO_VALUE_LIST (sai_qos_map_list_t, no default – empty list)

@@ -16,6 +16,13 @@
 SAI PTFv2 Unit Tests for Host Interface feature (saihostif.h)
 """
 
+import os as _os
+import sys as _sys
+# Add ptf/ to sys.path so sai_base_test and sai_utils can be found when
+# this file is run from ptf/unittests/.
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), ".."))
+
+
 from sai_base_test import ThriftInterface
 from sai_thrift.sai_adapter import *  # noqa: F401,F403
 from sai_thrift.sai_headers import *  # noqa: F401,F403

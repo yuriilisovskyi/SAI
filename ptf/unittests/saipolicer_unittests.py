@@ -32,6 +32,13 @@ class _AssertMixin:
 
 class TestPolicerCrud(_AssertMixin, ThriftInterface):
     """
+import os as _os
+import sys as _sys
+# Add ptf/ to sys.path so sai_base_test and sai_utils can be found when
+# this file is run from ptf/unittests/.
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), ".."))
+
+
     Policer mandatory attrs from CSV:
       SAI_POLICER_ATTR_METER_TYPE (default: SAI_METER_TYPE_PACKETS)
       SAI_POLICER_ATTR_MODE       (default: SAI_POLICER_MODE_SR_TCM)

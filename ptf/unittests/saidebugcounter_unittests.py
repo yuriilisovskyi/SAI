@@ -32,6 +32,13 @@ class _AssertMixin:
 
 class TestDebugCounterCrud(_AssertMixin, ThriftInterface):
     """
+import os as _os
+import sys as _sys
+# Add ptf/ to sys.path so sai_base_test and sai_utils can be found when
+# this file is run from ptf/unittests/.
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), ".."))
+
+
     Debug Counter mandatory attrs from CSV:
       SAI_DEBUG_COUNTER_ATTR_TYPE (default: SAI_DEBUG_COUNTER_TYPE_PORT_IN_DROP_REASONS)
     """

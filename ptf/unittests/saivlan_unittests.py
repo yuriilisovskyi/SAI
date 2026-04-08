@@ -75,6 +75,13 @@ class TestVlanCrud(_AssertMixin, ThriftInterface):
 
 class TestVlanMemberCrud(_AssertMixin, ThriftInterface):
     """
+import os as _os
+import sys as _sys
+# Add ptf/ to sys.path so sai_base_test and sai_utils can be found when
+# this file is run from ptf/unittests/.
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), ".."))
+
+
     VLAN Member mandatory attrs:
       SAI_VLAN_MEMBER_ATTR_VLAN_ID        (OID, no default)
       SAI_VLAN_MEMBER_ATTR_BRIDGE_PORT_ID (OID, no default)
