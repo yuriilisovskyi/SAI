@@ -140,3 +140,67 @@ class TestTunnelCrud(_AssertMixin, ThriftInterface):
     def remove_tunnel(self, tunnel):
         status = sai_thrift_remove_tunnel(self.client, tunnel)
         self._assert_status_success(status)
+
+
+class TestTunnelNonCrudApis(_AssertMixin, ThriftInterface):
+    """
+    Validates non-CRUD Tunnel APIs from saitunnel.h:
+      sai_thrift_get_tunnel_stats     – get tunnel counters
+      sai_thrift_get_tunnel_stats_ext – get tunnel counters (extended mode)
+      sai_thrift_clear_tunnel_stats   – clear tunnel counters
+    """
+
+    def runTest(self):
+        vr = sai_thrift_create_virtual_router(self.client)
+        attr = sai_thrift_get_switch_attribute(
+            self.client, number_of_active_ports=True
+        )
+        num_ports = attr["number_of_active_ports"]
+        attr = sai_thrift_get_switch_attribute(
+            self.client,
+            port_list=sai_thrift_object_list_t(idlist=[], count=num_ports),
+        )
+        port_ids = attr["port_list"].idlist
+
+        overlay_rif = sai_thrift_create_router_interface(
+            self.client,
+            type=SAI_ROUTER_INTERFACE_TYPE_PORT,
+            virtual_router_id=vr,
+            port_id=port_ids[0],
+        )
+        underlay_rif = sai_thrift_create_router_interface(
+            self.client,
+            type=SAI_ROUTER_INTERFACE_TYPE_PORT,
+            virtual_router_id=vr,
+            port_id=port_ids[1] if len(port_ids) > 1 else port_ids[0],
+        )
+
+        tun_kwargs = {
+            attr[len("SAI_TUNNEL_ATTR_"):].lower():
+                getattr(sai_headers, default, default)
+            for attr in get_mandatory_attrs_from_csv("SAI_TUNNEL_ATTR_", _ATTR_DEFAULTS)
+            for _, default, _ in [_ATTR_DEFAULTS[attr]] if default
+        }
+        tun_kwargs["overlay_interface"] = overlay_rif
+        tun_kwargs["underlay_interface"] = underlay_rif
+        tunnel = sai_thrift_create_tunnel(self.client, **tun_kwargs)
+        self._assert_status_success(adapter.status)
+        counter_ids = sai_thrift_s32_list_t(
+            count=1, int32list=[SAI_TUNNEL_STAT_IN_OCTETS]
+        )
+
+        sai_thrift_get_tunnel_stats(self.client, tunnel, counter_ids)
+        self._assert_status_success(adapter.status)
+
+        sai_thrift_get_tunnel_stats_ext(
+            self.client, tunnel, SAI_STATS_MODE_READ, counter_ids
+        )
+        self._assert_status_success(adapter.status)
+
+        status = sai_thrift_clear_tunnel_stats(self.client, tunnel, counter_ids)
+        self._assert_status_success(status)
+
+        sai_thrift_remove_tunnel(self.client, tunnel)
+        sai_thrift_remove_router_interface(self.client, underlay_rif)
+        sai_thrift_remove_router_interface(self.client, overlay_rif)
+        sai_thrift_remove_virtual_router(self.client, vr)

@@ -108,14 +108,13 @@ class TestPortCrud(_AssertMixin, ThriftInterface):
 
 class TestPortNonCrudApis(_AssertMixin, ThriftInterface):
     """
-    Validates non-CRUD Port APIs discovered from sai_api_list.csv:
-      sai_thrift_get_port_stats       – get port counters
-      sai_thrift_clear_port_all_stats – clear all port counters
+    Validates non-CRUD Port APIs from saiport.h:
+      sai_thrift_get_port_stats         – get port counters
+      sai_thrift_get_port_stats_ext     – get port counters (extended mode)
+      sai_thrift_clear_port_stats       – clear selected port counters
+      sai_thrift_clear_port_all_stats   – clear all port counters
     Uses the first active port on the switch.
     """
-
-    # Non-CRUD APIs for SAI_OBJECT_TYPE_PORT from sai_api_list.csv
-    NON_CRUD_APIS = get_non_crud_apis("SAI_OBJECT_TYPE_PORT")
 
     def runTest(self):
         attr = sai_thrift_get_switch_attribute(
@@ -127,26 +126,20 @@ class TestPortNonCrudApis(_AssertMixin, ThriftInterface):
             port_list=sai_thrift_object_list_t(idlist=[], count=num_ports),
         )
         port_id = attr["port_list"].idlist[0]
-
-        for fn_name in self.NON_CRUD_APIS:
-            self.assertIn(
-                fn_name,
-                globals(),
-                "Non-CRUD function '{}' not found in sai_thrift".format(fn_name),
-            )
-
-        self.test_get_port_stats(port_id)
-        self.test_clear_port_all_stats(port_id)
-
-    def test_get_port_stats(self, port_id):
-        """sai_thrift_get_port_stats – expected SAI_STATUS_SUCCESS."""
         counter_ids = sai_thrift_s32_list_t(
             count=1, int32list=[SAI_PORT_STAT_IF_IN_OCTETS]
         )
+
         sai_thrift_get_port_stats(self.client, port_id, counter_ids)
         self._assert_status_success(adapter.status)
 
-    def test_clear_port_all_stats(self, port_id):
-        """sai_thrift_clear_port_all_stats – expected SAI_STATUS_SUCCESS."""
+        sai_thrift_get_port_stats_ext(
+            self.client, port_id, SAI_STATS_MODE_READ, counter_ids
+        )
+        self._assert_status_success(adapter.status)
+
+        status = sai_thrift_clear_port_stats(self.client, port_id, counter_ids)
+        self._assert_status_success(status)
+
         status = sai_thrift_clear_port_all_stats(self.client, port_id)
         self._assert_status_success(status)

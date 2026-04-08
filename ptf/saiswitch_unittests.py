@@ -72,3 +72,34 @@ class TestSwitchGetSetAttribute(_AssertMixin, ThriftInterface):
             self.client, switch_id, fdb_aging_time=0
         )
         self._assert_status_success(status)
+
+
+class TestSwitchNonCrudApis(_AssertMixin, ThriftInterface):
+    """
+    Validates non-CRUD Switch APIs from saiswitch.h:
+      sai_thrift_get_switch_stats     – get switch counters
+      sai_thrift_get_switch_stats_ext – get switch counters (extended mode)
+      sai_thrift_clear_switch_stats   – clear switch counters
+    """
+
+    def runTest(self):
+        switch_id = sai_thrift_create_switch(
+            self.client,
+            init_switch=True,
+            src_mac_address="00:77:66:55:44:00",
+        )
+        self._assert_status_success(adapter.status)
+        counter_ids = sai_thrift_s32_list_t(
+            count=1, int32list=[SAI_SWITCH_STAT_DROPPED_TRIM_PACKETS]
+        )
+
+        sai_thrift_get_switch_stats(self.client, counter_ids)
+        self._assert_status_success(adapter.status)
+
+        sai_thrift_get_switch_stats_ext(
+            self.client, SAI_STATS_MODE_READ, counter_ids
+        )
+        self._assert_status_success(adapter.status)
+
+        status = sai_thrift_clear_switch_stats(self.client, counter_ids)
+        self._assert_status_success(status)

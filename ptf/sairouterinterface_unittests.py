@@ -102,3 +102,54 @@ class TestRouterInterfaceCrud(_AssertMixin, ThriftInterface):
     def remove_router_interface(self, rif):
         status = sai_thrift_remove_router_interface(self.client, rif)
         self._assert_status_success(status)
+
+
+class TestRouterInterfaceNonCrudApis(_AssertMixin, ThriftInterface):
+    """
+    Validates non-CRUD Router Interface APIs from sairouterinterface.h:
+      sai_thrift_get_router_interface_stats     – get RIF counters
+      sai_thrift_get_router_interface_stats_ext – get RIF counters (extended mode)
+      sai_thrift_clear_router_interface_stats   – clear RIF counters
+    """
+
+    def runTest(self):
+        vr = sai_thrift_create_virtual_router(self.client)
+        attr = sai_thrift_get_switch_attribute(
+            self.client, number_of_active_ports=True
+        )
+        num_ports = attr["number_of_active_ports"]
+        attr = sai_thrift_get_switch_attribute(
+            self.client,
+            port_list=sai_thrift_object_list_t(idlist=[], count=num_ports),
+        )
+        port_id = attr["port_list"].idlist[0]
+
+        rif_kwargs = {
+            attr[len("SAI_ROUTER_INTERFACE_ATTR_"):].lower():
+                getattr(sai_headers, default, default)
+            for attr in get_mandatory_attrs_from_csv(
+                "SAI_ROUTER_INTERFACE_ATTR_", _ATTR_DEFAULTS)
+            for _, default, _ in [_ATTR_DEFAULTS[attr]] if default
+        }
+        rif_kwargs["type"] = SAI_ROUTER_INTERFACE_TYPE_PORT
+        rif_kwargs["virtual_router_id"] = vr
+        rif_kwargs["port_id"] = port_id
+        rif = sai_thrift_create_router_interface(self.client, **rif_kwargs)
+        self._assert_status_success(adapter.status)
+        counter_ids = sai_thrift_s32_list_t(
+            count=1, int32list=[SAI_ROUTER_INTERFACE_STAT_IN_OCTETS]
+        )
+
+        sai_thrift_get_router_interface_stats(self.client, rif, counter_ids)
+        self._assert_status_success(adapter.status)
+
+        sai_thrift_get_router_interface_stats_ext(
+            self.client, rif, SAI_STATS_MODE_READ, counter_ids
+        )
+        self._assert_status_success(adapter.status)
+
+        status = sai_thrift_clear_router_interface_stats(self.client, rif, counter_ids)
+        self._assert_status_success(status)
+
+        sai_thrift_remove_router_interface(self.client, rif)
+        sai_thrift_remove_virtual_router(self.client, vr)
