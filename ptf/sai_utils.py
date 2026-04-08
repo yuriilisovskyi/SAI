@@ -784,9 +784,20 @@ def verify_object_attributes(test_case, get_fn, oid, attr_prefix,
     sig = inspect.signature(get_fn)
 
     request_kwargs = {}
-    for attr_name in object_defaults:
+    for attr_name, (type_str, _default_str) in object_defaults.items():
         kwarg = attr_name[len(attr_prefix):].lower()
-        if kwarg in sig.parameters:
+        if kwarg not in sig.parameters:
+            continue
+        # List-typed attributes require an empty list placeholder so the
+        # Thrift serialiser can determine the buffer size.  Passing True
+        # causes an AttributeError when the attr_list is written to the wire.
+        if type_str == "sai_object_list_t":
+            request_kwargs[kwarg] = sai_thrift_object_list_t(count=0, idlist=[])
+        elif type_str.startswith("sai_s32_list_t"):
+            request_kwargs[kwarg] = sai_thrift_s32_list_t(count=0, int32list=[])
+        elif type_str.startswith("sai_u32_list_t"):
+            request_kwargs[kwarg] = sai_thrift_u32_list_t(count=0, uint32list=[])
+        else:
             request_kwargs[kwarg] = True
     request_kwargs.update(get_kwargs)
 
