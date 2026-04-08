@@ -49,9 +49,11 @@ or:
 """
 
 import csv
+import glob
 import inspect
 import os
 import sys
+import xml.etree.ElementTree as ET
 
 from sai_base_test import ThriftInterface
 
@@ -60,6 +62,78 @@ from sai_base_test import ThriftInterface
 from sai_thrift.sai_adapter import *  # noqa: F401,F403
 from sai_thrift.sai_headers import *  # noqa: F401,F403
 import sai_thrift.sai_adapter as adapter
+
+# ---------------------------------------------------------------------------
+# Mandatory-on-create attribute discovery via SAI metadata XML
+# ---------------------------------------------------------------------------
+
+# Path to the doxygen-generated XML produced by 'make xml' in meta/.
+_XML_DIR = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+    "meta", "xml",
+)
+
+
+def get_mandatory_on_create_attrs(object_type_name, xml_dir=_XML_DIR):
+    """
+    Return a list of attribute constant names (strings) that are marked
+    MANDATORY_ON_CREATE for the SAI object type identified by
+    *object_type_name*.
+
+    The function discovers mandatory attributes by inspecting the doxygen XML
+    files generated from the SAI headers (``meta/xml/group__SAI*.xml``).
+    Each enumvalue element whose ``detaileddescription`` contains the text
+    "MANDATORY_ON_CREATE" is collected and its ``name`` text is returned.
+
+    Args:
+        object_type_name (str): SAI object type name without the
+            ``SAI_OBJECT_TYPE_`` prefix, e.g. ``"ACL_TABLE_GROUP"`` or
+            ``"ACL_ENTRY"``.  The prefix ``SAI_`` is prepended to build the
+            expected attribute name prefix ``SAI_<object_type_name>_ATTR_``.
+        xml_dir (str): Path to the directory containing doxygen XML files.
+            Defaults to ``meta/xml/`` relative to the repository root.
+
+    Returns:
+        list[str]: Sorted list of attribute constant names whose
+        ``sai_thrift_attr_metadata_t.ismandatoryoncreate`` is True,
+        e.g. ``["SAI_ACL_TABLE_GROUP_ATTR_ACL_STAGE"]``.
+
+    Example::
+
+        mandatory = get_mandatory_on_create_attrs("ACL_TABLE_GROUP")
+        # ["SAI_ACL_TABLE_GROUP_ATTR_ACL_STAGE"]
+
+        mandatory = get_mandatory_on_create_attrs("ACL_TABLE_GROUP_MEMBER")
+        # ["SAI_ACL_TABLE_GROUP_MEMBER_ATTR_ACL_TABLE_GROUP_ID",
+        #  "SAI_ACL_TABLE_GROUP_MEMBER_ATTR_ACL_TABLE_ID",
+        #  "SAI_ACL_TABLE_GROUP_MEMBER_ATTR_PRIORITY"]
+    """
+    attr_prefix = "SAI_{}_ATTR_".format(object_type_name)
+    mandatory = []
+
+    for xml_file in glob.glob(os.path.join(xml_dir, "group__SAI*.xml")):
+        tree = ET.parse(xml_file)
+        root = tree.getroot()
+        xml_text = ET.tostring(root, encoding="unicode")
+
+        # Quick pre-filter: skip files that don't mention this attr prefix
+        if attr_prefix not in xml_text:
+            continue
+
+        # Walk every enumvalue element looking for MANDATORY_ON_CREATE
+        for enumvalue in root.iter("enumvalue"):
+            name_el = enumvalue.find("name")
+            if name_el is None or not (name_el.text or "").startswith(attr_prefix):
+                continue
+            detail_el = enumvalue.find("detaileddescription")
+            if detail_el is None:
+                continue
+            detail_text = ET.tostring(detail_el, encoding="unicode")
+            if "MANDATORY_ON_CREATE" in detail_text:
+                mandatory.append(name_el.text)
+
+    return sorted(set(mandatory))
+
 
 # Path to the SAI attribute defaults CSV (repo root).
 _CSV_PATH = os.path.join(
