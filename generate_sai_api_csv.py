@@ -2,7 +2,14 @@
 """
 Generate a CSV file listing all SAI APIs for all SAI objects.
 
-Output format: File, SAI object, SAI API
+Output format: File, SAI object, SAI API, Python Thrift function
+
+Scope:
+  - Only inc/ headers (experimental/ is excluded)
+  - SAI API column has the _fn suffix removed
+  - Python Thrift function column contains the matching function name from
+    test/saithrift/src/switch_sai.thrift (sai_thrift_<op>), or empty if no
+    match exists in the Thrift service definition.
 """
 
 import csv
@@ -10,9 +17,10 @@ import glob
 import os
 import re
 
-INC_DIR = os.path.join(os.path.dirname(__file__), 'inc')
-EXP_DIR = os.path.join(os.path.dirname(__file__), 'experimental')
-OUTPUT_CSV = os.path.join(os.path.dirname(__file__), 'sai_api_list.csv')
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+INC_DIR = os.path.join(SCRIPT_DIR, 'inc')
+THRIFT_FILE = os.path.join(SCRIPT_DIR, 'test', 'saithrift', 'src', 'switch_sai.thrift')
+OUTPUT_CSV = os.path.join(SCRIPT_DIR, 'sai_api_list.csv')
 
 EXCLUDE_OBJECT_TYPE_SUFFIXES = {
     'NULL', 'MAX',
@@ -36,7 +44,6 @@ MANUAL_OBJECT_OVERRIDES = {
     'sai_packet_event_notification_fn':                      'SAI_OBJECT_TYPE_HOSTIF_PACKET',
     'sai_nat_event_notification_fn':                         'SAI_OBJECT_TYPE_NAT_ENTRY',
     'sai_remove_all_neighbor_entries_fn':                    'SAI_OBJECT_TYPE_NEIGHBOR_ENTRY',
-    'sai_flow_bulk_get_session_event_notification_fn':       'SAI_OBJECT_TYPE_FLOW_ENTRY_BULK_GET_SESSION',
 }
 
 
@@ -76,19 +83,50 @@ def infer_object_type(fn_name, sorted_names, obj_map):
     return '(unknown)'
 
 
+def load_thrift_functions(thrift_file):
+    """
+    Parse the Thrift service definition and return a set of method names
+    (e.g. {'sai_thrift_create_vlan', 'sai_thrift_set_port_attribute', ...}).
+    """
+    thrift_fns = set()
+    if not os.path.isfile(thrift_file):
+        return thrift_fns
+    with open(thrift_file, 'r', errors='replace') as f:
+        content = f.read()
+    # Match method names inside the service block: <return_type> <method_name>(
+    thrift_fns = set(re.findall(r'\b(sai_thrift_\w+)\s*\(', content))
+    return thrift_fns
+
+
+def sai_api_to_thrift(sai_api, thrift_fns):
+    """
+    Map a SAI API name (without _fn suffix) to its Python Thrift function name.
+
+    The Thrift service method name is typically sai_thrift_<op> where
+    sai_<op> is the SAI C API name. For example:
+      sai_create_vlan      -> sai_thrift_create_vlan
+      sai_set_port_attribute -> sai_thrift_set_port_attribute
+
+    Returns the matched thrift function name, or empty string if none.
+    """
+    if not sai_api.startswith('sai_'):
+        return ''
+    candidate = 'sai_thrift_' + sai_api[len('sai_'):]
+    return candidate if candidate in thrift_fns else ''
+
+
 def main():
-    headers = (
-        sorted(glob.glob(os.path.join(INC_DIR, '*.h'))) +
-        sorted(glob.glob(os.path.join(EXP_DIR, '*.h')))
-    )
+    headers = sorted(glob.glob(os.path.join(INC_DIR, '*.h')))
 
     obj_map = collect_object_types(headers)
     # Sort longest-first so greedy matching prefers the most specific object name
     sorted_names = sorted(obj_map.keys(), key=len, reverse=True)
 
+    thrift_fns = load_thrift_functions(THRIFT_FILE)
+
     rows = []
     for filepath in headers:
-        rel_path = os.path.relpath(filepath, os.path.dirname(__file__))
+        rel_path = os.path.relpath(filepath, SCRIPT_DIR)
         with open(filepath, 'r', errors='replace') as f:
             content = f.read()
 
@@ -97,13 +135,16 @@ def main():
         )
         for fn_name in fn_typedefs:
             obj_type = infer_object_type(fn_name, sorted_names, obj_map)
-            rows.append((rel_path, obj_type, fn_name))
+            # Strip _fn suffix for the SAI API column
+            sai_api = fn_name[:-3] if fn_name.endswith('_fn') else fn_name
+            thrift_fn = sai_api_to_thrift(sai_api, thrift_fns)
+            rows.append((rel_path, obj_type, sai_api, thrift_fn))
 
     rows.sort(key=lambda r: (r[0], r[1], r[2]))
 
     with open(OUTPUT_CSV, 'w', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow(['File', 'SAI object', 'SAI API'])
+        writer.writerow(['File', 'SAI object', 'SAI API', 'Python Thrift function'])
         writer.writerows(rows)
 
     print(f"Written {len(rows)} rows to {OUTPUT_CSV}")
@@ -113,6 +154,9 @@ def main():
         print(f"WARNING: {len(unknown)} entries with unknown object type:")
         for r in unknown:
             print(f"  {r}")
+
+    matched = sum(1 for r in rows if r[3])
+    print(f"Thrift matches: {matched}/{len(rows)} entries have a Python Thrift function")
 
 
 if __name__ == '__main__':
