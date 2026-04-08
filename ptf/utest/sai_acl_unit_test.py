@@ -20,12 +20,14 @@ Validates the SAI ACL implementation by:
      test/saithriftv2/build/lib/sai_thrift (sai_adapter + sai_headers).
   2. Verifying that each CRUD API call with default values returns
      SAI_STATUS_SUCCESS against a running SAI implementation.
+  3. For get calls: iterating over ALL attributes defined in
+     sai_attr_defaults.csv for the object type and comparing each
+     returned value against the default specified in that CSV.
 
 Each test class inherits from ThriftInterface (ptf/sai_base_test.py) which
 sets up the Thrift RPC connection via setUp/tearDown.  Each class defines a
 runTest method that calls create, get, set (where applicable), and remove
-helper methods in sequence using a single SAI object.  The only assertion in
-every helper is that the API returns SAI_STATUS_SUCCESS.
+helper methods in sequence using a single SAI object.
 
 Note: set_acl_table_group_attribute, set_acl_table_attribute, and
 set_acl_range_attribute are omitted because all attributes for those object
@@ -46,19 +48,229 @@ or:
     python3 -m pytest ptf/utest/sai_acl_unit_test.py -v
 """
 
+import csv
 import inspect
+import os
 import sys
 
 from sai_base_test import ThriftInterface
 
 # All SAI API functions, type helpers, and attribute constants are imported
 # directly from the generated sai_thrift package (no embedded stubs).
-# The package is produced by the saithriftv2 build and placed under
-# test/saithriftv2/build/lib/sai_thrift.  If it is not installed this import
-# will raise ImportError – build the package first (see module docstring).
 from sai_thrift.sai_adapter import *  # noqa: F401,F403
 from sai_thrift.sai_headers import *  # noqa: F401,F403
 import sai_thrift.sai_adapter as adapter
+
+# Path to the SAI attribute defaults CSV (repo root).
+_CSV_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+    "sai_attr_defaults.csv",
+)
+
+
+# ---------------------------------------------------------------------------
+# CSV loader – reads sai_attr_defaults.csv once at import time
+# ---------------------------------------------------------------------------
+
+def _load_attr_defaults(csv_path):
+    """
+    Parse sai_attr_defaults.csv and return a dict:
+        { attribute_name: (type_str, default_str) }
+
+    Rows with an empty default_value are included with default_str = "".
+    """
+    defaults = {}
+    with open(csv_path, newline="") as fh:
+        reader = csv.DictReader(fh)
+        for row in reader:
+            defaults[row["attribute_name"]] = (
+                row["type"],
+                row["default_value"],
+            )
+    return defaults
+
+
+_ATTR_DEFAULTS = _load_attr_defaults(_CSV_PATH)
+
+
+def _get_object_defaults(attr_prefix):
+    """
+    Return {attr_name: (type_str, default_str)} for all attributes whose
+    name starts with *attr_prefix* (e.g. "SAI_ACL_TABLE_GROUP_ATTR_").
+    """
+    return {
+        name: val
+        for name, val in _ATTR_DEFAULTS.items()
+        if name.startswith(attr_prefix)
+    }
+
+
+# ---------------------------------------------------------------------------
+# Default-value comparator
+# ---------------------------------------------------------------------------
+
+def _check_default(test_case, attr_name, type_str, default_str, actual):
+    """
+    Compare *actual* (the value returned by a sai_thrift get call, keyed by
+    the full attribute constant name) against the *default_str* from the CSV.
+
+    Attribute types and their default representations:
+
+      bool            "true" / "false"        → Python bool
+      sai_uint*_t     numeric string           → int (u32, u64 …)
+      sai_int*_t      numeric string           → int
+      sai_*_t (enum)  constant name string     → compare via sai_headers constant
+      sai_object_id_t "SAI_NULL_OBJECT_ID" /""→ int 0 or skip
+      sai_object_list_t / sai_s32_list_t  "empty" → count == 0
+      sai_acl_field_data_t  "disabled"         → enable == False
+      sai_acl_action_data_t "disabled"         → enable == False
+      sai_u32_range_t   no canonical default   → skip
+      char            '""""""'                 → empty string
+      (empty string)                           → skip (no default specified)
+    """
+    if default_str == "":
+        # No default defined in CSV – skip value comparison.
+        return
+
+    # ---- bool -------------------------------------------------------
+    if type_str == "bool":
+        expected = default_str.lower() == "true"
+        test_case.assertEqual(
+            actual, expected,
+            "{}: expected bool {}, got {}".format(attr_name, expected, actual),
+        )
+        return
+
+    # ---- integer scalar types ---------------------------------------
+    int_types = {
+        "sai_uint8_t", "sai_uint16_t", "sai_uint32_t", "sai_uint64_t",
+        "sai_int8_t",  "sai_int16_t",  "sai_int32_t",  "sai_int64_t",
+    }
+    if type_str in int_types:
+        expected = int(default_str)
+        test_case.assertEqual(
+            actual, expected,
+            "{}: expected int {}, got {}".format(attr_name, expected, actual),
+        )
+        return
+
+    # ---- object id --------------------------------------------------
+    if type_str == "sai_object_id_t":
+        if default_str == "SAI_NULL_OBJECT_ID":
+            test_case.assertEqual(
+                actual, SAI_NULL_OBJECT_ID,
+                "{}: expected SAI_NULL_OBJECT_ID, got {}".format(attr_name, actual),
+            )
+        # other OID defaults (e.g. mandatory attrs with no default) – skip
+        return
+
+    # ---- enum / s32 -------------------------------------------------
+    enum_types = {
+        "sai_acl_stage_t",
+        "sai_acl_table_group_type_t",
+        "sai_acl_table_chain_group_type_t",
+        "sai_acl_table_chain_group_stage_t",
+        "sai_acl_range_type_t",
+        "sai_acl_table_match_type_t",
+    }
+    if type_str in enum_types:
+        expected = globals().get(default_str)
+        if expected is None:
+            return  # constant not available in this build – skip
+        test_case.assertEqual(
+            actual, expected,
+            "{}: expected {} ({}), got {}".format(attr_name, default_str, repr(expected), repr(actual)),
+        )
+        return
+
+    # ---- list types -------------------------------------------------
+    list_types = {
+        "sai_object_list_t",
+        "sai_s32_list_t sai_acl_bind_point_type_t",
+        "sai_s32_list_t sai_acl_action_type_t",
+        "sai_s32_list_t sai_acl_range_type_t",
+    }
+    if type_str in list_types and default_str == "empty":
+        test_case.assertEqual(
+            actual.count, 0,
+            "{}: expected empty list (count=0), got count={}".format(
+                attr_name, actual.count
+            ),
+        )
+        return
+
+    # ---- acl_field_data_t / acl_action_data_t – "disabled" default --
+    if default_str == "disabled":
+        if actual is not None:
+            test_case.assertFalse(
+                actual.enable,
+                "{}: expected disabled (enable=False), got enable={}".format(
+                    attr_name, actual.enable
+                ),
+            )
+        return
+
+    # ---- char (string) ----------------------------------------------
+    if type_str == "char":
+        expected = ""
+        if default_str not in ('""""""', '""'):
+            expected = default_str.strip('"')
+        if actual is not None:
+            test_case.assertEqual(
+                actual, expected,
+                "{}: expected string '{}', got '{}'".format(attr_name, expected, actual),
+            )
+        return
+
+    # All other types (sai_u32_range_t etc.) – skip value comparison.
+
+
+def _verify_object_attributes(test_case, get_fn, oid, attr_prefix, **get_kwargs):
+    """
+    Call *get_fn* requesting every attribute for *attr_prefix*, then compare
+    each returned value against the CSV default via _check_default.
+
+    *get_kwargs* can supply any extra arguments the get function requires
+    (e.g. pre-allocated list objects for list-typed attributes).
+
+    Attributes with no corresponding get kwarg in the adapter signature are
+    silently skipped.
+
+    Returns the full attrs dict returned by the get function.
+    """
+    object_defaults = _get_object_defaults(attr_prefix)
+
+    # Build the keyword arguments for the get call – one True per attribute
+    # that appears in both the CSV and the adapter function signature.
+    import sai_thrift.sai_adapter as _adapter_mod
+    sig = inspect.signature(get_fn)
+    adapter_params = set(sig.parameters.keys()) - {"client", attr_prefix.rstrip("_").lower()}
+
+    request_kwargs = {}
+    for attr_name in object_defaults:
+        # Derive the kwarg name from the attribute constant:
+        # SAI_ACL_TABLE_GROUP_ATTR_ACL_STAGE  →  acl_stage
+        # Strip the prefix and lowercase.
+        kwarg = attr_name[len(attr_prefix):].lower()
+        if kwarg in sig.parameters:
+            request_kwargs[kwarg] = True
+
+    # Merge any caller-supplied kwargs (e.g. pre-sized lists).
+    request_kwargs.update(get_kwargs)
+
+    attrs = get_fn(test_case.client, oid, **request_kwargs)
+    test_case._assert_status_success(adapter.status)
+
+    if attrs is None:
+        return attrs
+
+    # Compare each returned value against CSV default.
+    for attr_name, (type_str, default_str) in object_defaults.items():
+        if attr_name in attrs:
+            _check_default(test_case, attr_name, type_str, default_str,
+                           attrs[attr_name])
+
+    return attrs
 
 
 # ---------------------------------------------------------------------------
@@ -69,12 +281,6 @@ def _get_acl_api_functions():
     """
     Return a sorted list of (name, callable) tuples for every ACL-related
     function exported by sai_thrift.sai_adapter.
-
-    The naming convention used by gensairpc.pl is:
-        sai_thrift_create_acl_*
-        sai_thrift_remove_acl_*
-        sai_thrift_set_acl_*_attribute
-        sai_thrift_get_acl_*_attribute
     """
     import sai_thrift.sai_adapter as _mod
     return sorted(
@@ -90,15 +296,6 @@ def _get_acl_attribute_constants():
     """
     Return {name: value} for every ACL attribute constant visible in this
     module's global namespace after the wildcard imports above.
-
-    Covers:
-      SAI_ACL_TABLE_ATTR_*
-      SAI_ACL_ENTRY_ATTR_*
-      SAI_ACL_COUNTER_ATTR_*
-      SAI_ACL_RANGE_ATTR_*
-      SAI_ACL_TABLE_GROUP_ATTR_*
-      SAI_ACL_TABLE_GROUP_MEMBER_ATTR_*
-      SAI_ACL_TABLE_CHAIN_GROUP_ATTR_*
     """
     current_module = sys.modules[__name__]
     prefixes = (
@@ -212,8 +409,9 @@ class TestAclApiDiscovery(ThriftInterface):
 class TestAclTableGroupCrud(_SaiAclAssertMixin, ThriftInterface):
     """
     Validates create / get / remove for ACL Table Group.
-    runTest calls each operation in sequence using a single object.
-    Only SAI_STATUS_SUCCESS is verified in each step.
+    get iterates all SAI_ACL_TABLE_GROUP_ATTR_* attributes from
+    sai_attr_defaults.csv and validates each returned value against its
+    defined default.
     """
 
     def runTest(self):
@@ -230,10 +428,12 @@ class TestAclTableGroupCrud(_SaiAclAssertMixin, ThriftInterface):
         return acl_table_group
 
     def get_acl_table_group_attribute(self, acl_table_group):
-        sai_thrift_get_acl_table_group_attribute(
-            self.client, acl_table_group, acl_stage=True
+        _verify_object_attributes(
+            self,
+            sai_thrift_get_acl_table_group_attribute,
+            acl_table_group,
+            "SAI_ACL_TABLE_GROUP_ATTR_",
         )
-        self._assert_status_success(adapter.status)
 
     def remove_acl_table_group(self, acl_table_group):
         status = sai_thrift_remove_acl_table_group(self.client, acl_table_group)
@@ -247,8 +447,9 @@ class TestAclTableGroupCrud(_SaiAclAssertMixin, ThriftInterface):
 class TestAclTableCrud(_SaiAclAssertMixin, ThriftInterface):
     """
     Validates create / get / remove for ACL Table.
-    runTest calls each operation in sequence using a single object.
-    Only SAI_STATUS_SUCCESS is verified in each step.
+    get iterates all SAI_ACL_TABLE_ATTR_* attributes from
+    sai_attr_defaults.csv and validates each returned value against its
+    defined default.
     """
 
     def runTest(self):
@@ -266,10 +467,12 @@ class TestAclTableCrud(_SaiAclAssertMixin, ThriftInterface):
         return acl_table
 
     def get_acl_table_attribute(self, acl_table):
-        sai_thrift_get_acl_table_attribute(
-            self.client, acl_table, acl_stage=True
+        _verify_object_attributes(
+            self,
+            sai_thrift_get_acl_table_attribute,
+            acl_table,
+            "SAI_ACL_TABLE_ATTR_",
         )
-        self._assert_status_success(adapter.status)
 
     def remove_acl_table(self, acl_table):
         status = sai_thrift_remove_acl_table(self.client, acl_table)
@@ -283,9 +486,9 @@ class TestAclTableCrud(_SaiAclAssertMixin, ThriftInterface):
 class TestAclTableGroupMemberCrud(_SaiAclAssertMixin, ThriftInterface):
     """
     Validates create / get / set / remove for ACL Table Group Member.
-    runTest creates the prerequisite ACL table group and table, then calls
-    each member operation in sequence using a single object.
-    Only SAI_STATUS_SUCCESS is verified in each step.
+    get iterates all SAI_ACL_TABLE_GROUP_MEMBER_ATTR_* attributes from
+    sai_attr_defaults.csv and validates each returned value against its
+    defined default.
     """
 
     def runTest(self):
@@ -315,10 +518,12 @@ class TestAclTableGroupMemberCrud(_SaiAclAssertMixin, ThriftInterface):
         return member
 
     def get_acl_table_group_member_attribute(self, member):
-        sai_thrift_get_acl_table_group_member_attribute(
-            self.client, member, priority=True
+        _verify_object_attributes(
+            self,
+            sai_thrift_get_acl_table_group_member_attribute,
+            member,
+            "SAI_ACL_TABLE_GROUP_MEMBER_ATTR_",
         )
-        self._assert_status_success(adapter.status)
 
     def set_acl_table_group_member_attribute(self, member):
         status = sai_thrift_set_acl_table_group_member_attribute(
@@ -338,9 +543,9 @@ class TestAclTableGroupMemberCrud(_SaiAclAssertMixin, ThriftInterface):
 class TestAclEntryCrud(_SaiAclAssertMixin, ThriftInterface):
     """
     Validates create / get / set / remove for ACL Entry.
-    runTest creates the prerequisite ACL table, then calls each entry operation
-    in sequence using a single object.
-    Only SAI_STATUS_SUCCESS is verified in each step.
+    get iterates all SAI_ACL_ENTRY_ATTR_* attributes from
+    sai_attr_defaults.csv and validates each returned value against its
+    defined default.
     """
 
     def runTest(self):
@@ -375,10 +580,12 @@ class TestAclEntryCrud(_SaiAclAssertMixin, ThriftInterface):
         return acl_entry
 
     def get_acl_entry_attribute(self, acl_entry):
-        sai_thrift_get_acl_entry_attribute(
-            self.client, acl_entry, table_id=True
+        _verify_object_attributes(
+            self,
+            sai_thrift_get_acl_entry_attribute,
+            acl_entry,
+            "SAI_ACL_ENTRY_ATTR_",
         )
-        self._assert_status_success(adapter.status)
 
     def set_acl_entry_attribute(self, acl_entry):
         status = sai_thrift_set_acl_entry_attribute(
@@ -398,9 +605,9 @@ class TestAclEntryCrud(_SaiAclAssertMixin, ThriftInterface):
 class TestAclCounterCrud(_SaiAclAssertMixin, ThriftInterface):
     """
     Validates create / get / set / remove for ACL Counter.
-    runTest creates the prerequisite ACL table, then calls each counter
-    operation in sequence using a single object.
-    Only SAI_STATUS_SUCCESS is verified in each step.
+    get iterates all SAI_ACL_COUNTER_ATTR_* attributes from
+    sai_attr_defaults.csv and validates each returned value against its
+    defined default.
     """
 
     def runTest(self):
@@ -423,10 +630,12 @@ class TestAclCounterCrud(_SaiAclAssertMixin, ThriftInterface):
         return acl_counter
 
     def get_acl_counter_attribute(self, acl_counter):
-        sai_thrift_get_acl_counter_attribute(
-            self.client, acl_counter, table_id=True
+        _verify_object_attributes(
+            self,
+            sai_thrift_get_acl_counter_attribute,
+            acl_counter,
+            "SAI_ACL_COUNTER_ATTR_",
         )
-        self._assert_status_success(adapter.status)
 
     def set_acl_counter_attribute(self, acl_counter):
         status = sai_thrift_set_acl_counter_attribute(
@@ -446,8 +655,9 @@ class TestAclCounterCrud(_SaiAclAssertMixin, ThriftInterface):
 class TestAclRangeCrud(_SaiAclAssertMixin, ThriftInterface):
     """
     Validates create / get / remove for ACL Range.
-    runTest calls each operation in sequence using a single object.
-    Only SAI_STATUS_SUCCESS is verified in each step.
+    get iterates all SAI_ACL_RANGE_ATTR_* attributes from
+    sai_attr_defaults.csv and validates each returned value against its
+    defined default.
     """
 
     def runTest(self):
@@ -465,12 +675,13 @@ class TestAclRangeCrud(_SaiAclAssertMixin, ThriftInterface):
         return acl_range
 
     def get_acl_range_attribute(self, acl_range):
-        sai_thrift_get_acl_range_attribute(
-            self.client, acl_range, type=True
+        _verify_object_attributes(
+            self,
+            sai_thrift_get_acl_range_attribute,
+            acl_range,
+            "SAI_ACL_RANGE_ATTR_",
         )
-        self._assert_status_success(adapter.status)
 
     def remove_acl_range(self, acl_range):
         status = sai_thrift_remove_acl_range(self.client, acl_range)
         self._assert_status_success(status)
-
