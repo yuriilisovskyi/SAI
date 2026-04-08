@@ -160,3 +160,58 @@ class TestHostifCrud(_AssertMixin, ThriftInterface):
     def remove_hostif(self, hif):
         status = sai_thrift_remove_hostif(self.client, hif)
         self._assert_status_success(status)
+
+
+class TestHostifTableEntryCrud(_AssertMixin, ThriftInterface):
+    """
+    Hostif Table Entry mandatory attrs from CSV:
+      SAI_HOSTIF_TABLE_ENTRY_ATTR_TYPE         (default: SAI_HOSTIF_TABLE_ENTRY_TYPE_PORT)
+      SAI_HOSTIF_TABLE_ENTRY_ATTR_CHANNEL_TYPE (default: SAI_HOSTIF_TABLE_ENTRY_CHANNEL_TYPE_CB)
+      SAI_HOSTIF_TABLE_ENTRY_ATTR_OBJ_ID       (OID, no default – first active port)
+      SAI_HOSTIF_TABLE_ENTRY_ATTR_TRAP_ID      (OID, no default – hostif trap)
+      SAI_HOSTIF_TABLE_ENTRY_ATTR_HOST_IF      (OID, conditional on channel type)
+    For TYPE=PORT + CHANNEL_TYPE=CB, only TYPE, OBJ_ID and CHANNEL_TYPE are needed.
+    """
+
+    def runTest(self):
+        attr = sai_thrift_get_switch_attribute(self.client, number_of_active_ports=True)
+        num_ports = attr["number_of_active_ports"]
+        attr = sai_thrift_get_switch_attribute(
+            self.client, port_list=sai_thrift_object_list_t(idlist=[], count=num_ports))
+        port_id = attr["port_list"].idlist[0]
+
+        trap = sai_thrift_create_hostif_trap(
+            self.client,
+            trap_type=SAI_HOSTIF_TRAP_TYPE_ARP_REQUEST,
+            packet_action=SAI_PACKET_ACTION_TRAP,
+        )
+
+        entry = self.create_hostif_table_entry(port_id, trap)
+        self.get_hostif_table_entry_attribute(entry)
+        self.remove_hostif_table_entry(entry)
+
+        sai_thrift_remove_hostif_trap(self.client, trap)
+
+    def create_hostif_table_entry(self, port_id, trap):
+        mandatory = get_mandatory_attrs_from_csv("SAI_HOSTIF_TABLE_ENTRY_ATTR_", _ATTR_DEFAULTS)
+        kwargs = {}
+        for attr in mandatory:
+            _t, default, _m = _ATTR_DEFAULTS[attr]
+            kwarg = attr[len("SAI_HOSTIF_TABLE_ENTRY_ATTR_"):].lower()
+            if default:
+                kwargs[kwarg] = getattr(sai_headers, default, default)
+        kwargs["type"] = SAI_HOSTIF_TABLE_ENTRY_TYPE_TRAP_ID
+        kwargs["obj_id"] = port_id
+        kwargs["trap_id"] = trap
+        kwargs["channel_type"] = SAI_HOSTIF_TABLE_ENTRY_CHANNEL_TYPE_CB
+        entry = sai_thrift_create_hostif_table_entry(self.client, **kwargs)
+        self._assert_status_success(adapter.status)
+        return entry
+
+    def get_hostif_table_entry_attribute(self, entry):
+        verify_object_attributes(
+            self, sai_thrift_get_hostif_table_entry_attribute, entry, "SAI_HOSTIF_TABLE_ENTRY_ATTR_")
+
+    def remove_hostif_table_entry(self, entry):
+        status = sai_thrift_remove_hostif_table_entry(self.client, entry)
+        self._assert_status_success(status)

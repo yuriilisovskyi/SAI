@@ -204,3 +204,74 @@ class TestTunnelNonCrudApis(_AssertMixin, ThriftInterface):
         sai_thrift_remove_router_interface(self.client, underlay_rif)
         sai_thrift_remove_router_interface(self.client, overlay_rif)
         sai_thrift_remove_virtual_router(self.client, vr)
+
+
+class TestTunnelTermTableEntryCrud(_AssertMixin, ThriftInterface):
+    """
+    Tunnel Term Table Entry mandatory attrs from CSV:
+      SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_VR_ID          (OID, no default)
+      SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_TYPE            (default: SAI_TUNNEL_TERM_TABLE_ENTRY_TYPE_P2P)
+      SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_DST_IP          (ip_address, no default)
+      SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_SRC_IP          (ip_address, conditional on P2P)
+      SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_TUNNEL_TYPE     (default: SAI_TUNNEL_TYPE_IPINIP)
+      SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_ACTION_TUNNEL_ID (OID, no default)
+    """
+
+    def runTest(self):
+        vr = sai_thrift_create_virtual_router(self.client)
+        attr = sai_thrift_get_switch_attribute(self.client, number_of_active_ports=True)
+        num_ports = attr["number_of_active_ports"]
+        attr = sai_thrift_get_switch_attribute(
+            self.client, port_list=sai_thrift_object_list_t(idlist=[], count=num_ports))
+        port_ids = attr["port_list"].idlist
+
+        overlay_rif = sai_thrift_create_router_interface(
+            self.client, type=SAI_ROUTER_INTERFACE_TYPE_PORT, virtual_router_id=vr, port_id=port_ids[0])
+        underlay_rif = sai_thrift_create_router_interface(
+            self.client, type=SAI_ROUTER_INTERFACE_TYPE_PORT, virtual_router_id=vr,
+            port_id=port_ids[1] if len(port_ids) > 1 else port_ids[0])
+
+        tun_kwargs = {
+            attr[len("SAI_TUNNEL_ATTR_"):].lower(): getattr(sai_headers, default, default)
+            for attr in get_mandatory_attrs_from_csv("SAI_TUNNEL_ATTR_", _ATTR_DEFAULTS)
+            for _, default, _ in [_ATTR_DEFAULTS[attr]] if default
+        }
+        tun_kwargs["overlay_interface"] = overlay_rif
+        tun_kwargs["underlay_interface"] = underlay_rif
+        tunnel = sai_thrift_create_tunnel(self.client, **tun_kwargs)
+
+        term_entry = self.create_tunnel_term_table_entry(vr, tunnel)
+        self.get_tunnel_term_table_entry_attribute(term_entry)
+        self.remove_tunnel_term_table_entry(term_entry)
+
+        sai_thrift_remove_tunnel(self.client, tunnel)
+        sai_thrift_remove_router_interface(self.client, underlay_rif)
+        sai_thrift_remove_router_interface(self.client, overlay_rif)
+        sai_thrift_remove_virtual_router(self.client, vr)
+
+    def create_tunnel_term_table_entry(self, vr, tunnel):
+        mandatory = get_mandatory_attrs_from_csv("SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_", _ATTR_DEFAULTS)
+        kwargs = {}
+        for attr in mandatory:
+            _t, default, _m = _ATTR_DEFAULTS[attr]
+            kwarg = attr[len("SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_"):].lower()
+            if default:
+                kwargs[kwarg] = getattr(sai_headers, default, default)
+        kwargs["vr_id"] = vr
+        kwargs["action_tunnel_id"] = tunnel
+        kwargs["dst_ip"] = sai_thrift_ip_address_t(
+            addr_family=SAI_IP_ADDR_FAMILY_IPV4, addr=sai_thrift_ip_addr_t(ip4="192.168.1.1"))
+        kwargs["src_ip"] = sai_thrift_ip_address_t(
+            addr_family=SAI_IP_ADDR_FAMILY_IPV4, addr=sai_thrift_ip_addr_t(ip4="10.0.0.1"))
+        term_entry = sai_thrift_create_tunnel_term_table_entry(self.client, **kwargs)
+        self._assert_status_success(adapter.status)
+        return term_entry
+
+    def get_tunnel_term_table_entry_attribute(self, term_entry):
+        verify_object_attributes(
+            self, sai_thrift_get_tunnel_term_table_entry_attribute,
+            term_entry, "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_")
+
+    def remove_tunnel_term_table_entry(self, term_entry):
+        status = sai_thrift_remove_tunnel_term_table_entry(self.client, term_entry)
+        self._assert_status_success(status)
