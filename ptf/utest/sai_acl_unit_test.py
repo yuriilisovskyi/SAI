@@ -359,7 +359,6 @@ class TestAclEntryCrud(_SaiAclAssertMixin, ThriftInterface):
         acl_entry = sai_thrift_create_acl_entry(
             self.client,
             table_id=acl_table,
-            priority=10,
             field_src_ip=sai_thrift_acl_field_data_t(
                 enable=True,
                 data=sai_thrift_acl_field_data_data_t(ip4="10.0.0.1"),
@@ -377,7 +376,7 @@ class TestAclEntryCrud(_SaiAclAssertMixin, ThriftInterface):
 
     def get_acl_entry_attribute(self, acl_entry):
         sai_thrift_get_acl_entry_attribute(
-            self.client, acl_entry, priority=True
+            self.client, acl_entry, table_id=True
         )
         self._assert_status_success(adapter.status)
 
@@ -418,20 +417,20 @@ class TestAclCounterCrud(_SaiAclAssertMixin, ThriftInterface):
 
     def create_acl_counter(self, acl_table):
         acl_counter = sai_thrift_create_acl_counter(
-            self.client, table_id=acl_table, enable_packet_count=True
+            self.client, table_id=acl_table
         )
         self._assert_status_success(adapter.status)
         return acl_counter
 
     def get_acl_counter_attribute(self, acl_counter):
         sai_thrift_get_acl_counter_attribute(
-            self.client, acl_counter, packets=True
+            self.client, acl_counter, table_id=True
         )
         self._assert_status_success(adapter.status)
 
     def set_acl_counter_attribute(self, acl_counter):
         status = sai_thrift_set_acl_counter_attribute(
-            self.client, acl_counter, packets=0
+            self.client, acl_counter, bytes=0
         )
         self._assert_status_success(status)
 
