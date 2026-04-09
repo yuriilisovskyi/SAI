@@ -87,6 +87,87 @@ _DEFAULT_JSON = os.path.join(_REPO_DIR, 'sai_api_attributes.json')
 
 
 # ---------------------------------------------------------------------------
+# Default value verification helpers
+# ---------------------------------------------------------------------------
+
+# Return value fields from attr.value.<field> that carry a comparable integer/bool.
+_INT_COMPARABLE_FIELDS  = frozenset({'s32', 'u32', 'u64', 'u8', 'u16', 's8', 's16', 'oid', 'objid'})
+_BOOL_COMPARABLE_FIELDS = frozenset({'booldata'})
+
+# Cache: fn_callable → {param_name: attr_value_return_field}
+_GET_RETURN_FIELD_CACHE: dict = {}
+
+def _get_param_return_fields(fn_callable) -> dict:
+    """
+    Parse the adapter source and return a mapping:
+        {param_name: attr_value_return_field}   (short param names only, not SAI_* keys)
+
+    e.g. {'type': 's32', 'learn_disable': 'booldata', 'port_list': 'objlist', ...}
+    """
+    fn_id = id(fn_callable)
+    if fn_id in _GET_RETURN_FIELD_CACHE:
+        return _GET_RETURN_FIELD_CACHE[fn_id]
+    try:
+        src = inspect.getsource(fn_callable)
+    except (OSError, TypeError):
+        return {}
+    result = {
+        p: f
+        for p, f in re.findall(r'attrs\["(\w+)"\] = attr\.value\.(\w+)', src)
+        if not p.startswith('SAI_')
+    }
+    _GET_RETURN_FIELD_CACHE[fn_id] = result
+    return result
+
+
+def _to_comparable(value) -> int | bool | None:
+    """
+    Normalise a value to a plain int or bool for comparison.
+
+    SAI constants are IntEnum subclasses (isinstance(v, int) is True) so we
+    call int() explicitly to unwrap the enum to a bare integer.
+
+    Returns None if the value cannot be meaningfully compared
+    (None, complex struct, str, list, …).
+    """
+    if value is None:
+        return None
+    # bool must be checked before int because bool is a subclass of int
+    if type(value) is bool:
+        return value
+    if isinstance(value, int):
+        return int(value)     # unwraps IntEnum → plain int
+    # Thrift structs, strings, etc. — not comparable
+    return None
+
+
+def _expected_comparable(attr_val):
+    """
+    Return the comparable form of the expected default value for verification,
+    or None when no meaningful comparison is possible.
+
+    Skips:
+      - empty / empty list  (device may legitimately return non-empty)
+      - internal / attrvalue  (no expected value)
+      - plain strings (IP address, MAC address, vendor, …)
+      - condition attributes  (not sent in create, so not meaningful to verify)
+    """
+    if isinstance(attr_val, dict):
+        if 'condition' in attr_val:
+            return None
+        raw = attr_val.get('def_value', '')
+    else:
+        raw = str(attr_val) if attr_val else ''
+
+    if not raw or raw.lower() in ('empty', 'empty list', 'internal') \
+            or raw.lower().startswith('attrvalue'):
+        return None
+
+    rendered = _render_default(raw)
+    return _to_comparable(rendered)
+
+
+# ---------------------------------------------------------------------------
 # Empty SAI object / list construction
 # ---------------------------------------------------------------------------
 
@@ -707,6 +788,39 @@ class SaiApiTestBase(ThriftInterface):
         result, err = self._call(fn, *pos_args, **kwargs)
         if err:
             self._record(obj_type, fn_name, f'FAIL: {err}')
+            return
+
+        # Verify returned attribute values against JSON defaults
+        mismatches = []
+        if isinstance(result, dict):
+            return_fields = _get_param_return_fields(fn)
+            for attr_name, attr_val in attributes.items():
+                param = _attr_to_param(attr_name)
+                ret_field = return_fields.get(param)
+                if ret_field is None:
+                    continue
+                # Only verify scalar/bool fields; skip lists and complex structs
+                if ret_field not in _INT_COMPARABLE_FIELDS and ret_field not in _BOOL_COMPARABLE_FIELDS:
+                    continue
+                returned = result.get(param)
+                if returned is None:
+                    continue
+                expected = _expected_comparable(attr_val)
+                if expected is None:
+                    continue
+                actual = _to_comparable(returned)
+                if actual is None:
+                    continue
+                if actual != expected:
+                    mismatches.append(
+                        f'{attr_name}: expected {expected!r}, got {actual!r}'
+                    )
+                else:
+                    print(f'    [OK] {param} = {actual!r}')
+
+        if mismatches:
+            details = '; '.join(mismatches)
+            self._record(obj_type, fn_name, f'FAIL: default value mismatch: {details}')
         else:
             self._record(obj_type, fn_name, 'PASS')
             print(f'  [PASS] {fn_name}')
