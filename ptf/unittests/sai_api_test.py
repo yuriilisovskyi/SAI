@@ -642,11 +642,13 @@ class SaiApiTestBase(ThriftInterface):
             value = _attr_default(attr_val)
             if value is None:
                 continue
-            # u8 fields are serialised as signed TType.BYTE (-128..127);
-            # skip values that would overflow the wire format.
+            # u8 fields (sai_uint8_t, range 0..255) are serialised by Thrift as
+            # TType.BYTE (signed, -128..127).  Convert values 128..255 to their
+            # two's complement signed form so the wire format is correct.
+            # The SAI device interprets the byte as unsigned again on receipt.
             if (isinstance(value, int) and not isinstance(value, bool)
                     and param_vtypes.get(param) == 'u8' and value > 127):
-                continue
+                value = value - 256
             kwargs[param] = value
         return kwargs
 
