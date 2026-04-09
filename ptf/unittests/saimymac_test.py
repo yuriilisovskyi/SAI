@@ -1,0 +1,28 @@
+"""
+Auto-generated PTF test for inc/saimymac.h.
+
+Validates all SAI object types defined in inc/saimymac.h:
+  - SAI_OBJECT_TYPE_MY_MAC
+
+Re-generate by running: python3 generate_sai_json.py
+"""
+
+import os
+from sai_api_test import SaiApiTestBase
+
+# ptf/unittests/ → ../../sai_data/<file>
+_JSON = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    '..', '..', 'sai_data', 'saimymac_api_attributes.json',
+)
+
+
+class SaiMymacTest(SaiApiTestBase):
+    """
+    Exercises all Thrift functions for the following object types
+    defined in inc/saimymac.h:
+        SAI_OBJECT_TYPE_MY_MAC
+    """
+
+    json_path = _JSON
+    object_types = ['SAI_OBJECT_TYPE_MY_MAC']

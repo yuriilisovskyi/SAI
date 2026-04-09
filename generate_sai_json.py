@@ -58,7 +58,7 @@ API_CSV = os.path.join(SCRIPT_DIR, 'sai_api_list.csv')
 ATTR_CSV = os.path.join(SCRIPT_DIR, 'sai_attr_defaults.csv')
 OUTPUT_JSON = os.path.join(SCRIPT_DIR, 'sai_api_attributes.json')
 SAI_DATA_DIR = os.path.join(SCRIPT_DIR, 'sai_data')
-PTF_DIR = os.path.join(SCRIPT_DIR, 'ptf')
+PTF_DIR = os.path.join(SCRIPT_DIR, 'ptf', 'unittests')
 
 
 # ---------------------------------------------------------------------------
@@ -338,9 +338,10 @@ Re-generate by running: python3 generate_sai_json.py
 import os
 from sai_api_test import SaiApiTestBase
 
+# ptf/unittests/ → ../../sai_data/<file>
 _JSON = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
-    '..', 'sai_data', '{json_filename}',
+    '..', '..', 'sai_data', '{json_filename}',
 )
 
 
