@@ -4,12 +4,8 @@ SAI API dynamic test suite.
 This module provides:
 
   SaiApiTestBase  -- base class with the full execution engine.  Sub-classes
-                     (or the built-in SaiApiTest) point it at a JSON file and
-                     an optional object-type filter; the engine does the rest.
-
-  SaiApiTest      -- ready-to-run PTF test that loads sai_api_attributes.json
-                     and exercises every object type that has at least one
-                     Thrift function mapped.
+                     point it at a JSON file and an optional object-type filter;
+                     the engine does the rest.
 
 Engine overview
 ---------------
@@ -29,7 +25,8 @@ For each SAI object type in the JSON the engine:
                   * "empty" / "empty list" defaults are replaced with the
                     appropriate Thrift empty list/object constructed from the
                     attribute's "type" field (e.g. sai_thrift_object_list_t(count=0, idlist=[]))
-     get     -- every attribute passed as <param>=True
+     get     -- every attribute passed as <param>=True; returned values verified
+                against def_value from JSON
      set     -- each settable attribute individually (SAI allows one at a time)
      stats   -- OID / entry only (counter_ids use adapter defaults)
      remove  -- OID or entry
@@ -987,23 +984,3 @@ class SaiApiTestBase(ThriftInterface):
             self.fail(f'{len(failures)} function(s) failed – see output above')
 
 
-# ---------------------------------------------------------------------------
-# Concrete ready-to-run test class
-# ---------------------------------------------------------------------------
-
-class SaiApiTest(SaiApiTestBase):
-    """
-    Exercises every SAI object type present in sai_api_attributes.json.
-
-    Run with PTF::
-
-        ptf --test-dir ptf/unittests sai_api_test.SaiApiTest \\
-            --interface 0@<iface> \\
-            --test-params "thrift_server='localhost'"
-
-    To restrict to specific object types, sub-class and set ``object_types``::
-
-        class SaiVlanTest(SaiApiTestBase):
-            object_types = ['SAI_OBJECT_TYPE_VLAN']
-    """
-    pass
