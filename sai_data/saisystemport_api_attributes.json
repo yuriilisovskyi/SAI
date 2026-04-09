@@ -1,0 +1,19 @@
+{
+  "SAI_OBJECT_TYPE_SYSTEM_PORT": {
+    "functions": [
+      "sai_thrift_create_system_port",
+      "sai_thrift_get_system_port_attribute",
+      "sai_thrift_remove_system_port",
+      "sai_thrift_set_system_port_attribute"
+    ],
+    "attributes": {
+      "SAI_SYSTEM_PORT_ATTR_TYPE": "SAI_SYSTEM_PORT_TYPE_LOCAL",
+      "SAI_SYSTEM_PORT_ATTR_QOS_NUMBER_OF_VOQS": "",
+      "SAI_SYSTEM_PORT_ATTR_QOS_VOQ_LIST": "",
+      "SAI_SYSTEM_PORT_ATTR_PORT": "",
+      "SAI_SYSTEM_PORT_ATTR_ADMIN_STATE": "false",
+      "SAI_SYSTEM_PORT_ATTR_CONFIG_INFO": "",
+      "SAI_SYSTEM_PORT_ATTR_QOS_TC_TO_QUEUE_MAP": "SAI_NULL_OBJECT_ID"
+    }
+  }
+}

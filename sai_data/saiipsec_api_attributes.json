@@ -1,0 +1,161 @@
+{
+  "SAI_OBJECT_TYPE_IPSEC": {
+    "functions": [
+      "sai_thrift_create_ipsec",
+      "sai_thrift_get_ipsec_attribute",
+      "sai_thrift_remove_ipsec",
+      "sai_thrift_set_ipsec_attribute"
+    ],
+    "attributes": {
+      "SAI_IPSEC_ATTR_TERM_REMOTE_IP_MATCH_SUPPORTED": "",
+      "SAI_IPSEC_ATTR_SWITCHING_MODE_CUT_THROUGH_SUPPORTED": "",
+      "SAI_IPSEC_ATTR_SWITCHING_MODE_STORE_AND_FORWARD_SUPPORTED": "",
+      "SAI_IPSEC_ATTR_STATS_MODE_READ_SUPPORTED": "",
+      "SAI_IPSEC_ATTR_STATS_MODE_READ_CLEAR_SUPPORTED": "",
+      "SAI_IPSEC_ATTR_SN_32BIT_SUPPORTED": "",
+      "SAI_IPSEC_ATTR_ESN_64BIT_SUPPORTED": "",
+      "SAI_IPSEC_ATTR_SUPPORTED_CIPHER_LIST": "",
+      "SAI_IPSEC_ATTR_SYSTEM_SIDE_MTU": "",
+      "SAI_IPSEC_ATTR_WARM_BOOT_SUPPORTED": "",
+      "SAI_IPSEC_ATTR_WARM_BOOT_ENABLE": "false",
+      "SAI_IPSEC_ATTR_EXTERNAL_SA_INDEX_ENABLE": "",
+      "SAI_IPSEC_ATTR_CTAG_TPID": "0x8100",
+      "SAI_IPSEC_ATTR_STAG_TPID": "0x88A8",
+      "SAI_IPSEC_ATTR_MAX_VLAN_TAGS_PARSED": "0",
+      "SAI_IPSEC_ATTR_OCTET_COUNT_HIGH_WATERMARK": "0",
+      "SAI_IPSEC_ATTR_OCTET_COUNT_LOW_WATERMARK": "0",
+      "SAI_IPSEC_ATTR_STATS_MODE": "SAI_STATS_MODE_READ_AND_CLEAR",
+      "SAI_IPSEC_ATTR_AVAILABLE_IPSEC_SA": "",
+      "SAI_IPSEC_ATTR_SA_LIST": "",
+      "SAI_IPSEC_ATTR_POST_STATUS": "SAI_IPSEC_POST_STATUS_UNKNOWN",
+      "SAI_IPSEC_ATTR_ENABLE_POST": "false"
+    }
+  },
+  "SAI_OBJECT_TYPE_IPSEC_PORT": {
+    "functions": [
+      "sai_thrift_clear_ipsec_port_stats",
+      "sai_thrift_create_ipsec_port",
+      "sai_thrift_get_ipsec_port_attribute",
+      "sai_thrift_get_ipsec_port_stats",
+      "sai_thrift_get_ipsec_port_stats_ext",
+      "sai_thrift_remove_ipsec_port",
+      "sai_thrift_set_ipsec_port_attribute"
+    ],
+    "attributes": {
+      "SAI_IPSEC_PORT_ATTR_PORT_ID": "",
+      "SAI_IPSEC_PORT_ATTR_CTAG_ENABLE": "false",
+      "SAI_IPSEC_PORT_ATTR_STAG_ENABLE": "false",
+      "SAI_IPSEC_PORT_ATTR_NATIVE_VLAN_ID": "",
+      "SAI_IPSEC_PORT_ATTR_VRF_FROM_PACKET_VLAN_ENABLE": "false",
+      "SAI_IPSEC_PORT_ATTR_SWITCH_SWITCHING_MODE": "SAI_SWITCH_SWITCHING_MODE_CUT_THROUGH",
+      "SAI_IPSEC_PORT_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
+      "SAI_IPSEC_PORT_ATTR_SELECTIVE_COUNTER_LIST": "empty",
+      "SAI_IPSEC_PORT_ATTR_POST_STATUS": "SAI_IPSEC_PORT_POST_STATUS_UNKNOWN"
+    }
+  },
+  "SAI_OBJECT_TYPE_IPSEC_SA": {
+    "functions": [
+      "sai_thrift_clear_ipsec_sa_stats",
+      "sai_thrift_create_ipsec_sa",
+      "sai_thrift_get_ipsec_sa_attribute",
+      "sai_thrift_get_ipsec_sa_stats",
+      "sai_thrift_get_ipsec_sa_stats_ext",
+      "sai_thrift_remove_ipsec_sa",
+      "sai_thrift_set_ipsec_sa_attribute"
+    ],
+    "attributes": {
+      "SAI_IPSEC_SA_ATTR_IPSEC_DIRECTION": "SAI_IPSEC_DIRECTION_EGRESS",
+      "SAI_IPSEC_SA_ATTR_IPSEC_ID": "",
+      "SAI_IPSEC_SA_ATTR_OCTET_COUNT_STATUS": "SAI_IPSEC_SA_OCTET_COUNT_STATUS_BELOW_LOW_WATERMARK",
+      "SAI_IPSEC_SA_ATTR_EXTERNAL_SA_INDEX": "0",
+      "SAI_IPSEC_SA_ATTR_SA_INDEX": "",
+      "SAI_IPSEC_SA_ATTR_IPSEC_PORT_LIST": "empty",
+      "SAI_IPSEC_SA_ATTR_IPSEC_SPI": "",
+      "SAI_IPSEC_SA_ATTR_IPSEC_ESN_ENABLE": "true",
+      "SAI_IPSEC_SA_ATTR_IPSEC_CIPHER": "SAI_IPSEC_CIPHER_AES256_GCM16",
+      "SAI_IPSEC_SA_ATTR_ENCRYPT_KEY": "",
+      "SAI_IPSEC_SA_ATTR_SALT": "",
+      "SAI_IPSEC_SA_ATTR_AUTH_KEY": "",
+      "SAI_IPSEC_SA_ATTR_IPSEC_REPLAY_PROTECTION_ENABLE": {
+        "validonly": [
+          {
+            "SAI_IPSEC_SA_ATTR_IPSEC_DIRECTION": "SAI_IPSEC_DIRECTION_INGRESS"
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_IPSEC_SA_ATTR_IPSEC_REPLAY_PROTECTION_WINDOW": {
+        "validonly": [
+          {
+            "SAI_IPSEC_SA_ATTR_IPSEC_DIRECTION": "SAI_IPSEC_DIRECTION_INGRESS"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_IPSEC_SA_ATTR_TERM_DST_IP": {
+        "condition": [
+          {
+            "SAI_IPSEC_SA_ATTR_IPSEC_DIRECTION": "SAI_IPSEC_DIRECTION_INGRESS"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_IPSEC_SA_ATTR_TERM_VLAN_ID_ENABLE": {
+        "validonly": [
+          {
+            "SAI_IPSEC_SA_ATTR_IPSEC_DIRECTION": "SAI_IPSEC_DIRECTION_INGRESS"
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_IPSEC_SA_ATTR_TERM_VLAN_ID": {
+        "condition": [
+          {
+            "SAI_IPSEC_SA_ATTR_IPSEC_DIRECTION": "SAI_IPSEC_DIRECTION_INGRESS"
+          },
+          {
+            "SAI_IPSEC_SA_ATTR_TERM_VLAN_ID_ENABLE": "true"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_IPSEC_SA_ATTR_TERM_SRC_IP_ENABLE": {
+        "validonly": [
+          {
+            "SAI_IPSEC_SA_ATTR_IPSEC_DIRECTION": "SAI_IPSEC_DIRECTION_INGRESS"
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_IPSEC_SA_ATTR_TERM_SRC_IP": {
+        "condition": [
+          {
+            "SAI_IPSEC_SA_ATTR_IPSEC_DIRECTION": "SAI_IPSEC_DIRECTION_INGRESS"
+          },
+          {
+            "SAI_IPSEC_SA_ATTR_TERM_SRC_IP_ENABLE": "true"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_IPSEC_SA_ATTR_EGRESS_ESN": {
+        "validonly": [
+          {
+            "SAI_IPSEC_SA_ATTR_IPSEC_DIRECTION": "SAI_IPSEC_DIRECTION_EGRESS"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_IPSEC_SA_ATTR_MINIMUM_INGRESS_ESN": {
+        "validonly": [
+          {
+            "SAI_IPSEC_SA_ATTR_IPSEC_DIRECTION": "SAI_IPSEC_DIRECTION_INGRESS"
+          }
+        ],
+        "def_value": "1"
+      },
+      "SAI_IPSEC_SA_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
+      "SAI_IPSEC_SA_ATTR_SELECTIVE_COUNTER_LIST": "empty"
+    }
+  }
+}

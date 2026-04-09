@@ -1,0 +1,23 @@
+{
+  "SAI_OBJECT_TYPE_IPMC_ENTRY": {
+    "functions": [
+      "sai_thrift_create_ipmc_entry",
+      "sai_thrift_get_ipmc_entry_attribute",
+      "sai_thrift_remove_ipmc_entry",
+      "sai_thrift_set_ipmc_entry_attribute"
+    ],
+    "attributes": {
+      "SAI_IPMC_ENTRY_ATTR_PACKET_ACTION": "SAI_PACKET_ACTION_DROP",
+      "SAI_IPMC_ENTRY_ATTR_OUTPUT_GROUP_ID": {
+        "validonly": [
+          {
+            "SAI_IPMC_ENTRY_ATTR_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD"
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_IPMC_ENTRY_ATTR_RPF_GROUP_ID": "",
+      "SAI_IPMC_ENTRY_ATTR_COUNTER_ID": "SAI_NULL_OBJECT_ID"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "SAI_OBJECT_TYPE_L2MC_ENTRY": {
+    "functions": [
+      "sai_thrift_create_l2mc_entry",
+      "sai_thrift_get_l2mc_entry_attribute",
+      "sai_thrift_remove_l2mc_entry",
+      "sai_thrift_set_l2mc_entry_attribute"
+    ],
+    "attributes": {
+      "SAI_L2MC_ENTRY_ATTR_PACKET_ACTION": "SAI_PACKET_ACTION_DROP",
+      "SAI_L2MC_ENTRY_ATTR_OUTPUT_GROUP_ID": {
+        "validonly": [
+          {
+            "SAI_L2MC_ENTRY_ATTR_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD"
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      }
+    }
+  }
+}

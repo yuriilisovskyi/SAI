@@ -1,0 +1,37 @@
+{
+  "SAI_OBJECT_TYPE_POLICER": {
+    "functions": [
+      "sai_thrift_clear_policer_stats",
+      "sai_thrift_create_policer",
+      "sai_thrift_get_policer_attribute",
+      "sai_thrift_get_policer_stats",
+      "sai_thrift_get_policer_stats_ext",
+      "sai_thrift_remove_policer",
+      "sai_thrift_set_policer_attribute"
+    ],
+    "attributes": {
+      "SAI_POLICER_ATTR_METER_TYPE": "SAI_METER_TYPE_PACKETS",
+      "SAI_POLICER_ATTR_MODE": "SAI_POLICER_MODE_SR_TCM",
+      "SAI_POLICER_ATTR_COLOR_SOURCE": "SAI_POLICER_COLOR_SOURCE_AWARE",
+      "SAI_POLICER_ATTR_CBS": "0",
+      "SAI_POLICER_ATTR_CIR": "0",
+      "SAI_POLICER_ATTR_PBS": "0",
+      "SAI_POLICER_ATTR_PIR": {
+        "validonly": [
+          {
+            "SAI_POLICER_ATTR_MODE": "SAI_POLICER_MODE_TR_TCM"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_POLICER_ATTR_GREEN_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD",
+      "SAI_POLICER_ATTR_YELLOW_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD",
+      "SAI_POLICER_ATTR_RED_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD",
+      "SAI_POLICER_ATTR_ENABLE_COUNTER_PACKET_ACTION_LIST": "empty",
+      "SAI_POLICER_ATTR_OBJECT_STAGE": "SAI_OBJECT_STAGE_BOTH",
+      "SAI_POLICER_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
+      "SAI_POLICER_ATTR_SELECTIVE_COUNTER_LIST": "empty",
+      "SAI_POLICER_ATTR_LABEL": "\"\""
+    }
+  }
+}

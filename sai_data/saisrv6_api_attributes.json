@@ -1,0 +1,94 @@
+{
+  "SAI_OBJECT_TYPE_MY_SID_ENTRY": {
+    "functions": [
+      "sai_thrift_bulk_create_my_sid_entry",
+      "sai_thrift_bulk_get_my_sid_entry_attribute",
+      "sai_thrift_bulk_remove_my_sid_entry",
+      "sai_thrift_bulk_set_my_sid_entry_attribute",
+      "sai_thrift_create_my_sid_entry",
+      "sai_thrift_get_my_sid_entry_attribute",
+      "sai_thrift_remove_my_sid_entry",
+      "sai_thrift_set_my_sid_entry_attribute"
+    ],
+    "attributes": {
+      "SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR": "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_E",
+      "SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR_FLAVOR": {
+        "validonly": [
+          {
+            "SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR": [
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_E",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_X",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_T",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UN",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UA"
+            ]
+          }
+        ],
+        "def_value": "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_FLAVOR_NONE"
+      },
+      "SAI_MY_SID_ENTRY_ATTR_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD",
+      "SAI_MY_SID_ENTRY_ATTR_TRAP_PRIORITY": "0",
+      "SAI_MY_SID_ENTRY_ATTR_NEXT_HOP_ID": {
+        "validonly": [
+          {
+            "SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR": [
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_X",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DX4",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DX6",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_B6_ENCAPS",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_B6_ENCAPS_RED",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_B6_INSERT",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_B6_INSERT_RED",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UA"
+            ]
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_MY_SID_ENTRY_ATTR_TUNNEL_ID": {
+        "validonly": [
+          {
+            "_raw": "SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR_FLAVOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_FLAVOR_USD or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR_FLAVOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_FLAVOR_USD_AND_USP or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR_FLAVOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_FLAVOR_PSP_AND_USD or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR_FLAVOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_FLAVOR_PSP_AND_USP_AND_USD or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DT4 or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DT6 or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DT46 or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UDT4 or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UDT6 or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UDT46"
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_MY_SID_ENTRY_ATTR_VRF": {
+        "validonly": [
+          {
+            "SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR": [
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_T",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DT4",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DT6",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DT46",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UDT4",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UDT6",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UDT46"
+            ]
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_MY_SID_ENTRY_ATTR_COUNTER_ID": "SAI_NULL_OBJECT_ID"
+    }
+  },
+  "SAI_OBJECT_TYPE_SRV6_SIDLIST": {
+    "functions": [
+      "sai_thrift_clear_srv6_sidlist_stats",
+      "sai_thrift_create_srv6_sidlist",
+      "sai_thrift_get_srv6_sidlist_attribute",
+      "sai_thrift_get_srv6_sidlist_stats",
+      "sai_thrift_get_srv6_sidlist_stats_ext",
+      "sai_thrift_remove_srv6_sidlist",
+      "sai_thrift_set_srv6_sidlist_attribute"
+    ],
+    "attributes": {
+      "SAI_SRV6_SIDLIST_ATTR_TYPE": "SAI_SRV6_SIDLIST_TYPE_INSERT",
+      "SAI_SRV6_SIDLIST_ATTR_TLV_LIST": "empty",
+      "SAI_SRV6_SIDLIST_ATTR_SEGMENT_LIST": "empty",
+      "SAI_SRV6_SIDLIST_ATTR_NEXT_HOP_ID": "SAI_NULL_OBJECT_ID",
+      "SAI_SRV6_SIDLIST_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
+      "SAI_SRV6_SIDLIST_ATTR_SELECTIVE_COUNTER_LIST": "empty"
+    }
+  }
+}

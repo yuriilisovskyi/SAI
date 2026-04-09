@@ -1,0 +1,26 @@
+{
+  "SAI_OBJECT_TYPE_ISOLATION_GROUP": {
+    "functions": [
+      "sai_thrift_create_isolation_group",
+      "sai_thrift_get_isolation_group_attribute",
+      "sai_thrift_remove_isolation_group",
+      "sai_thrift_set_isolation_group_attribute"
+    ],
+    "attributes": {
+      "SAI_ISOLATION_GROUP_ATTR_TYPE": "SAI_ISOLATION_GROUP_TYPE_PORT",
+      "SAI_ISOLATION_GROUP_ATTR_ISOLATION_MEMBER_LIST": ""
+    }
+  },
+  "SAI_OBJECT_TYPE_ISOLATION_GROUP_MEMBER": {
+    "functions": [
+      "sai_thrift_create_isolation_group_member",
+      "sai_thrift_get_isolation_group_member_attribute",
+      "sai_thrift_remove_isolation_group_member",
+      "sai_thrift_set_isolation_group_member_attribute"
+    ],
+    "attributes": {
+      "SAI_ISOLATION_GROUP_MEMBER_ATTR_ISOLATION_GROUP_ID": "",
+      "SAI_ISOLATION_GROUP_MEMBER_ATTR_ISOLATION_OBJECT": ""
+    }
+  }
+}

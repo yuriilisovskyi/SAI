@@ -1,0 +1,17 @@
+{
+  "SAI_OBJECT_TYPE_MY_MAC": {
+    "functions": [
+      "sai_thrift_create_my_mac",
+      "sai_thrift_get_my_mac_attribute",
+      "sai_thrift_remove_my_mac",
+      "sai_thrift_set_my_mac_attribute"
+    ],
+    "attributes": {
+      "SAI_MY_MAC_ATTR_PRIORITY": "0",
+      "SAI_MY_MAC_ATTR_PORT_ID": "SAI_NULL_OBJECT_ID",
+      "SAI_MY_MAC_ATTR_VLAN_ID": "0",
+      "SAI_MY_MAC_ATTR_MAC_ADDRESS": "vendor",
+      "SAI_MY_MAC_ATTR_MAC_ADDRESS_MASK": "vendor"
+    }
+  }
+}

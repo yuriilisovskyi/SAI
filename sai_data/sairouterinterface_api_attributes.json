@@ -1,0 +1,81 @@
+{
+  "SAI_OBJECT_TYPE_ROUTER_INTERFACE": {
+    "functions": [
+      "sai_thrift_clear_router_interface_stats",
+      "sai_thrift_create_router_interface",
+      "sai_thrift_get_router_interface_attribute",
+      "sai_thrift_get_router_interface_stats",
+      "sai_thrift_get_router_interface_stats_ext",
+      "sai_thrift_remove_router_interface",
+      "sai_thrift_set_router_interface_attribute"
+    ],
+    "attributes": {
+      "SAI_ROUTER_INTERFACE_ATTR_VIRTUAL_ROUTER_ID": "",
+      "SAI_ROUTER_INTERFACE_ATTR_TYPE": "SAI_ROUTER_INTERFACE_TYPE_PORT",
+      "SAI_ROUTER_INTERFACE_ATTR_PORT_ID": {
+        "condition": [
+          {
+            "SAI_ROUTER_INTERFACE_ATTR_TYPE": [
+              "SAI_ROUTER_INTERFACE_TYPE_PORT",
+              "SAI_ROUTER_INTERFACE_TYPE_SUB_PORT"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_VLAN_ID": {
+        "condition": [
+          {
+            "SAI_ROUTER_INTERFACE_ATTR_TYPE": "SAI_ROUTER_INTERFACE_TYPE_VLAN"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_OUTER_VLAN_ID": {
+        "condition": [
+          {
+            "SAI_ROUTER_INTERFACE_ATTR_TYPE": [
+              "SAI_ROUTER_INTERFACE_TYPE_QINQ_PORT",
+              "SAI_ROUTER_INTERFACE_TYPE_SUB_PORT"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_INNER_VLAN_ID": {
+        "condition": [
+          {
+            "SAI_ROUTER_INTERFACE_ATTR_TYPE": "SAI_ROUTER_INTERFACE_TYPE_QINQ_PORT"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_BRIDGE_ID": {
+        "condition": [
+          {
+            "SAI_ROUTER_INTERFACE_ATTR_TYPE": "SAI_ROUTER_INTERFACE_TYPE_BRIDGE"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_SRC_MAC_ADDRESS": "attrvalue SAI_VIRTUAL_ROUTER_ATTR_SRC_MAC_ADDRESS",
+      "SAI_ROUTER_INTERFACE_ATTR_ADMIN_V4_STATE": "true",
+      "SAI_ROUTER_INTERFACE_ATTR_ADMIN_V6_STATE": "true",
+      "SAI_ROUTER_INTERFACE_ATTR_MTU": "1514",
+      "SAI_ROUTER_INTERFACE_ATTR_INGRESS_ACL": "SAI_NULL_OBJECT_ID",
+      "SAI_ROUTER_INTERFACE_ATTR_EGRESS_ACL": "SAI_NULL_OBJECT_ID",
+      "SAI_ROUTER_INTERFACE_ATTR_NEIGHBOR_MISS_PACKET_ACTION": "SAI_PACKET_ACTION_TRAP",
+      "SAI_ROUTER_INTERFACE_ATTR_V4_MCAST_ENABLE": "false",
+      "SAI_ROUTER_INTERFACE_ATTR_V6_MCAST_ENABLE": "false",
+      "SAI_ROUTER_INTERFACE_ATTR_LOOPBACK_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD",
+      "SAI_ROUTER_INTERFACE_ATTR_IS_VIRTUAL": "false",
+      "SAI_ROUTER_INTERFACE_ATTR_NAT_ZONE_ID": "0",
+      "SAI_ROUTER_INTERFACE_ATTR_DISABLE_DECREMENT_TTL": "false",
+      "SAI_ROUTER_INTERFACE_ATTR_ADMIN_MPLS_STATE": "false",
+      "SAI_ROUTER_INTERFACE_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
+      "SAI_ROUTER_INTERFACE_ATTR_SELECTIVE_COUNTER_LIST": "empty",
+      "SAI_ROUTER_INTERFACE_ATTR_LABEL": "\"\"",
+      "SAI_ROUTER_INTERFACE_ATTR_MY_MAC": "SAI_NULL_OBJECT_ID"
+    }
+  }
+}

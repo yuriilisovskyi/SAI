@@ -1,0 +1,77 @@
+{
+  "SAI_OBJECT_TYPE_BUFFER_POOL": {
+    "functions": [
+      "sai_thrift_clear_buffer_pool_stats",
+      "sai_thrift_create_buffer_pool",
+      "sai_thrift_get_buffer_pool_attribute",
+      "sai_thrift_get_buffer_pool_stats",
+      "sai_thrift_get_buffer_pool_stats_ext",
+      "sai_thrift_remove_buffer_pool",
+      "sai_thrift_set_buffer_pool_attribute"
+    ],
+    "attributes": {
+      "SAI_BUFFER_POOL_ATTR_SHARED_SIZE": "",
+      "SAI_BUFFER_POOL_ATTR_TYPE": "SAI_BUFFER_POOL_TYPE_INGRESS",
+      "SAI_BUFFER_POOL_ATTR_SIZE": "",
+      "SAI_BUFFER_POOL_ATTR_THRESHOLD_MODE": "SAI_BUFFER_POOL_THRESHOLD_MODE_DYNAMIC",
+      "SAI_BUFFER_POOL_ATTR_TAM": "empty",
+      "SAI_BUFFER_POOL_ATTR_XOFF_SIZE": "0",
+      "SAI_BUFFER_POOL_ATTR_WRED_PROFILE_ID": "SAI_NULL_OBJECT_ID",
+      "SAI_BUFFER_POOL_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
+      "SAI_BUFFER_POOL_ATTR_SELECTIVE_COUNTER_LIST": "empty"
+    }
+  },
+  "SAI_OBJECT_TYPE_BUFFER_PROFILE": {
+    "functions": [
+      "sai_thrift_create_buffer_profile",
+      "sai_thrift_get_buffer_profile_attribute",
+      "sai_thrift_remove_buffer_profile",
+      "sai_thrift_set_buffer_profile_attribute"
+    ],
+    "attributes": {
+      "SAI_BUFFER_PROFILE_ATTR_POOL_ID": "",
+      "SAI_BUFFER_PROFILE_ATTR_RESERVED_BUFFER_SIZE": "",
+      "SAI_BUFFER_PROFILE_ATTR_BUFFER_SIZE": "",
+      "SAI_BUFFER_PROFILE_ATTR_THRESHOLD_MODE": "SAI_BUFFER_PROFILE_THRESHOLD_MODE_STATIC",
+      "SAI_BUFFER_PROFILE_ATTR_SHARED_DYNAMIC_TH": {
+        "condition": [
+          {
+            "SAI_BUFFER_PROFILE_ATTR_THRESHOLD_MODE": "SAI_BUFFER_PROFILE_THRESHOLD_MODE_DYNAMIC"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_BUFFER_PROFILE_ATTR_SHARED_STATIC_TH": {
+        "condition": [
+          {
+            "SAI_BUFFER_PROFILE_ATTR_THRESHOLD_MODE": "SAI_BUFFER_PROFILE_THRESHOLD_MODE_STATIC"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_BUFFER_PROFILE_ATTR_XOFF_TH": "0",
+      "SAI_BUFFER_PROFILE_ATTR_XON_TH": "0",
+      "SAI_BUFFER_PROFILE_ATTR_XON_OFFSET_TH": "0",
+      "SAI_BUFFER_PROFILE_ATTR_PACKET_ADMISSION_FAIL_ACTION": "SAI_BUFFER_PROFILE_PACKET_ADMISSION_FAIL_ACTION_DROP"
+    }
+  },
+  "SAI_OBJECT_TYPE_INGRESS_PRIORITY_GROUP": {
+    "functions": [
+      "sai_thrift_clear_ingress_priority_group_stats",
+      "sai_thrift_create_ingress_priority_group",
+      "sai_thrift_get_ingress_priority_group_attribute",
+      "sai_thrift_get_ingress_priority_group_stats",
+      "sai_thrift_get_ingress_priority_group_stats_ext",
+      "sai_thrift_remove_ingress_priority_group",
+      "sai_thrift_set_ingress_priority_group_attribute"
+    ],
+    "attributes": {
+      "SAI_INGRESS_PRIORITY_GROUP_ATTR_BUFFER_PROFILE": "SAI_NULL_OBJECT_ID",
+      "SAI_INGRESS_PRIORITY_GROUP_ATTR_PORT": "",
+      "SAI_INGRESS_PRIORITY_GROUP_ATTR_TAM": "empty",
+      "SAI_INGRESS_PRIORITY_GROUP_ATTR_INDEX": "",
+      "SAI_INGRESS_PRIORITY_GROUP_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
+      "SAI_INGRESS_PRIORITY_GROUP_ATTR_SELECTIVE_COUNTER_LIST": "empty"
+    }
+  }
+}

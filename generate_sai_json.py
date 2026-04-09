@@ -1,7 +1,15 @@
 #!/usr/bin/env python3
 """
-Combine sai_api_list.csv and sai_attr_defaults.csv into a single JSON file
-that maps each SAI object type to its Thrift functions and attribute defaults.
+Combine sai_api_list.csv and sai_attr_defaults.csv into:
+
+  1. sai_api_attributes.json        -- full combined JSON (all object types)
+  2. sai_data/<stem>_api_attributes.json
+                                    -- one JSON per SAI header file
+                                       (e.g. sai_data/saivlan_api_attributes.json)
+  3. ptf/<stem>_test.py             -- thin PTF test module per header, each
+                                       containing a single test class that
+                                       inherits SaiApiTestBase and points at the
+                                       matching per-header JSON.
 
 For attributes that have @validonly or @condition annotations in the SAI header,
 the attribute value uses an extended structure:
@@ -42,12 +50,15 @@ import glob
 import json
 import os
 import re
+import textwrap
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 INC_DIR = os.path.join(SCRIPT_DIR, 'inc')
 API_CSV = os.path.join(SCRIPT_DIR, 'sai_api_list.csv')
 ATTR_CSV = os.path.join(SCRIPT_DIR, 'sai_attr_defaults.csv')
 OUTPUT_JSON = os.path.join(SCRIPT_DIR, 'sai_api_attributes.json')
+SAI_DATA_DIR = os.path.join(SCRIPT_DIR, 'sai_data')
+PTF_DIR = os.path.join(SCRIPT_DIR, 'ptf')
 
 
 # ---------------------------------------------------------------------------
@@ -55,20 +66,43 @@ OUTPUT_JSON = os.path.join(SCRIPT_DIR, 'sai_api_attributes.json')
 # ---------------------------------------------------------------------------
 
 def load_functions(api_csv):
-    """Return dict: SAI object type -> sorted list of unique Thrift functions."""
+    """
+    Return:
+      obj_functions  -- dict: SAI object type -> sorted list of unique Thrift functions
+      hdr_to_objs    -- dict: header stem (e.g. 'saivlan') -> sorted list of object types
+    """
     obj_functions: dict[str, list[str]] = {}
+    hdr_to_objs: dict[str, list[str]] = {}
+
     with open(api_csv, newline='') as f:
         for row in csv.DictReader(f):
             obj_type = row['SAI object'].strip()
             thrift_fn = row['Python Thrift function'].strip()
-            if not thrift_fn or obj_type == 'SAI_OBJECT_TYPE_NULL':
+            header = row['File'].strip()            # e.g. inc/saivlan.h
+            stem = os.path.basename(header).replace('.h', '')  # e.g. saivlan
+
+            if obj_type == 'SAI_OBJECT_TYPE_NULL':
                 continue
+
+            # Track header -> object mapping regardless of thrift_fn presence
+            if stem not in hdr_to_objs:
+                hdr_to_objs[stem] = []
+            if obj_type not in hdr_to_objs[stem]:
+                hdr_to_objs[stem].append(obj_type)
+
+            if not thrift_fn:
+                continue
+
             obj_functions.setdefault(obj_type, [])
             if thrift_fn not in obj_functions[obj_type]:
                 obj_functions[obj_type].append(thrift_fn)
+
     for obj_type in obj_functions:
         obj_functions[obj_type].sort()
-    return obj_functions
+    for stem in hdr_to_objs:
+        hdr_to_objs[stem].sort()
+
+    return obj_functions, hdr_to_objs
 
 
 def attr_to_object_type(attr_name: str) -> str:
@@ -223,7 +257,8 @@ def parse_header_annotations(inc_dir: str) -> dict[str, dict]:
 
 def build_combined(obj_functions, obj_attrs, annotations):
     """
-    Merge functions, attributes (with annotation metadata), keyed by object type.
+    Merge functions and attributes (with annotation metadata), keyed by object type.
+    Returns a dict covering all object types seen in either source.
     """
     all_obj_types = sorted(set(obj_functions) | set(obj_attrs))
     combined = {}
@@ -252,16 +287,122 @@ def build_combined(obj_functions, obj_attrs, annotations):
 
 
 # ---------------------------------------------------------------------------
+# Per-header JSON splitter
+# ---------------------------------------------------------------------------
+
+def split_by_header(combined: dict, hdr_to_objs: dict, out_dir: str) -> dict[str, str]:
+    """
+    Write one JSON file per SAI header into out_dir.
+
+    Returns a dict mapping header stem -> output file path.
+    """
+    os.makedirs(out_dir, exist_ok=True)
+    stem_to_path: dict[str, str] = {}
+
+    for stem, obj_types in sorted(hdr_to_objs.items()):
+        subset = {ot: combined[ot] for ot in obj_types if ot in combined}
+        if not subset:
+            continue
+        filename = f"{stem}_api_attributes.json"
+        out_path = os.path.join(out_dir, filename)
+        with open(out_path, 'w') as f:
+            json.dump(subset, f, indent=2)
+        stem_to_path[stem] = out_path
+
+    return stem_to_path
+
+
+# ---------------------------------------------------------------------------
+# Per-header PTF test file generator
+# ---------------------------------------------------------------------------
+
+def _stem_to_class_name(stem: str) -> str:
+    """saivlan -> SaiVlanTest,  saiacl -> SaiAclTest"""
+    # strip leading 'sai', capitalise remaining words split on known boundaries
+    without_sai = stem[3:] if stem.startswith('sai') else stem
+    # insert word boundaries before sequences that look like a new word
+    # (upper-case transitions are already absent in stems; just capitalise whole thing)
+    return 'Sai' + without_sai.capitalize() + 'Test'
+
+
+_PTF_TEST_TEMPLATE = '''\
+"""
+Auto-generated PTF test for {header}.
+
+Validates all SAI object types defined in {header}:
+{object_list}
+
+Re-generate by running: python3 generate_sai_json.py
+"""
+
+import os
+from sai_api_test import SaiApiTestBase
+
+_JSON = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    '..', 'sai_data', '{json_filename}',
+)
+
+
+class {class_name}(SaiApiTestBase):
+    """
+    Exercises all Thrift functions for the following object types
+    defined in {header}:
+{object_doclist}
+    """
+
+    json_path = _JSON
+    object_types = {object_types_repr}
+'''
+
+
+def generate_ptf_tests(stem_to_path: dict, hdr_to_objs: dict, ptf_dir: str) -> list[str]:
+    """
+    Write one PTF test module per header stem into ptf_dir.
+    Returns the list of generated file paths.
+    """
+    os.makedirs(ptf_dir, exist_ok=True)
+    generated = []
+
+    for stem, json_path in sorted(stem_to_path.items()):
+        obj_types = hdr_to_objs.get(stem, [])
+        header = f"inc/{stem}.h"
+        json_filename = os.path.basename(json_path)
+        class_name = _stem_to_class_name(stem)
+
+        object_list = '\n'.join(f'  - {ot}' for ot in obj_types)
+        object_doclist = '\n'.join(f'        {ot}' for ot in obj_types)
+        object_types_repr = repr(obj_types)
+
+        src = _PTF_TEST_TEMPLATE.format(
+            header=header,
+            json_filename=json_filename,
+            class_name=class_name,
+            object_list=object_list,
+            object_doclist=object_doclist,
+            object_types_repr=object_types_repr,
+        )
+
+        out_path = os.path.join(ptf_dir, f"{stem}_test.py")
+        with open(out_path, 'w') as f:
+            f.write(src)
+        generated.append(out_path)
+
+    return generated
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
 def main():
-    obj_functions = load_functions(API_CSV)
+    obj_functions, hdr_to_objs = load_functions(API_CSV)
     obj_attrs = load_attributes(ATTR_CSV)
     annotations = parse_header_annotations(INC_DIR)
 
     combined = build_combined(obj_functions, obj_attrs, annotations)
 
+    # 1. Write the full combined JSON
     with open(OUTPUT_JSON, 'w') as f:
         json.dump(combined, f, indent=2)
 
@@ -275,15 +416,23 @@ def main():
     attr_total = sum(len(v['attributes']) for v in combined.values())
 
     print(f"Written {len(combined)} object types to {OUTPUT_JSON}")
-    print(f"  {fn_total} Thrift functions")
-    print(f"  {attr_total} attributes total")
-    print(f"  {annotated} attributes with @validonly / @condition metadata")
+    print(f"  {fn_total} Thrift functions, {attr_total} attributes "
+          f"({annotated} with @validonly/@condition)")
 
     unknown_attrs = obj_attrs.get('(unknown)', {})
     if unknown_attrs:
-        print(f"  WARNING: {len(unknown_attrs)} attribute(s) could not be mapped to an object type:")
+        print(f"  WARNING: {len(unknown_attrs)} attribute(s) could not be mapped "
+              f"to an object type:")
         for attr in sorted(unknown_attrs):
             print(f"    {attr}")
+
+    # 2. Write per-header JSON files
+    stem_to_path = split_by_header(combined, hdr_to_objs, SAI_DATA_DIR)
+    print(f"\nWritten {len(stem_to_path)} per-header JSON files to {SAI_DATA_DIR}/")
+
+    # 3. Write per-header PTF test files
+    generated = generate_ptf_tests(stem_to_path, hdr_to_objs, PTF_DIR)
+    print(f"Written {len(generated)} per-header PTF test files to {PTF_DIR}/")
 
 
 if __name__ == '__main__':

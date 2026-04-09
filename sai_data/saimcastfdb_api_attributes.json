@@ -1,0 +1,15 @@
+{
+  "SAI_OBJECT_TYPE_MCAST_FDB_ENTRY": {
+    "functions": [
+      "sai_thrift_create_mcast_fdb_entry",
+      "sai_thrift_get_mcast_fdb_entry_attribute",
+      "sai_thrift_remove_mcast_fdb_entry",
+      "sai_thrift_set_mcast_fdb_entry_attribute"
+    ],
+    "attributes": {
+      "SAI_MCAST_FDB_ENTRY_ATTR_GROUP_ID": "",
+      "SAI_MCAST_FDB_ENTRY_ATTR_PACKET_ACTION": "SAI_PACKET_ACTION_DROP",
+      "SAI_MCAST_FDB_ENTRY_ATTR_META_DATA": "0"
+    }
+  }
+}

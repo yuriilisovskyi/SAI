@@ -1,0 +1,62 @@
+{
+  "SAI_OBJECT_TYPE_ICMP_ECHO_SESSION": {
+    "functions": [
+      "sai_thrift_clear_icmp_echo_session_stats",
+      "sai_thrift_create_icmp_echo_session",
+      "sai_thrift_get_icmp_echo_session_attribute",
+      "sai_thrift_get_icmp_echo_session_stats",
+      "sai_thrift_get_icmp_echo_session_stats_ext",
+      "sai_thrift_remove_icmp_echo_session",
+      "sai_thrift_set_icmp_echo_session_attribute"
+    ],
+    "attributes": {
+      "SAI_ICMP_ECHO_SESSION_ATTR_HW_LOOKUP_VALID": "true",
+      "SAI_ICMP_ECHO_SESSION_ATTR_VIRTUAL_ROUTER": {
+        "condition": [
+          {
+            "SAI_ICMP_ECHO_SESSION_ATTR_HW_LOOKUP_VALID": "true"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_ICMP_ECHO_SESSION_ATTR_PORT": {
+        "condition": [
+          {
+            "SAI_ICMP_ECHO_SESSION_ATTR_HW_LOOKUP_VALID": "false"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_ICMP_ECHO_SESSION_ATTR_RX_PORT": "SAI_NULL_OBJECT_ID",
+      "SAI_ICMP_ECHO_SESSION_ATTR_GUID": "",
+      "SAI_ICMP_ECHO_SESSION_ATTR_COOKIE": "",
+      "SAI_ICMP_ECHO_SESSION_ATTR_IPHDR_VERSION": "",
+      "SAI_ICMP_ECHO_SESSION_ATTR_TOS": "0",
+      "SAI_ICMP_ECHO_SESSION_ATTR_TTL": "255",
+      "SAI_ICMP_ECHO_SESSION_ATTR_SRC_IP_ADDRESS": "",
+      "SAI_ICMP_ECHO_SESSION_ATTR_DST_IP_ADDRESS": "",
+      "SAI_ICMP_ECHO_SESSION_ATTR_SRC_MAC_ADDRESS": {
+        "condition": [
+          {
+            "SAI_ICMP_ECHO_SESSION_ATTR_HW_LOOKUP_VALID": "false"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_ICMP_ECHO_SESSION_ATTR_DST_MAC_ADDRESS": {
+        "condition": [
+          {
+            "SAI_ICMP_ECHO_SESSION_ATTR_HW_LOOKUP_VALID": "false"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_ICMP_ECHO_SESSION_ATTR_TX_INTERVAL": "",
+      "SAI_ICMP_ECHO_SESSION_ATTR_RX_INTERVAL": "",
+      "SAI_ICMP_ECHO_SESSION_ATTR_SET_NEXT_HOP_GROUP_SWITCHOVER": "false",
+      "SAI_ICMP_ECHO_SESSION_ATTR_STATE": "SAI_ICMP_ECHO_SESSION_STATE_DOWN",
+      "SAI_ICMP_ECHO_SESSION_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
+      "SAI_ICMP_ECHO_SESSION_ATTR_SELECTIVE_COUNTER_LIST": "empty"
+    }
+  }
+}

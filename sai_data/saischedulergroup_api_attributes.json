@@ -1,0 +1,19 @@
+{
+  "SAI_OBJECT_TYPE_SCHEDULER_GROUP": {
+    "functions": [
+      "sai_thrift_create_scheduler_group",
+      "sai_thrift_get_scheduler_group_attribute",
+      "sai_thrift_remove_scheduler_group",
+      "sai_thrift_set_scheduler_group_attribute"
+    ],
+    "attributes": {
+      "SAI_SCHEDULER_GROUP_ATTR_CHILD_COUNT": "",
+      "SAI_SCHEDULER_GROUP_ATTR_CHILD_LIST": "",
+      "SAI_SCHEDULER_GROUP_ATTR_PORT_ID": "",
+      "SAI_SCHEDULER_GROUP_ATTR_LEVEL": "",
+      "SAI_SCHEDULER_GROUP_ATTR_MAX_CHILDS": "",
+      "SAI_SCHEDULER_GROUP_ATTR_SCHEDULER_PROFILE_ID": "SAI_NULL_OBJECT_ID",
+      "SAI_SCHEDULER_GROUP_ATTR_PARENT_NODE": ""
+    }
+  }
+}

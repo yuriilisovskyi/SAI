@@ -1,0 +1,27 @@
+{
+  "SAI_OBJECT_TYPE_SCHEDULER": {
+    "functions": [
+      "sai_thrift_create_scheduler",
+      "sai_thrift_get_scheduler_attribute",
+      "sai_thrift_remove_scheduler",
+      "sai_thrift_set_scheduler_attribute"
+    ],
+    "attributes": {
+      "SAI_SCHEDULER_ATTR_SCHEDULING_TYPE": "SAI_SCHEDULING_TYPE_WRR",
+      "SAI_SCHEDULER_ATTR_SCHEDULING_WEIGHT": {
+        "validonly": [
+          {
+            "SAI_SCHEDULER_ATTR_SCHEDULING_TYPE": "SAI_SCHEDULING_TYPE_DWRR"
+          }
+        ],
+        "def_value": "1"
+      },
+      "SAI_SCHEDULER_ATTR_METER_TYPE": "SAI_METER_TYPE_BYTES",
+      "SAI_SCHEDULER_ATTR_MIN_BANDWIDTH_RATE": "0",
+      "SAI_SCHEDULER_ATTR_MIN_BANDWIDTH_BURST_RATE": "0",
+      "SAI_SCHEDULER_ATTR_MAX_BANDWIDTH_RATE": "0",
+      "SAI_SCHEDULER_ATTR_MAX_BANDWIDTH_BURST_RATE": "0",
+      "SAI_SCHEDULER_ATTR_LABEL": "\"\""
+    }
+  }
+}

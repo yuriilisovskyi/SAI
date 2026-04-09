@@ -1,0 +1,351 @@
+{
+  "SAI_OBJECT_TYPE_WRED": {
+    "functions": [
+      "sai_thrift_create_wred",
+      "sai_thrift_get_wred_attribute",
+      "sai_thrift_remove_wred",
+      "sai_thrift_set_wred_attribute"
+    ],
+    "attributes": {
+      "SAI_WRED_ATTR_GREEN_ENABLE": "false",
+      "SAI_WRED_ATTR_GREEN_MIN_THRESHOLD": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_GREEN_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_GREEN_MAX_THRESHOLD": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_GREEN_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_GREEN_DROP_PROBABILITY": "100",
+      "SAI_WRED_ATTR_YELLOW_ENABLE": "false",
+      "SAI_WRED_ATTR_YELLOW_MIN_THRESHOLD": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_YELLOW_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_YELLOW_MAX_THRESHOLD": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_YELLOW_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_YELLOW_DROP_PROBABILITY": "100",
+      "SAI_WRED_ATTR_RED_ENABLE": "false",
+      "SAI_WRED_ATTR_RED_MIN_THRESHOLD": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_RED_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_RED_MAX_THRESHOLD": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_RED_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_RED_DROP_PROBABILITY": "100",
+      "SAI_WRED_ATTR_WEIGHT": "0",
+      "SAI_WRED_ATTR_ECN_MARK_MODE": "SAI_ECN_MARK_MODE_NONE",
+      "SAI_WRED_ATTR_ECN_GREEN_MIN_THRESHOLD": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_GREEN",
+              "SAI_ECN_MARK_MODE_GREEN_YELLOW",
+              "SAI_ECN_MARK_MODE_GREEN_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_GREEN_MAX_THRESHOLD": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_GREEN",
+              "SAI_ECN_MARK_MODE_GREEN_YELLOW",
+              "SAI_ECN_MARK_MODE_GREEN_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_GREEN_MARK_PROBABILITY": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_GREEN",
+              "SAI_ECN_MARK_MODE_GREEN_YELLOW",
+              "SAI_ECN_MARK_MODE_GREEN_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "100"
+      },
+      "SAI_WRED_ATTR_ECN_YELLOW_MIN_THRESHOLD": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_YELLOW",
+              "SAI_ECN_MARK_MODE_GREEN_YELLOW",
+              "SAI_ECN_MARK_MODE_YELLOW_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_YELLOW_MAX_THRESHOLD": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_YELLOW",
+              "SAI_ECN_MARK_MODE_GREEN_YELLOW",
+              "SAI_ECN_MARK_MODE_YELLOW_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_YELLOW_MARK_PROBABILITY": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_YELLOW",
+              "SAI_ECN_MARK_MODE_GREEN_YELLOW",
+              "SAI_ECN_MARK_MODE_YELLOW_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "100"
+      },
+      "SAI_WRED_ATTR_ECN_RED_MIN_THRESHOLD": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_RED",
+              "SAI_ECN_MARK_MODE_GREEN_RED",
+              "SAI_ECN_MARK_MODE_YELLOW_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_RED_MAX_THRESHOLD": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_RED",
+              "SAI_ECN_MARK_MODE_GREEN_RED",
+              "SAI_ECN_MARK_MODE_YELLOW_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_RED_MARK_PROBABILITY": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_RED",
+              "SAI_ECN_MARK_MODE_GREEN_RED",
+              "SAI_ECN_MARK_MODE_YELLOW_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "100"
+      },
+      "SAI_WRED_ATTR_ECN_COLOR_UNAWARE_MIN_THRESHOLD": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": "SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_COLOR_UNAWARE_MAX_THRESHOLD": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": "SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_COLOR_UNAWARE_MARK_PROBABILITY": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": "SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "100"
+      },
+      "SAI_WRED_ATTR_GREEN_MIN_THRESHOLD_64": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_GREEN_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_GREEN_MAX_THRESHOLD_64": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_GREEN_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_YELLOW_MIN_THRESHOLD_64": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_YELLOW_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_YELLOW_MAX_THRESHOLD_64": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_YELLOW_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_RED_MIN_THRESHOLD_64": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_RED_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_RED_MAX_THRESHOLD_64": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_RED_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_GREEN_MIN_THRESHOLD_64": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_GREEN",
+              "SAI_ECN_MARK_MODE_GREEN_YELLOW",
+              "SAI_ECN_MARK_MODE_GREEN_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_GREEN_MAX_THRESHOLD_64": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_GREEN",
+              "SAI_ECN_MARK_MODE_GREEN_YELLOW",
+              "SAI_ECN_MARK_MODE_GREEN_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_YELLOW_MIN_THRESHOLD_64": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_YELLOW",
+              "SAI_ECN_MARK_MODE_GREEN_YELLOW",
+              "SAI_ECN_MARK_MODE_YELLOW_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_YELLOW_MAX_THRESHOLD_64": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_YELLOW",
+              "SAI_ECN_MARK_MODE_GREEN_YELLOW",
+              "SAI_ECN_MARK_MODE_YELLOW_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_RED_MIN_THRESHOLD_64": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_RED",
+              "SAI_ECN_MARK_MODE_GREEN_RED",
+              "SAI_ECN_MARK_MODE_YELLOW_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_RED_MAX_THRESHOLD_64": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_RED",
+              "SAI_ECN_MARK_MODE_GREEN_RED",
+              "SAI_ECN_MARK_MODE_YELLOW_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_COLOR_UNAWARE_MIN_THRESHOLD_64": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": "SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_COLOR_UNAWARE_MAX_THRESHOLD_64": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": "SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      }
+    }
+  }
+}

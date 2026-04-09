@@ -1,0 +1,53 @@
+{
+  "SAI_OBJECT_TYPE_FINE_GRAINED_HASH_FIELD": {
+    "functions": [
+      "sai_thrift_create_fine_grained_hash_field",
+      "sai_thrift_get_fine_grained_hash_field_attribute",
+      "sai_thrift_remove_fine_grained_hash_field",
+      "sai_thrift_set_fine_grained_hash_field_attribute"
+    ],
+    "attributes": {
+      "SAI_FINE_GRAINED_HASH_FIELD_ATTR_NATIVE_HASH_FIELD": "SAI_NATIVE_HASH_FIELD_NONE",
+      "SAI_FINE_GRAINED_HASH_FIELD_ATTR_IPV4_MASK": {
+        "condition": [
+          {
+            "SAI_FINE_GRAINED_HASH_FIELD_ATTR_NATIVE_HASH_FIELD": [
+              "SAI_NATIVE_HASH_FIELD_SRC_IPV4",
+              "SAI_NATIVE_HASH_FIELD_DST_IPV4",
+              "SAI_NATIVE_HASH_FIELD_INNER_SRC_IPV4",
+              "SAI_NATIVE_HASH_FIELD_INNER_DST_IPV4"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_FINE_GRAINED_HASH_FIELD_ATTR_IPV6_MASK": {
+        "condition": [
+          {
+            "SAI_FINE_GRAINED_HASH_FIELD_ATTR_NATIVE_HASH_FIELD": [
+              "SAI_NATIVE_HASH_FIELD_SRC_IPV6",
+              "SAI_NATIVE_HASH_FIELD_DST_IPV6",
+              "SAI_NATIVE_HASH_FIELD_INNER_SRC_IPV6",
+              "SAI_NATIVE_HASH_FIELD_INNER_DST_IPV6"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_FINE_GRAINED_HASH_FIELD_ATTR_SEQUENCE_ID": "0"
+    }
+  },
+  "SAI_OBJECT_TYPE_HASH": {
+    "functions": [
+      "sai_thrift_create_hash",
+      "sai_thrift_get_hash_attribute",
+      "sai_thrift_remove_hash",
+      "sai_thrift_set_hash_attribute"
+    ],
+    "attributes": {
+      "SAI_HASH_ATTR_NATIVE_HASH_FIELD_LIST": "empty",
+      "SAI_HASH_ATTR_UDF_GROUP_LIST": "empty",
+      "SAI_HASH_ATTR_FINE_GRAINED_HASH_FIELD_LIST": "empty"
+    }
+  }
+}

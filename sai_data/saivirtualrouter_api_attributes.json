@@ -1,0 +1,19 @@
+{
+  "SAI_OBJECT_TYPE_VIRTUAL_ROUTER": {
+    "functions": [
+      "sai_thrift_create_virtual_router",
+      "sai_thrift_get_virtual_router_attribute",
+      "sai_thrift_remove_virtual_router",
+      "sai_thrift_set_virtual_router_attribute"
+    ],
+    "attributes": {
+      "SAI_VIRTUAL_ROUTER_ATTR_ADMIN_V4_STATE": "true",
+      "SAI_VIRTUAL_ROUTER_ATTR_ADMIN_V6_STATE": "true",
+      "SAI_VIRTUAL_ROUTER_ATTR_SRC_MAC_ADDRESS": "attrvalue SAI_SWITCH_ATTR_SRC_MAC_ADDRESS",
+      "SAI_VIRTUAL_ROUTER_ATTR_VIOLATION_TTL1_PACKET_ACTION": "SAI_PACKET_ACTION_TRAP",
+      "SAI_VIRTUAL_ROUTER_ATTR_VIOLATION_IP_OPTIONS_PACKET_ACTION": "SAI_PACKET_ACTION_TRAP",
+      "SAI_VIRTUAL_ROUTER_ATTR_UNKNOWN_L3_MULTICAST_PACKET_ACTION": "SAI_PACKET_ACTION_DROP",
+      "SAI_VIRTUAL_ROUTER_ATTR_LABEL": "\"\""
+    }
+  }
+}

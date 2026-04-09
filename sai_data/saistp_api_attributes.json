@@ -1,0 +1,28 @@
+{
+  "SAI_OBJECT_TYPE_STP": {
+    "functions": [
+      "sai_thrift_create_stp",
+      "sai_thrift_get_stp_attribute",
+      "sai_thrift_remove_stp",
+      "sai_thrift_set_stp_attribute"
+    ],
+    "attributes": {
+      "SAI_STP_ATTR_VLAN_LIST": "",
+      "SAI_STP_ATTR_BRIDGE_ID": "",
+      "SAI_STP_ATTR_PORT_LIST": ""
+    }
+  },
+  "SAI_OBJECT_TYPE_STP_PORT": {
+    "functions": [
+      "sai_thrift_create_stp_port",
+      "sai_thrift_get_stp_port_attribute",
+      "sai_thrift_remove_stp_port",
+      "sai_thrift_set_stp_port_attribute"
+    ],
+    "attributes": {
+      "SAI_STP_PORT_ATTR_STP": "",
+      "SAI_STP_PORT_ATTR_BRIDGE_PORT": "",
+      "SAI_STP_PORT_ATTR_STATE": "SAI_STP_PORT_STATE_LEARNING"
+    }
+  }
+}

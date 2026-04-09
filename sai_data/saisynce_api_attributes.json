@@ -1,0 +1,16 @@
+{
+  "SAI_OBJECT_TYPE_SYNCE_CLOCK": {
+    "functions": [
+      "sai_thrift_create_synce_clock",
+      "sai_thrift_get_synce_clock_attribute",
+      "sai_thrift_remove_synce_clock",
+      "sai_thrift_set_synce_clock_attribute"
+    ],
+    "attributes": {
+      "SAI_SYNCE_CLOCK_ATTR_SRC_PORT": "SAI_NULL_OBJECT_ID",
+      "SAI_SYNCE_CLOCK_ATTR_CLOCK_VALID": "",
+      "SAI_SYNCE_CLOCK_ATTR_CLOCK_HARDWARE_ID": "",
+      "SAI_SYNCE_CLOCK_ATTR_DEBUG_FORCE_SYNCE_RECOVERED_CLOCK_STATE": "SAI_SYNCE_RECOVERED_CLOCK_STATE_FORCE_VALID_DISABLE"
+    }
+  }
+}

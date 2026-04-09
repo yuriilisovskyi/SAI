@@ -1,0 +1,22 @@
+{
+  "SAI_OBJECT_TYPE_ARS": {
+    "functions": [
+      "sai_thrift_create_ars",
+      "sai_thrift_get_ars_attribute",
+      "sai_thrift_remove_ars",
+      "sai_thrift_set_ars_attribute"
+    ],
+    "attributes": {
+      "SAI_ARS_ATTR_MODE": "SAI_ARS_MODE_FLOWLET_QUALITY",
+      "SAI_ARS_ATTR_IDLE_TIME": "256",
+      "SAI_ARS_ATTR_MAX_FLOWS": "512",
+      "SAI_ARS_ATTR_MON_ENABLE": "false",
+      "SAI_ARS_ATTR_SAMPLEPACKET_ENABLE": "SAI_NULL_OBJECT_ID",
+      "SAI_ARS_ATTR_MAX_ALT_MEMEBERS_PER_GROUP": "16",
+      "SAI_ARS_ATTR_MAX_PRIMARY_MEMEBERS_PER_GROUP": "16",
+      "SAI_ARS_ATTR_PRIMARY_PATH_QUALITY_THRESHOLD": "16",
+      "SAI_ARS_ATTR_ALTERNATE_PATH_COST": "0",
+      "SAI_ARS_ATTR_ALTERNATE_PATH_BIAS": "0"
+    }
+  }
+}

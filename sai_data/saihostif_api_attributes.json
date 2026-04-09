@@ -1,0 +1,198 @@
+{
+  "SAI_OBJECT_TYPE_HOSTIF": {
+    "functions": [
+      "sai_thrift_create_hostif",
+      "sai_thrift_get_hostif_attribute",
+      "sai_thrift_remove_hostif",
+      "sai_thrift_set_hostif_attribute"
+    ],
+    "attributes": {
+      "SAI_HOSTIF_ATTR_TYPE": "SAI_HOSTIF_TYPE_NETDEV",
+      "SAI_HOSTIF_ATTR_OBJ_ID": {
+        "condition": [
+          {
+            "SAI_HOSTIF_ATTR_TYPE": "SAI_HOSTIF_TYPE_NETDEV"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_HOSTIF_ATTR_NAME": {
+        "condition": [
+          {
+            "SAI_HOSTIF_ATTR_TYPE": [
+              "SAI_HOSTIF_TYPE_NETDEV",
+              "SAI_HOSTIF_TYPE_GENETLINK"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_HOSTIF_ATTR_OPER_STATUS": "false",
+      "SAI_HOSTIF_ATTR_QUEUE": "0",
+      "SAI_HOSTIF_ATTR_VLAN_TAG": {
+        "validonly": [
+          {
+            "SAI_HOSTIF_ATTR_TYPE": "SAI_HOSTIF_TYPE_NETDEV"
+          }
+        ],
+        "def_value": "SAI_HOSTIF_VLAN_TAG_STRIP"
+      },
+      "SAI_HOSTIF_ATTR_GENETLINK_MCGRP_NAME": {
+        "condition": [
+          {
+            "SAI_HOSTIF_ATTR_TYPE": "SAI_HOSTIF_TYPE_GENETLINK"
+          }
+        ],
+        "def_value": ""
+      }
+    }
+  },
+  "SAI_OBJECT_TYPE_HOSTIF_PACKET": {
+    "functions": [
+      "sai_thrift_allocate_hostif_packet",
+      "sai_thrift_free_hostif_packet",
+      "sai_thrift_recv_hostif_packet",
+      "sai_thrift_send_hostif_packet"
+    ],
+    "attributes": {
+      "SAI_HOSTIF_PACKET_ATTR_HOSTIF_TRAP_ID": "",
+      "SAI_HOSTIF_PACKET_ATTR_INGRESS_PORT": "",
+      "SAI_HOSTIF_PACKET_ATTR_INGRESS_LAG": "",
+      "SAI_HOSTIF_PACKET_ATTR_HOSTIF_TX_TYPE": "SAI_HOSTIF_TX_TYPE_PIPELINE_BYPASS",
+      "SAI_HOSTIF_PACKET_ATTR_EGRESS_PORT_OR_LAG": {
+        "condition": [
+          {
+            "SAI_HOSTIF_PACKET_ATTR_HOSTIF_TX_TYPE": "SAI_HOSTIF_TX_TYPE_PIPELINE_BYPASS"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_HOSTIF_PACKET_ATTR_BRIDGE_ID": "",
+      "SAI_HOSTIF_PACKET_ATTR_TIMESTAMP": "",
+      "SAI_HOSTIF_PACKET_ATTR_EGRESS_QUEUE_INDEX": "0",
+      "SAI_HOSTIF_PACKET_ATTR_ZERO_COPY_TX": "false"
+    }
+  },
+  "SAI_OBJECT_TYPE_HOSTIF_TABLE_ENTRY": {
+    "functions": [
+      "sai_thrift_create_hostif_table_entry",
+      "sai_thrift_get_hostif_table_entry_attribute",
+      "sai_thrift_remove_hostif_table_entry",
+      "sai_thrift_set_hostif_table_entry_attribute"
+    ],
+    "attributes": {
+      "SAI_HOSTIF_TABLE_ENTRY_ATTR_TYPE": "SAI_HOSTIF_TABLE_ENTRY_TYPE_PORT",
+      "SAI_HOSTIF_TABLE_ENTRY_ATTR_OBJ_ID": {
+        "condition": [
+          {
+            "SAI_HOSTIF_TABLE_ENTRY_ATTR_TYPE": [
+              "SAI_HOSTIF_TABLE_ENTRY_TYPE_PORT",
+              "SAI_HOSTIF_TABLE_ENTRY_TYPE_VLAN",
+              "SAI_HOSTIF_TABLE_ENTRY_TYPE_LAG"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_HOSTIF_TABLE_ENTRY_ATTR_TRAP_ID": {
+        "condition": [
+          {
+            "SAI_HOSTIF_TABLE_ENTRY_ATTR_TYPE": [
+              "SAI_HOSTIF_TABLE_ENTRY_TYPE_PORT",
+              "SAI_HOSTIF_TABLE_ENTRY_TYPE_VLAN",
+              "SAI_HOSTIF_TABLE_ENTRY_TYPE_LAG",
+              "SAI_HOSTIF_TABLE_ENTRY_TYPE_TRAP_ID"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_HOSTIF_TABLE_ENTRY_ATTR_CHANNEL_TYPE": "SAI_HOSTIF_TABLE_ENTRY_CHANNEL_TYPE_CB",
+      "SAI_HOSTIF_TABLE_ENTRY_ATTR_HOST_IF": {
+        "condition": [
+          {
+            "SAI_HOSTIF_TABLE_ENTRY_ATTR_CHANNEL_TYPE": [
+              "SAI_HOSTIF_TABLE_ENTRY_CHANNEL_TYPE_FD",
+              "SAI_HOSTIF_TABLE_ENTRY_CHANNEL_TYPE_GENETLINK"
+            ]
+          }
+        ],
+        "def_value": ""
+      }
+    }
+  },
+  "SAI_OBJECT_TYPE_HOSTIF_TRAP": {
+    "functions": [
+      "sai_thrift_create_hostif_trap",
+      "sai_thrift_get_hostif_trap_attribute",
+      "sai_thrift_remove_hostif_trap",
+      "sai_thrift_set_hostif_trap_attribute"
+    ],
+    "attributes": {
+      "SAI_HOSTIF_TRAP_ATTR_TRAP_TYPE": "SAI_HOSTIF_TRAP_TYPE_START",
+      "SAI_HOSTIF_TRAP_ATTR_PACKET_ACTION": "SAI_PACKET_ACTION_DROP",
+      "SAI_HOSTIF_TRAP_ATTR_TRAP_PRIORITY": {
+        "validonly": [
+          {
+            "SAI_HOSTIF_TRAP_ATTR_PACKET_ACTION": [
+              "SAI_PACKET_ACTION_TRAP",
+              "SAI_PACKET_ACTION_COPY"
+            ]
+          }
+        ],
+        "def_value": "attrvalue SAI_SWITCH_ATTR_ACL_ENTRY_MINIMUM_PRIORITY"
+      },
+      "SAI_HOSTIF_TRAP_ATTR_EXCLUDE_PORT_LIST": {
+        "validonly": [
+          {
+            "SAI_HOSTIF_TRAP_ATTR_PACKET_ACTION": [
+              "SAI_PACKET_ACTION_TRAP",
+              "SAI_PACKET_ACTION_COPY"
+            ]
+          }
+        ],
+        "def_value": "empty"
+      },
+      "SAI_HOSTIF_TRAP_ATTR_TRAP_GROUP": {
+        "validonly": [
+          {
+            "SAI_HOSTIF_TRAP_ATTR_PACKET_ACTION": [
+              "SAI_PACKET_ACTION_TRAP",
+              "SAI_PACKET_ACTION_COPY"
+            ]
+          }
+        ],
+        "def_value": "attrvalue SAI_SWITCH_ATTR_DEFAULT_TRAP_GROUP"
+      },
+      "SAI_HOSTIF_TRAP_ATTR_MIRROR_SESSION": "empty",
+      "SAI_HOSTIF_TRAP_ATTR_COUNTER_ID": "SAI_NULL_OBJECT_ID"
+    }
+  },
+  "SAI_OBJECT_TYPE_HOSTIF_TRAP_GROUP": {
+    "functions": [
+      "sai_thrift_create_hostif_trap_group",
+      "sai_thrift_get_hostif_trap_group_attribute",
+      "sai_thrift_remove_hostif_trap_group",
+      "sai_thrift_set_hostif_trap_group_attribute"
+    ],
+    "attributes": {
+      "SAI_HOSTIF_TRAP_GROUP_ATTR_ADMIN_STATE": "true",
+      "SAI_HOSTIF_TRAP_GROUP_ATTR_QUEUE": "0",
+      "SAI_HOSTIF_TRAP_GROUP_ATTR_POLICER": "SAI_NULL_OBJECT_ID",
+      "SAI_HOSTIF_TRAP_GROUP_ATTR_OBJECT_STAGE": "SAI_OBJECT_STAGE_BOTH"
+    }
+  },
+  "SAI_OBJECT_TYPE_HOSTIF_USER_DEFINED_TRAP": {
+    "functions": [
+      "sai_thrift_create_hostif_user_defined_trap",
+      "sai_thrift_get_hostif_user_defined_trap_attribute",
+      "sai_thrift_remove_hostif_user_defined_trap",
+      "sai_thrift_set_hostif_user_defined_trap_attribute"
+    ],
+    "attributes": {
+      "SAI_HOSTIF_USER_DEFINED_TRAP_ATTR_TYPE": "SAI_HOSTIF_USER_DEFINED_TRAP_TYPE_START",
+      "SAI_HOSTIF_USER_DEFINED_TRAP_ATTR_TRAP_PRIORITY": "attrvalue SAI_SWITCH_ATTR_ACL_ENTRY_MINIMUM_PRIORITY",
+      "SAI_HOSTIF_USER_DEFINED_TRAP_ATTR_TRAP_GROUP": "attrvalue SAI_SWITCH_ATTR_DEFAULT_TRAP_GROUP"
+    }
+  }
+}

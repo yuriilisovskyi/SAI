@@ -1,0 +1,410 @@
+{
+  "SAI_OBJECT_TYPE_PORT": {
+    "functions": [
+      "sai_thrift_clear_port_all_stats",
+      "sai_thrift_clear_port_stats",
+      "sai_thrift_create_port",
+      "sai_thrift_get_port_attribute",
+      "sai_thrift_get_port_stats",
+      "sai_thrift_get_port_stats_ext",
+      "sai_thrift_remove_port",
+      "sai_thrift_set_port_attribute"
+    ],
+    "attributes": {
+      "SAI_PORT_ATTR_TYPE": "SAI_PORT_TYPE_LOGICAL",
+      "SAI_PORT_ATTR_OPER_STATUS": "SAI_PORT_OPER_STATUS_UNKNOWN",
+      "SAI_PORT_ATTR_SUPPORTED_BREAKOUT_MODE_TYPE": "",
+      "SAI_PORT_ATTR_CURRENT_BREAKOUT_MODE_TYPE": "SAI_PORT_BREAKOUT_MODE_TYPE_1_LANE",
+      "SAI_PORT_ATTR_QOS_NUMBER_OF_QUEUES": "",
+      "SAI_PORT_ATTR_QOS_QUEUE_LIST": "",
+      "SAI_PORT_ATTR_QOS_NUMBER_OF_SCHEDULER_GROUPS": "",
+      "SAI_PORT_ATTR_QOS_SCHEDULER_GROUP_LIST": "",
+      "SAI_PORT_ATTR_QOS_MAXIMUM_HEADROOM_SIZE": "",
+      "SAI_PORT_ATTR_SUPPORTED_SPEED": "",
+      "SAI_PORT_ATTR_SUPPORTED_FEC_MODE": "",
+      "SAI_PORT_ATTR_SUPPORTED_FEC_MODE_EXTENDED": "",
+      "SAI_PORT_ATTR_SUPPORTED_HALF_DUPLEX_SPEED": "",
+      "SAI_PORT_ATTR_SUPPORTED_AUTO_NEG_MODE": "",
+      "SAI_PORT_ATTR_SUPPORTED_FLOW_CONTROL_MODE": "SAI_PORT_FLOW_CONTROL_MODE_DISABLE",
+      "SAI_PORT_ATTR_SUPPORTED_ASYMMETRIC_PAUSE_MODE": "",
+      "SAI_PORT_ATTR_SUPPORTED_MEDIA_TYPE": "SAI_PORT_MEDIA_TYPE_NOT_PRESENT",
+      "SAI_PORT_ATTR_REMOTE_ADVERTISED_SPEED": "",
+      "SAI_PORT_ATTR_REMOTE_ADVERTISED_FEC_MODE": "",
+      "SAI_PORT_ATTR_REMOTE_ADVERTISED_FEC_MODE_EXTENDED": "",
+      "SAI_PORT_ATTR_REMOTE_ADVERTISED_HALF_DUPLEX_SPEED": "",
+      "SAI_PORT_ATTR_REMOTE_ADVERTISED_AUTO_NEG_MODE": "",
+      "SAI_PORT_ATTR_REMOTE_ADVERTISED_FLOW_CONTROL_MODE": "SAI_PORT_FLOW_CONTROL_MODE_DISABLE",
+      "SAI_PORT_ATTR_REMOTE_ADVERTISED_ASYMMETRIC_PAUSE_MODE": "",
+      "SAI_PORT_ATTR_REMOTE_ADVERTISED_MEDIA_TYPE": "SAI_PORT_MEDIA_TYPE_NOT_PRESENT",
+      "SAI_PORT_ATTR_REMOTE_ADVERTISED_OUI_CODE": "",
+      "SAI_PORT_ATTR_NUMBER_OF_INGRESS_PRIORITY_GROUPS": "",
+      "SAI_PORT_ATTR_INGRESS_PRIORITY_GROUP_LIST": "",
+      "SAI_PORT_ATTR_EYE_VALUES": "",
+      "SAI_PORT_ATTR_OPER_SPEED": "",
+      "SAI_PORT_ATTR_HW_LANE_LIST": "",
+      "SAI_PORT_ATTR_SPEED": "",
+      "SAI_PORT_ATTR_FULL_DUPLEX_MODE": "true",
+      "SAI_PORT_ATTR_AUTO_NEG_MODE": "false",
+      "SAI_PORT_ATTR_ADMIN_STATE": "false",
+      "SAI_PORT_ATTR_MEDIA_TYPE": "SAI_PORT_MEDIA_TYPE_NOT_PRESENT",
+      "SAI_PORT_ATTR_ADVERTISED_SPEED": "empty",
+      "SAI_PORT_ATTR_ADVERTISED_FEC_MODE": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_USE_EXTENDED_FEC": "false"
+          }
+        ],
+        "def_value": "empty"
+      },
+      "SAI_PORT_ATTR_ADVERTISED_FEC_MODE_EXTENDED": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_USE_EXTENDED_FEC": "true"
+          }
+        ],
+        "def_value": "empty"
+      },
+      "SAI_PORT_ATTR_ADVERTISED_HALF_DUPLEX_SPEED": "empty",
+      "SAI_PORT_ATTR_ADVERTISED_AUTO_NEG_MODE": "false",
+      "SAI_PORT_ATTR_ADVERTISED_FLOW_CONTROL_MODE": "SAI_PORT_FLOW_CONTROL_MODE_DISABLE",
+      "SAI_PORT_ATTR_ADVERTISED_ASYMMETRIC_PAUSE_MODE": "false",
+      "SAI_PORT_ATTR_ADVERTISED_MEDIA_TYPE": "SAI_PORT_MEDIA_TYPE_UNKNOWN",
+      "SAI_PORT_ATTR_ADVERTISED_OUI_CODE": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_SPEED": [
+              "25000",
+              "50000"
+            ]
+          }
+        ],
+        "def_value": "0x6A737D"
+      },
+      "SAI_PORT_ATTR_PORT_VLAN_ID": "1",
+      "SAI_PORT_ATTR_DEFAULT_VLAN_PRIORITY": "0",
+      "SAI_PORT_ATTR_DROP_UNTAGGED": "false",
+      "SAI_PORT_ATTR_DROP_TAGGED": "false",
+      "SAI_PORT_ATTR_INTERNAL_LOOPBACK_MODE": "SAI_PORT_INTERNAL_LOOPBACK_MODE_NONE",
+      "SAI_PORT_ATTR_USE_EXTENDED_FEC": "false",
+      "SAI_PORT_ATTR_FEC_MODE": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_USE_EXTENDED_FEC": "false"
+          }
+        ],
+        "def_value": "SAI_PORT_FEC_MODE_NONE"
+      },
+      "SAI_PORT_ATTR_FEC_MODE_EXTENDED": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_USE_EXTENDED_FEC": "true"
+          }
+        ],
+        "def_value": "SAI_PORT_FEC_MODE_EXTENDED_NONE"
+      },
+      "SAI_PORT_ATTR_UPDATE_DSCP": "false",
+      "SAI_PORT_ATTR_MTU": "1514",
+      "SAI_PORT_ATTR_FLOOD_STORM_CONTROL_POLICER_ID": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_BROADCAST_STORM_CONTROL_POLICER_ID": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_MULTICAST_STORM_CONTROL_POLICER_ID": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_GLOBAL_FLOW_CONTROL_MODE": "SAI_PORT_FLOW_CONTROL_MODE_DISABLE",
+      "SAI_PORT_ATTR_INGRESS_ACL": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_EGRESS_ACL": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_INGRESS_MACSEC_ACL": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_EGRESS_MACSEC_ACL": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_MACSEC_PORT_LIST": "",
+      "SAI_PORT_ATTR_INGRESS_MIRROR_SESSION": "empty",
+      "SAI_PORT_ATTR_EGRESS_MIRROR_SESSION": "empty",
+      "SAI_PORT_ATTR_INGRESS_SAMPLEPACKET_ENABLE": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_EGRESS_SAMPLEPACKET_ENABLE": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_INGRESS_SAMPLE_MIRROR_SESSION": "empty",
+      "SAI_PORT_ATTR_EGRESS_SAMPLE_MIRROR_SESSION": "empty",
+      "SAI_PORT_ATTR_POLICER_ID": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_QOS_DEFAULT_TC": "0",
+      "SAI_PORT_ATTR_QOS_DOT1P_TO_TC_MAP": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_QOS_DOT1P_TO_COLOR_MAP": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_QOS_DSCP_TO_TC_MAP": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_QOS_DSCP_TO_COLOR_MAP": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_QOS_TC_TO_QUEUE_MAP": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_QOS_TC_AND_COLOR_TO_DOT1P_MAP": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_QOS_TC_AND_COLOR_TO_DSCP_MAP": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_QOS_TC_TO_PRIORITY_GROUP_MAP": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_QOS_PFC_PRIORITY_TO_PRIORITY_GROUP_MAP": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_QOS_PFC_PRIORITY_TO_QUEUE_MAP": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_QOS_SCHEDULER_PROFILE_ID": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_QOS_INGRESS_BUFFER_PROFILE_LIST": "empty",
+      "SAI_PORT_ATTR_QOS_EGRESS_BUFFER_PROFILE_LIST": "empty",
+      "SAI_PORT_ATTR_PRIORITY_FLOW_CONTROL_MODE": "SAI_PORT_PRIORITY_FLOW_CONTROL_MODE_COMBINED",
+      "SAI_PORT_ATTR_PRIORITY_FLOW_CONTROL": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_PRIORITY_FLOW_CONTROL_MODE": "SAI_PORT_PRIORITY_FLOW_CONTROL_MODE_COMBINED"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_PORT_ATTR_PRIORITY_FLOW_CONTROL_RX": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_PRIORITY_FLOW_CONTROL_MODE": "SAI_PORT_PRIORITY_FLOW_CONTROL_MODE_SEPARATE"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_PORT_ATTR_PRIORITY_FLOW_CONTROL_TX": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_PRIORITY_FLOW_CONTROL_MODE": "SAI_PORT_PRIORITY_FLOW_CONTROL_MODE_SEPARATE"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_PORT_ATTR_META_DATA": "0",
+      "SAI_PORT_ATTR_EGRESS_BLOCK_PORT_LIST": "empty",
+      "SAI_PORT_ATTR_HW_PROFILE_ID": "vendor",
+      "SAI_PORT_ATTR_EEE_ENABLE": "false",
+      "SAI_PORT_ATTR_EEE_IDLE_TIME": "2500",
+      "SAI_PORT_ATTR_EEE_WAKE_TIME": "5",
+      "SAI_PORT_ATTR_PORT_POOL_LIST": "",
+      "SAI_PORT_ATTR_ISOLATION_GROUP": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_PKT_TX_ENABLE": "true",
+      "SAI_PORT_ATTR_TAM_OBJECT": "empty",
+      "SAI_PORT_ATTR_SERDES_PREEMPHASIS": "internal",
+      "SAI_PORT_ATTR_SERDES_IDRIVER": "internal",
+      "SAI_PORT_ATTR_SERDES_IPREDRIVER": "internal",
+      "SAI_PORT_ATTR_LINK_TRAINING_ENABLE": "false",
+      "SAI_PORT_ATTR_PTP_MODE": "SAI_PORT_PTP_MODE_NONE",
+      "SAI_PORT_ATTR_INTERFACE_TYPE": "SAI_PORT_INTERFACE_TYPE_NONE",
+      "SAI_PORT_ATTR_ADVERTISED_INTERFACE_TYPE": "empty",
+      "SAI_PORT_ATTR_REFERENCE_CLOCK": "internal",
+      "SAI_PORT_ATTR_PRBS_POLYNOMIAL": "internal",
+      "SAI_PORT_ATTR_PORT_SERDES_ID": "internal",
+      "SAI_PORT_ATTR_LINK_TRAINING_FAILURE_STATUS": "SAI_PORT_LINK_TRAINING_FAILURE_STATUS_NO_ERROR",
+      "SAI_PORT_ATTR_LINK_TRAINING_RX_STATUS": "SAI_PORT_LINK_TRAINING_RX_STATUS_NOT_TRAINED",
+      "SAI_PORT_ATTR_PRBS_CONFIG": "SAI_PORT_PRBS_CONFIG_DISABLE",
+      "SAI_PORT_ATTR_PRBS_LOCK_STATUS": "",
+      "SAI_PORT_ATTR_PRBS_LOCK_LOSS_STATUS": "",
+      "SAI_PORT_ATTR_PRBS_RX_STATUS": "SAI_PORT_PRBS_RX_STATUS_OK",
+      "SAI_PORT_ATTR_PRBS_RX_STATE": "",
+      "SAI_PORT_ATTR_AUTO_NEG_STATUS": "",
+      "SAI_PORT_ATTR_DISABLE_DECREMENT_TTL": "false",
+      "SAI_PORT_ATTR_QOS_MPLS_EXP_TO_TC_MAP": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_QOS_MPLS_EXP_TO_COLOR_MAP": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_QOS_TC_AND_COLOR_TO_MPLS_EXP_MAP": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_TPID": "0x8100",
+      "SAI_PORT_ATTR_ERR_STATUS_LIST": "",
+      "SAI_PORT_ATTR_FABRIC_ATTACHED": "",
+      "SAI_PORT_ATTR_FABRIC_ATTACHED_SWITCH_TYPE": "SAI_SWITCH_TYPE_NPU",
+      "SAI_PORT_ATTR_FABRIC_ATTACHED_SWITCH_ID": "",
+      "SAI_PORT_ATTR_FABRIC_ATTACHED_PORT_INDEX": "",
+      "SAI_PORT_ATTR_FABRIC_REACHABILITY": "",
+      "SAI_PORT_ATTR_SYSTEM_PORT": "",
+      "SAI_PORT_ATTR_AUTO_NEG_FEC_MODE_OVERRIDE": "false",
+      "SAI_PORT_ATTR_LOOPBACK_MODE": "SAI_PORT_LOOPBACK_MODE_NONE",
+      "SAI_PORT_ATTR_MDIX_MODE_STATUS": "SAI_PORT_MDIX_MODE_STATUS_STRAIGHT",
+      "SAI_PORT_ATTR_MDIX_MODE_CONFIG": "SAI_PORT_MDIX_MODE_CONFIG_AUTO",
+      "SAI_PORT_ATTR_AUTO_NEG_CONFIG_MODE": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_AUTO_NEG_MODE": "true"
+          }
+        ],
+        "def_value": "SAI_PORT_AUTO_NEG_CONFIG_MODE_DISABLED"
+      },
+      "SAI_PORT_ATTR_1000X_SGMII_SLAVE_AUTODETECT": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_MEDIA_TYPE": "SAI_PORT_MEDIA_TYPE_FIBER"
+          },
+          {
+            "SAI_PORT_ATTR_SPEED": "1000"
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_PORT_ATTR_MODULE_TYPE": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_MEDIA_TYPE": "SAI_PORT_MEDIA_TYPE_FIBER"
+          },
+          {
+            "SAI_PORT_ATTR_SPEED": "1000"
+          }
+        ],
+        "def_value": "SAI_PORT_MODULE_TYPE_1000BASE_X"
+      },
+      "SAI_PORT_ATTR_DUAL_MEDIA": "SAI_PORT_DUAL_MEDIA_NONE",
+      "SAI_PORT_ATTR_AUTO_NEG_FEC_MODE_EXTENDED": "SAI_PORT_FEC_MODE_EXTENDED_NONE",
+      "SAI_PORT_ATTR_IPG": "96",
+      "SAI_PORT_ATTR_GLOBAL_FLOW_CONTROL_FORWARD": "false",
+      "SAI_PORT_ATTR_PRIORITY_FLOW_CONTROL_FORWARD": "false",
+      "SAI_PORT_ATTR_QOS_DSCP_TO_FORWARDING_CLASS_MAP": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_QOS_MPLS_EXP_TO_FORWARDING_CLASS_MAP": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_ATTR_IPSEC_PORT": "",
+      "SAI_PORT_ATTR_PFC_TC_DLD_INTERVAL_RANGE": "",
+      "SAI_PORT_ATTR_PFC_TC_DLD_INTERVAL": "empty",
+      "SAI_PORT_ATTR_PFC_TC_DLR_INTERVAL_RANGE": "",
+      "SAI_PORT_ATTR_PFC_TC_DLR_INTERVAL": "empty",
+      "SAI_PORT_ATTR_SUPPORTED_LINK_TRAINING_MODE": "",
+      "SAI_PORT_ATTR_RX_SIGNAL_DETECT": "",
+      "SAI_PORT_ATTR_RX_LOCK_STATUS": "",
+      "SAI_PORT_ATTR_PCS_RX_LINK_STATUS": "",
+      "SAI_PORT_ATTR_FEC_ALIGNMENT_LOCK": "",
+      "SAI_PORT_ATTR_FABRIC_ISOLATE": "false",
+      "SAI_PORT_ATTR_MAX_FEC_SYMBOL_ERRORS_DETECTABLE": "",
+      "SAI_PORT_ATTR_ARS_ENABLE": "false",
+      "SAI_PORT_ATTR_ARS_PORT_LOAD_SCALING_FACTOR": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_ARS_ENABLE": "true"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_PORT_ATTR_ARS_PORT_LOAD_PAST_ENABLE": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_ARS_ENABLE": "true"
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_PORT_ATTR_ARS_PORT_LOAD_FUTURE_ENABLE": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_ARS_ENABLE": "true"
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_PORT_ATTR_ARS_ALTERNATE_PATH": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_ARS_ENABLE": "true"
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_PORT_ATTR_JSON_FORMATTED_DEBUG_DATA": "",
+      "SAI_PORT_ATTR_ECMP_HASH_ALGORITHM": "SAI_HASH_ALGORITHM_CRC",
+      "SAI_PORT_ATTR_ECMP_HASH_SEED": "0",
+      "SAI_PORT_ATTR_ECMP_HASH_OFFSET": "0",
+      "SAI_PORT_ATTR_OPER_PORT_FEC_MODE": "SAI_PORT_FEC_MODE_NONE",
+      "SAI_PORT_ATTR_HOST_TX_SIGNAL_ENABLE": "true",
+      "SAI_PORT_ATTR_HOST_TX_READY_STATUS": "SAI_PORT_HOST_TX_READY_STATUS_NOT_READY",
+      "SAI_PORT_ATTR_PATH_TRACING_INTF": "0",
+      "SAI_PORT_ATTR_PATH_TRACING_TIMESTAMP_TYPE": "SAI_PORT_PATH_TRACING_TIMESTAMP_TYPE_16_23",
+      "SAI_PORT_ATTR_RX_FREQUENCY_OFFSET_PPM": "",
+      "SAI_PORT_ATTR_RX_SNR": "",
+      "SAI_PORT_ATTR_DATAPATH_ENABLE": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_USE_EXTENDED_FEC": "true"
+          }
+        ],
+        "def_value": "SAI_PORT_DATAPATH_ENABLE_PASS_THROUGH_MODE"
+      },
+      "SAI_PORT_ATTR_CABLE_PAIR_STATE": "",
+      "SAI_PORT_ATTR_CABLE_PAIR_LENGTH": "",
+      "SAI_PORT_ATTR_CABLE_TYPE": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_MEDIA_TYPE": "SAI_PORT_MEDIA_TYPE_COPPER"
+          }
+        ],
+        "def_value": "SAI_PORT_CABLE_TYPE_UNKNOWN"
+      },
+      "SAI_PORT_ATTR_ARS_PORT_LOAD_PAST_WEIGHT": "0",
+      "SAI_PORT_ATTR_ARS_PORT_LOAD_FUTURE_WEIGHT": "0",
+      "SAI_PORT_ATTR_POE_PORT_ID": "",
+      "SAI_PORT_ATTR_JSON_FORMATTED_DEBUG_DATA_SIZE": "",
+      "SAI_PORT_ATTR_UNRELIABLE_LOS": "false",
+      "SAI_PORT_ATTR_ERROR_STATUS": "SAI_PORT_ERROR_STATUS_CLEAR",
+      "SAI_PORT_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
+      "SAI_PORT_ATTR_SELECTIVE_COUNTER_LIST": "empty",
+      "SAI_PORT_ATTR_PORT_STAT_EXTENDED": "",
+      "SAI_PORT_ATTR_PAM4_EYE_VALUES": "",
+      "SAI_PORT_ATTR_FAST_LINKUP_ENABLED": "false",
+      "SAI_PORT_ATTR_SERDES_FW_REVISION": "",
+      "SAI_PORT_ATTR_PRBS_PER_LANE_LOCK_STATUS_LIST": "",
+      "SAI_PORT_ATTR_PRBS_PER_LANE_RX_STATUS_LIST": "",
+      "SAI_PORT_ATTR_PRBS_PER_LANE_RX_STATE_LIST": "",
+      "SAI_PORT_ATTR_PRBS_PER_LANE_BER_LIST": "",
+      "SAI_PORT_ATTR_EXTENSIONS_RANGE_BASE": ""
+    }
+  },
+  "SAI_OBJECT_TYPE_PORT_CONNECTOR": {
+    "functions": [
+      "sai_thrift_create_port_connector",
+      "sai_thrift_get_port_connector_attribute",
+      "sai_thrift_remove_port_connector",
+      "sai_thrift_set_port_connector_attribute"
+    ],
+    "attributes": {
+      "SAI_PORT_CONNECTOR_ATTR_SYSTEM_SIDE_PORT_ID": "",
+      "SAI_PORT_CONNECTOR_ATTR_LINE_SIDE_PORT_ID": "",
+      "SAI_PORT_CONNECTOR_ATTR_SYSTEM_SIDE_FAILOVER_PORT_ID": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_CONNECTOR_ATTR_LINE_SIDE_FAILOVER_PORT_ID": "SAI_NULL_OBJECT_ID",
+      "SAI_PORT_CONNECTOR_ATTR_FAILOVER_MODE": "SAI_PORT_CONNECTOR_FAILOVER_MODE_DISABLE"
+    }
+  },
+  "SAI_OBJECT_TYPE_PORT_POOL": {
+    "functions": [
+      "sai_thrift_clear_port_pool_stats",
+      "sai_thrift_create_port_pool",
+      "sai_thrift_get_port_pool_attribute",
+      "sai_thrift_get_port_pool_stats",
+      "sai_thrift_get_port_pool_stats_ext",
+      "sai_thrift_remove_port_pool",
+      "sai_thrift_set_port_pool_attribute"
+    ],
+    "attributes": {
+      "SAI_PORT_POOL_ATTR_PORT_ID": "",
+      "SAI_PORT_POOL_ATTR_BUFFER_POOL_ID": "",
+      "SAI_PORT_POOL_ATTR_QOS_WRED_PROFILE_ID": "SAI_NULL_OBJECT_ID"
+    }
+  },
+  "SAI_OBJECT_TYPE_PORT_SERDES": {
+    "functions": [
+      "sai_thrift_create_port_serdes",
+      "sai_thrift_get_port_serdes_attribute",
+      "sai_thrift_remove_port_serdes",
+      "sai_thrift_set_port_serdes_attribute"
+    ],
+    "attributes": {
+      "SAI_PORT_SERDES_ATTR_PORT_ID": "",
+      "SAI_PORT_SERDES_ATTR_PREEMPHASIS": "internal",
+      "SAI_PORT_SERDES_ATTR_IDRIVER": "internal",
+      "SAI_PORT_SERDES_ATTR_IPREDRIVER": "internal",
+      "SAI_PORT_SERDES_ATTR_TX_FIR_PRE1": "internal",
+      "SAI_PORT_SERDES_ATTR_TX_FIR_PRE2": "internal",
+      "SAI_PORT_SERDES_ATTR_TX_FIR_PRE3": "internal",
+      "SAI_PORT_SERDES_ATTR_TX_FIR_MAIN": "internal",
+      "SAI_PORT_SERDES_ATTR_TX_FIR_POST1": "internal",
+      "SAI_PORT_SERDES_ATTR_TX_FIR_POST2": "internal",
+      "SAI_PORT_SERDES_ATTR_TX_FIR_POST3": "internal",
+      "SAI_PORT_SERDES_ATTR_TX_FIR_ATTN": "internal",
+      "SAI_PORT_SERDES_ATTR_TX_PAM4_RATIO": "internal",
+      "SAI_PORT_SERDES_ATTR_TX_OUT_COMMON_MODE": "internal",
+      "SAI_PORT_SERDES_ATTR_TX_PMOS_COMMON_MODE": "internal",
+      "SAI_PORT_SERDES_ATTR_TX_NMOS_COMMON_MODE": "internal",
+      "SAI_PORT_SERDES_ATTR_TX_PMOS_VLTG_REG": "internal",
+      "SAI_PORT_SERDES_ATTR_TX_NMOS_VLTG_REG": "internal",
+      "SAI_PORT_SERDES_ATTR_TX_PRECODING": "internal",
+      "SAI_PORT_SERDES_ATTR_RX_PRECODING": "internal",
+      "SAI_PORT_SERDES_ATTR_CUSTOM_COLLECTION": "internal",
+      "SAI_PORT_SERDES_ATTR_TX_NLC_PERCENTAGE": "internal",
+      "SAI_PORT_SERDES_ATTR_TX_NLC_LOWER_EYE_PERCENTAGE": "internal",
+      "SAI_PORT_SERDES_ATTR_RX_ECD_MLSE_STATE": "empty",
+      "SAI_PORT_SERDES_ATTR_TX_POLARITY": "internal",
+      "SAI_PORT_SERDES_ATTR_RX_POLARITY": "internal",
+      "SAI_PORT_SERDES_ATTR_RX_FFE_COUNT": "",
+      "SAI_PORT_SERDES_ATTR_TX_FIR_COUNT": "",
+      "SAI_PORT_SERDES_ATTR_RX_DFE_COUNT": "",
+      "SAI_PORT_SERDES_ATTR_RX_FFE_TAPS_LIST": "internal",
+      "SAI_PORT_SERDES_ATTR_TX_FIR_TAPS_LIST": "internal",
+      "SAI_PORT_SERDES_ATTR_RX_DFE_TAPS_LIST": "internal",
+      "SAI_PORT_SERDES_ATTR_RX_VGA": "internal"
+    }
+  }
+}

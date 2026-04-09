@@ -1,0 +1,35 @@
+{
+  "SAI_OBJECT_TYPE_IPMC_GROUP": {
+    "functions": [
+      "sai_thrift_create_ipmc_group",
+      "sai_thrift_get_ipmc_group_attribute",
+      "sai_thrift_remove_ipmc_group",
+      "sai_thrift_set_ipmc_group_attribute"
+    ],
+    "attributes": {
+      "SAI_IPMC_GROUP_ATTR_IPMC_OUTPUT_COUNT": "",
+      "SAI_IPMC_GROUP_ATTR_IPMC_MEMBER_LIST": "",
+      "SAI_IPMC_GROUP_ATTR_IPMC_GROUP_WITH_MEMBERS": "false",
+      "SAI_IPMC_GROUP_ATTR_IPMC_OUTPUT_LIST": {
+        "validonly": [
+          {
+            "SAI_IPMC_GROUP_ATTR_IPMC_GROUP_WITH_MEMBERS": "true"
+          }
+        ],
+        "def_value": "empty"
+      }
+    }
+  },
+  "SAI_OBJECT_TYPE_IPMC_GROUP_MEMBER": {
+    "functions": [
+      "sai_thrift_create_ipmc_group_member",
+      "sai_thrift_get_ipmc_group_member_attribute",
+      "sai_thrift_remove_ipmc_group_member",
+      "sai_thrift_set_ipmc_group_member_attribute"
+    ],
+    "attributes": {
+      "SAI_IPMC_GROUP_MEMBER_ATTR_IPMC_GROUP_ID": "",
+      "SAI_IPMC_GROUP_MEMBER_ATTR_IPMC_OUTPUT_ID": ""
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "SAI_OBJECT_TYPE_PREFIX_COMPRESSION_ENTRY": {
+    "functions": [
+      "sai_thrift_bulk_create_prefix_compression_entry",
+      "sai_thrift_bulk_remove_prefix_compression_entry",
+      "sai_thrift_create_prefix_compression_entry",
+      "sai_thrift_get_prefix_compression_entry_attribute",
+      "sai_thrift_remove_prefix_compression_entry",
+      "sai_thrift_set_prefix_compression_entry_attribute"
+    ],
+    "attributes": {
+      "SAI_PREFIX_COMPRESSION_ENTRY_ATTR_META": ""
+    }
+  },
+  "SAI_OBJECT_TYPE_PREFIX_COMPRESSION_TABLE": {
+    "functions": [
+      "sai_thrift_create_prefix_compression_table",
+      "sai_thrift_get_prefix_compression_table_attribute",
+      "sai_thrift_remove_prefix_compression_table",
+      "sai_thrift_set_prefix_compression_table_attribute"
+    ],
+    "attributes": {
+      "SAI_PREFIX_COMPRESSION_TABLE_ATTR_LABEL": "\"\"",
+      "SAI_PREFIX_COMPRESSION_TABLE_ATTR_PREFIX_COMPRESSION_STAGE": "SAI_PREFIX_COMPRESSION_STAGE_INGRESS",
+      "SAI_PREFIX_COMPRESSION_TABLE_ATTR_PREFIX_COMPRESSION_TYPE": "SAI_PREFIX_COMPRESSION_TYPE_BOTH"
+    }
+  }
+}

@@ -1,0 +1,205 @@
+{
+  "SAI_OBJECT_TYPE_BRIDGE": {
+    "functions": [
+      "sai_thrift_clear_bridge_stats",
+      "sai_thrift_create_bridge",
+      "sai_thrift_get_bridge_attribute",
+      "sai_thrift_get_bridge_stats",
+      "sai_thrift_get_bridge_stats_ext",
+      "sai_thrift_remove_bridge",
+      "sai_thrift_set_bridge_attribute"
+    ],
+    "attributes": {
+      "SAI_BRIDGE_ATTR_TYPE": "SAI_BRIDGE_TYPE_1Q",
+      "SAI_BRIDGE_ATTR_PORT_LIST": "",
+      "SAI_BRIDGE_ATTR_MAX_LEARNED_ADDRESSES": "0",
+      "SAI_BRIDGE_ATTR_LEARN_DISABLE": "false",
+      "SAI_BRIDGE_ATTR_UNKNOWN_UNICAST_FLOOD_CONTROL_TYPE": "SAI_BRIDGE_FLOOD_CONTROL_TYPE_SUB_PORTS",
+      "SAI_BRIDGE_ATTR_UNKNOWN_UNICAST_FLOOD_GROUP": {
+        "validonly": [
+          {
+            "SAI_BRIDGE_ATTR_TYPE": "SAI_BRIDGE_TYPE_1D"
+          },
+          {
+            "SAI_BRIDGE_ATTR_UNKNOWN_UNICAST_FLOOD_CONTROL_TYPE": [
+              "SAI_BRIDGE_FLOOD_CONTROL_TYPE_L2MC_GROUP",
+              "SAI_BRIDGE_FLOOD_CONTROL_TYPE_COMBINED"
+            ]
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_BRIDGE_ATTR_UNKNOWN_MULTICAST_FLOOD_CONTROL_TYPE": "SAI_BRIDGE_FLOOD_CONTROL_TYPE_SUB_PORTS",
+      "SAI_BRIDGE_ATTR_UNKNOWN_MULTICAST_FLOOD_GROUP": {
+        "validonly": [
+          {
+            "SAI_BRIDGE_ATTR_TYPE": "SAI_BRIDGE_TYPE_1D"
+          },
+          {
+            "SAI_BRIDGE_ATTR_UNKNOWN_MULTICAST_FLOOD_CONTROL_TYPE": [
+              "SAI_BRIDGE_FLOOD_CONTROL_TYPE_L2MC_GROUP",
+              "SAI_BRIDGE_FLOOD_CONTROL_TYPE_COMBINED"
+            ]
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_BRIDGE_ATTR_BROADCAST_FLOOD_CONTROL_TYPE": "SAI_BRIDGE_FLOOD_CONTROL_TYPE_SUB_PORTS",
+      "SAI_BRIDGE_ATTR_BROADCAST_FLOOD_GROUP": {
+        "validonly": [
+          {
+            "SAI_BRIDGE_ATTR_TYPE": "SAI_BRIDGE_TYPE_1D"
+          },
+          {
+            "SAI_BRIDGE_ATTR_BROADCAST_FLOOD_CONTROL_TYPE": [
+              "SAI_BRIDGE_FLOOD_CONTROL_TYPE_L2MC_GROUP",
+              "SAI_BRIDGE_FLOOD_CONTROL_TYPE_COMBINED"
+            ]
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_BRIDGE_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
+      "SAI_BRIDGE_ATTR_SELECTIVE_COUNTER_LIST": "empty"
+    }
+  },
+  "SAI_OBJECT_TYPE_BRIDGE_PORT": {
+    "functions": [
+      "sai_thrift_clear_bridge_port_stats",
+      "sai_thrift_create_bridge_port",
+      "sai_thrift_get_bridge_port_attribute",
+      "sai_thrift_get_bridge_port_stats",
+      "sai_thrift_get_bridge_port_stats_ext",
+      "sai_thrift_remove_bridge_port",
+      "sai_thrift_set_bridge_port_attribute"
+    ],
+    "attributes": {
+      "SAI_BRIDGE_PORT_ATTR_TYPE": "SAI_BRIDGE_PORT_TYPE_PORT",
+      "SAI_BRIDGE_PORT_ATTR_PORT_ID": {
+        "condition": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": [
+              "SAI_BRIDGE_PORT_TYPE_PORT",
+              "SAI_BRIDGE_PORT_TYPE_SUB_PORT"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_BRIDGE_PORT_ATTR_TAGGING_MODE": {
+        "validonly": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": "SAI_BRIDGE_PORT_TYPE_SUB_PORT"
+          }
+        ],
+        "def_value": "SAI_BRIDGE_PORT_TAGGING_MODE_TAGGED"
+      },
+      "SAI_BRIDGE_PORT_ATTR_VLAN_ID": {
+        "condition": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": "SAI_BRIDGE_PORT_TYPE_SUB_PORT"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_BRIDGE_PORT_ATTR_RIF_ID": {
+        "condition": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": "SAI_BRIDGE_PORT_TYPE_1D_ROUTER"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_BRIDGE_PORT_ATTR_TUNNEL_ID": {
+        "condition": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": "SAI_BRIDGE_PORT_TYPE_TUNNEL"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_BRIDGE_PORT_ATTR_BRIDGE_ID": {
+        "condition": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": [
+              "SAI_BRIDGE_PORT_TYPE_SUB_PORT",
+              "SAI_BRIDGE_PORT_TYPE_1D_ROUTER",
+              "SAI_BRIDGE_PORT_TYPE_TUNNEL",
+              "SAI_BRIDGE_PORT_TYPE_BRIDGE_PORT_NEXT_HOP_GROUP"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_BRIDGE_PORT_ATTR_FDB_LEARNING_MODE": "SAI_BRIDGE_PORT_FDB_LEARNING_MODE_HW",
+      "SAI_BRIDGE_PORT_ATTR_MAX_LEARNED_ADDRESSES": "0",
+      "SAI_BRIDGE_PORT_ATTR_FDB_LEARNING_LIMIT_VIOLATION_PACKET_ACTION": "SAI_PACKET_ACTION_DROP",
+      "SAI_BRIDGE_PORT_ATTR_ADMIN_STATE": "false",
+      "SAI_BRIDGE_PORT_ATTR_INGRESS_FILTERING": "false",
+      "SAI_BRIDGE_PORT_ATTR_EGRESS_FILTERING": {
+        "validonly": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": "SAI_BRIDGE_PORT_TYPE_PORT"
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_BRIDGE_PORT_ATTR_ISOLATION_GROUP": "SAI_NULL_OBJECT_ID",
+      "SAI_BRIDGE_PORT_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
+      "SAI_BRIDGE_PORT_ATTR_SELECTIVE_COUNTER_LIST": "empty",
+      "SAI_BRIDGE_PORT_ATTR_BRIDGE_PORT_NEXT_HOP_GROUP_ID": {
+        "condition": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": "SAI_BRIDGE_PORT_TYPE_BRIDGE_PORT_NEXT_HOP_GROUP"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_BRIDGE_PORT_ATTR_TUNNEL_TERM_BUM_TX_DROP": {
+        "validonly": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": [
+              "SAI_BRIDGE_PORT_TYPE_PORT",
+              "SAI_BRIDGE_PORT_TYPE_SUB_PORT",
+              "SAI_BRIDGE_PORT_TYPE_TUNNEL"
+            ]
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_BRIDGE_PORT_ATTR_RX_DROP": {
+        "validonly": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": [
+              "SAI_BRIDGE_PORT_TYPE_PORT",
+              "SAI_BRIDGE_PORT_TYPE_SUB_PORT",
+              "SAI_BRIDGE_PORT_TYPE_TUNNEL"
+            ]
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_BRIDGE_PORT_ATTR_TX_DROP": {
+        "validonly": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": [
+              "SAI_BRIDGE_PORT_TYPE_PORT",
+              "SAI_BRIDGE_PORT_TYPE_SUB_PORT",
+              "SAI_BRIDGE_PORT_TYPE_TUNNEL"
+            ]
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_BRIDGE_PORT_ATTR_BRIDGE_PORT_PROTECTION_NEXT_HOP_GROUP_ID": "SAI_NULL_OBJECT_ID",
+      "SAI_BRIDGE_PORT_ATTR_BRIDGE_PORT_SET_SWITCHOVER": {
+        "validonly": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": "SAI_BRIDGE_PORT_TYPE_PORT"
+          }
+        ],
+        "def_value": "false"
+      }
+    }
+  }
+}
