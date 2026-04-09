@@ -385,16 +385,19 @@ def _render_default(raw: str, sai_type: str = ''):
 
     "empty" / "empty list" → Thrift empty list/object built from sai_type;
                               None if no Thrift constructor is known for the type.
+    "NULL"                  → None (pointer/callback attributes with no handler)
+    "vendor"                → None (device-specific placeholder, not a usable value)
     SAI_* constant strings  → resolved to their enum/integer value via
-                              sai_thrift.sai_headers; returned as-is if not found
-                              (the adapter will handle the name lookup itself for
-                              string-accepting fields).
+                              sai_thrift.sai_headers; skipped if not resolvable.
     """
     if not raw or raw in ('internal',) or raw.startswith('attrvalue'):
         return None
     low = raw.lower()
     if low in ('empty', 'empty list'):
         return _make_empty_thrift_object(sai_type)
+    # Pointer/callback defaults and device-specific placeholders have no usable value
+    if low in ('null', 'vendor'):
+        return None
     if low == 'true':
         return True
     if low == 'false':
@@ -405,12 +408,15 @@ def _render_default(raw: str, sai_type: str = ''):
         return int(raw)
     if re.fullmatch(r'0[xX][0-9a-fA-F]+', raw):
         return int(raw, 16)
-    # SAI enum constant name: resolve to the actual enum/integer via sai_headers
+    # SAI enum constant name: resolve to the actual enum/integer via sai_headers.
+    # Skip if not resolvable — unknown names passed as plain strings would fail
+    # serialisation for pointer/s32/u32 fields.
     if raw.startswith('SAI_'):
         resolved = getattr(_sai_headers, raw, None)
         if resolved is not None:
             return resolved
-    # IP address, MAC, vendor string, or unknown SAI name — pass through as string
+        return None
+    # Plain strings (IP address, MAC address, etc.) — pass through for mac/ip fields.
     return raw
 
 
