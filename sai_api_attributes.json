@@ -322,8 +322,22 @@
       "SAI_ACL_TABLE_ATTR_ACL_TABLE_MATCH_TYPE": "SAI_ACL_TABLE_MATCH_TYPE_TERNARY",
       "SAI_ACL_TABLE_ATTR_SRC_PREFIX_COMPRESSION_TABLE": "SAI_NULL_OBJECT_ID",
       "SAI_ACL_TABLE_ATTR_DST_PREFIX_COMPRESSION_TABLE": "SAI_NULL_OBJECT_ID",
-      "SAI_ACL_TABLE_ATTR_FIELD_VALID_BITS_SRC_IPV6": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
-      "SAI_ACL_TABLE_ATTR_FIELD_VALID_BITS_DST_IPV6": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"
+      "SAI_ACL_TABLE_ATTR_FIELD_VALID_BITS_SRC_IPV6": {
+        "validonly": [
+          {
+            "SAI_ACL_TABLE_ATTR_FIELD_SRC_IPV6": "true"
+          }
+        ],
+        "def_value": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"
+      },
+      "SAI_ACL_TABLE_ATTR_FIELD_VALID_BITS_DST_IPV6": {
+        "validonly": [
+          {
+            "SAI_ACL_TABLE_ATTR_FIELD_DST_IPV6": "true"
+          }
+        ],
+        "def_value": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"
+      }
     }
   },
   "SAI_OBJECT_TYPE_ACL_TABLE_CHAIN_GROUP": {
@@ -402,12 +416,54 @@
       "SAI_ARS_PROFILE_ATTR_ECMP_ARS_MAX_MEMBERS_PER_GROUP": "",
       "SAI_ARS_PROFILE_ATTR_LAG_ARS_MAX_GROUPS": "",
       "SAI_ARS_PROFILE_ATTR_LAG_ARS_MAX_MEMBERS_PER_GROUP": "",
-      "SAI_ARS_PROFILE_ATTR_PORT_LOAD_PAST": "true",
-      "SAI_ARS_PROFILE_ATTR_PORT_LOAD_PAST_WEIGHT": "16",
-      "SAI_ARS_PROFILE_ATTR_PORT_LOAD_FUTURE": "true",
-      "SAI_ARS_PROFILE_ATTR_PORT_LOAD_FUTURE_WEIGHT": "16",
-      "SAI_ARS_PROFILE_ATTR_PORT_LOAD_CURRENT": "false",
-      "SAI_ARS_PROFILE_ATTR_PORT_LOAD_EXPONENT": "2",
+      "SAI_ARS_PROFILE_ATTR_PORT_LOAD_PAST": {
+        "validonly": [
+          {
+            "SAI_ARS_PROFILE_ATTR_ALGO": "SAI_ARS_PROFILE_ALGO_EWMA"
+          }
+        ],
+        "def_value": "true"
+      },
+      "SAI_ARS_PROFILE_ATTR_PORT_LOAD_PAST_WEIGHT": {
+        "validonly": [
+          {
+            "SAI_ARS_PROFILE_ATTR_ALGO": "SAI_ARS_PROFILE_ALGO_EWMA"
+          }
+        ],
+        "def_value": "16"
+      },
+      "SAI_ARS_PROFILE_ATTR_PORT_LOAD_FUTURE": {
+        "validonly": [
+          {
+            "SAI_ARS_PROFILE_ATTR_ALGO": "SAI_ARS_PROFILE_ALGO_EWMA"
+          }
+        ],
+        "def_value": "true"
+      },
+      "SAI_ARS_PROFILE_ATTR_PORT_LOAD_FUTURE_WEIGHT": {
+        "validonly": [
+          {
+            "SAI_ARS_PROFILE_ATTR_ALGO": "SAI_ARS_PROFILE_ALGO_EWMA"
+          }
+        ],
+        "def_value": "16"
+      },
+      "SAI_ARS_PROFILE_ATTR_PORT_LOAD_CURRENT": {
+        "validonly": [
+          {
+            "SAI_ARS_PROFILE_ATTR_ALGO": "SAI_ARS_PROFILE_ALGO_EWMA"
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_ARS_PROFILE_ATTR_PORT_LOAD_EXPONENT": {
+        "validonly": [
+          {
+            "SAI_ARS_PROFILE_ATTR_ALGO": "SAI_ARS_PROFILE_ALGO_EWMA"
+          }
+        ],
+        "def_value": "2"
+      },
       "SAI_ARS_PROFILE_ATTR_QUANT_BANDS": "",
       "SAI_ARS_PROFILE_ATTR_QUANT_BAND_0_MIN_THRESHOLD": "0",
       "SAI_ARS_PROFILE_ATTR_QUANT_BAND_0_MAX_THRESHOLD": "0",
@@ -455,16 +511,61 @@
     "attributes": {
       "SAI_BFD_SESSION_ATTR_TYPE": "SAI_BFD_SESSION_TYPE_DEMAND_ACTIVE",
       "SAI_BFD_SESSION_ATTR_HW_LOOKUP_VALID": "true",
-      "SAI_BFD_SESSION_ATTR_VIRTUAL_ROUTER": "",
-      "SAI_BFD_SESSION_ATTR_PORT": "",
+      "SAI_BFD_SESSION_ATTR_VIRTUAL_ROUTER": {
+        "condition": [
+          {
+            "SAI_BFD_SESSION_ATTR_HW_LOOKUP_VALID": "true"
+          },
+          {
+            "SAI_BFD_SESSION_ATTR_USE_NEXT_HOP": "false"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_BFD_SESSION_ATTR_PORT": {
+        "condition": [
+          {
+            "SAI_BFD_SESSION_ATTR_HW_LOOKUP_VALID": "false"
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_BFD_SESSION_ATTR_LOCAL_DISCRIMINATOR": "",
       "SAI_BFD_SESSION_ATTR_REMOTE_DISCRIMINATOR": "",
       "SAI_BFD_SESSION_ATTR_UDP_SRC_PORT": "",
       "SAI_BFD_SESSION_ATTR_TC": "0",
-      "SAI_BFD_SESSION_ATTR_VLAN_TPID": "0x8100",
-      "SAI_BFD_SESSION_ATTR_VLAN_ID": "",
-      "SAI_BFD_SESSION_ATTR_VLAN_PRI": "0",
-      "SAI_BFD_SESSION_ATTR_VLAN_CFI": "0",
+      "SAI_BFD_SESSION_ATTR_VLAN_TPID": {
+        "validonly": [
+          {
+            "SAI_BFD_SESSION_ATTR_VLAN_HEADER_VALID": "true"
+          }
+        ],
+        "def_value": "0x8100"
+      },
+      "SAI_BFD_SESSION_ATTR_VLAN_ID": {
+        "condition": [
+          {
+            "SAI_BFD_SESSION_ATTR_VLAN_HEADER_VALID": "true"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_BFD_SESSION_ATTR_VLAN_PRI": {
+        "validonly": [
+          {
+            "SAI_BFD_SESSION_ATTR_VLAN_HEADER_VALID": "true"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_BFD_SESSION_ATTR_VLAN_CFI": {
+        "validonly": [
+          {
+            "SAI_BFD_SESSION_ATTR_VLAN_HEADER_VALID": "true"
+          }
+        ],
+        "def_value": "0"
+      },
       "SAI_BFD_SESSION_ATTR_VLAN_HEADER_VALID": "false",
       "SAI_BFD_SESSION_ATTR_BFD_ENCAPSULATION_TYPE": "SAI_BFD_ENCAPSULATION_TYPE_IP_IN_IP",
       "SAI_BFD_SESSION_ATTR_IPHDR_VERSION": "",
@@ -472,12 +573,63 @@
       "SAI_BFD_SESSION_ATTR_TTL": "255",
       "SAI_BFD_SESSION_ATTR_SRC_IP_ADDRESS": "",
       "SAI_BFD_SESSION_ATTR_DST_IP_ADDRESS": "",
-      "SAI_BFD_SESSION_ATTR_TUNNEL_TOS": "0",
-      "SAI_BFD_SESSION_ATTR_TUNNEL_TTL": "255",
-      "SAI_BFD_SESSION_ATTR_TUNNEL_SRC_IP_ADDRESS": "",
-      "SAI_BFD_SESSION_ATTR_TUNNEL_DST_IP_ADDRESS": "",
-      "SAI_BFD_SESSION_ATTR_SRC_MAC_ADDRESS": "",
-      "SAI_BFD_SESSION_ATTR_DST_MAC_ADDRESS": "",
+      "SAI_BFD_SESSION_ATTR_TUNNEL_TOS": {
+        "validonly": [
+          {
+            "SAI_BFD_SESSION_ATTR_BFD_ENCAPSULATION_TYPE": [
+              "SAI_BFD_ENCAPSULATION_TYPE_IP_IN_IP",
+              "SAI_BFD_ENCAPSULATION_TYPE_SRV6"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_BFD_SESSION_ATTR_TUNNEL_TTL": {
+        "validonly": [
+          {
+            "SAI_BFD_SESSION_ATTR_BFD_ENCAPSULATION_TYPE": [
+              "SAI_BFD_ENCAPSULATION_TYPE_IP_IN_IP",
+              "SAI_BFD_ENCAPSULATION_TYPE_SRV6"
+            ]
+          }
+        ],
+        "def_value": "255"
+      },
+      "SAI_BFD_SESSION_ATTR_TUNNEL_SRC_IP_ADDRESS": {
+        "condition": [
+          {
+            "SAI_BFD_SESSION_ATTR_BFD_ENCAPSULATION_TYPE": [
+              "SAI_BFD_ENCAPSULATION_TYPE_IP_IN_IP",
+              "SAI_BFD_ENCAPSULATION_TYPE_SRV6"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_BFD_SESSION_ATTR_TUNNEL_DST_IP_ADDRESS": {
+        "condition": [
+          {
+            "SAI_BFD_SESSION_ATTR_BFD_ENCAPSULATION_TYPE": "SAI_BFD_ENCAPSULATION_TYPE_IP_IN_IP"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_BFD_SESSION_ATTR_SRC_MAC_ADDRESS": {
+        "condition": [
+          {
+            "SAI_BFD_SESSION_ATTR_HW_LOOKUP_VALID": "false"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_BFD_SESSION_ATTR_DST_MAC_ADDRESS": {
+        "condition": [
+          {
+            "SAI_BFD_SESSION_ATTR_HW_LOOKUP_VALID": "false"
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_BFD_SESSION_ATTR_ECHO_ENABLE": "false",
       "SAI_BFD_SESSION_ATTR_MULTIHOP": "false",
       "SAI_BFD_SESSION_ATTR_CBIT": "false",
@@ -493,11 +645,25 @@
       "SAI_BFD_SESSION_ATTR_LOCAL_DIAG": "",
       "SAI_BFD_SESSION_ATTR_REMOTE_DIAG": "",
       "SAI_BFD_SESSION_ATTR_REMOTE_MULTIPLIER": "",
-      "SAI_BFD_SESSION_ATTR_SRV6_SIDLIST_ID": "",
+      "SAI_BFD_SESSION_ATTR_SRV6_SIDLIST_ID": {
+        "condition": [
+          {
+            "SAI_BFD_SESSION_ATTR_BFD_ENCAPSULATION_TYPE": "SAI_BFD_ENCAPSULATION_TYPE_SRV6"
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_BFD_SESSION_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
       "SAI_BFD_SESSION_ATTR_SELECTIVE_COUNTER_LIST": "empty",
       "SAI_BFD_SESSION_ATTR_USE_NEXT_HOP": "false",
-      "SAI_BFD_SESSION_ATTR_NEXT_HOP_ID": ""
+      "SAI_BFD_SESSION_ATTR_NEXT_HOP_ID": {
+        "condition": [
+          {
+            "SAI_BFD_SESSION_ATTR_USE_NEXT_HOP": "true"
+          }
+        ],
+        "def_value": ""
+      }
     }
   },
   "SAI_OBJECT_TYPE_BRIDGE": {
@@ -516,11 +682,50 @@
       "SAI_BRIDGE_ATTR_MAX_LEARNED_ADDRESSES": "0",
       "SAI_BRIDGE_ATTR_LEARN_DISABLE": "false",
       "SAI_BRIDGE_ATTR_UNKNOWN_UNICAST_FLOOD_CONTROL_TYPE": "SAI_BRIDGE_FLOOD_CONTROL_TYPE_SUB_PORTS",
-      "SAI_BRIDGE_ATTR_UNKNOWN_UNICAST_FLOOD_GROUP": "SAI_NULL_OBJECT_ID",
+      "SAI_BRIDGE_ATTR_UNKNOWN_UNICAST_FLOOD_GROUP": {
+        "validonly": [
+          {
+            "SAI_BRIDGE_ATTR_TYPE": "SAI_BRIDGE_TYPE_1D"
+          },
+          {
+            "SAI_BRIDGE_ATTR_UNKNOWN_UNICAST_FLOOD_CONTROL_TYPE": [
+              "SAI_BRIDGE_FLOOD_CONTROL_TYPE_L2MC_GROUP",
+              "SAI_BRIDGE_FLOOD_CONTROL_TYPE_COMBINED"
+            ]
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
       "SAI_BRIDGE_ATTR_UNKNOWN_MULTICAST_FLOOD_CONTROL_TYPE": "SAI_BRIDGE_FLOOD_CONTROL_TYPE_SUB_PORTS",
-      "SAI_BRIDGE_ATTR_UNKNOWN_MULTICAST_FLOOD_GROUP": "SAI_NULL_OBJECT_ID",
+      "SAI_BRIDGE_ATTR_UNKNOWN_MULTICAST_FLOOD_GROUP": {
+        "validonly": [
+          {
+            "SAI_BRIDGE_ATTR_TYPE": "SAI_BRIDGE_TYPE_1D"
+          },
+          {
+            "SAI_BRIDGE_ATTR_UNKNOWN_MULTICAST_FLOOD_CONTROL_TYPE": [
+              "SAI_BRIDGE_FLOOD_CONTROL_TYPE_L2MC_GROUP",
+              "SAI_BRIDGE_FLOOD_CONTROL_TYPE_COMBINED"
+            ]
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
       "SAI_BRIDGE_ATTR_BROADCAST_FLOOD_CONTROL_TYPE": "SAI_BRIDGE_FLOOD_CONTROL_TYPE_SUB_PORTS",
-      "SAI_BRIDGE_ATTR_BROADCAST_FLOOD_GROUP": "SAI_NULL_OBJECT_ID",
+      "SAI_BRIDGE_ATTR_BROADCAST_FLOOD_GROUP": {
+        "validonly": [
+          {
+            "SAI_BRIDGE_ATTR_TYPE": "SAI_BRIDGE_TYPE_1D"
+          },
+          {
+            "SAI_BRIDGE_ATTR_BROADCAST_FLOOD_CONTROL_TYPE": [
+              "SAI_BRIDGE_FLOOD_CONTROL_TYPE_L2MC_GROUP",
+              "SAI_BRIDGE_FLOOD_CONTROL_TYPE_COMBINED"
+            ]
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
       "SAI_BRIDGE_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
       "SAI_BRIDGE_ATTR_SELECTIVE_COUNTER_LIST": "empty"
     }
@@ -537,27 +742,131 @@
     ],
     "attributes": {
       "SAI_BRIDGE_PORT_ATTR_TYPE": "SAI_BRIDGE_PORT_TYPE_PORT",
-      "SAI_BRIDGE_PORT_ATTR_PORT_ID": "",
-      "SAI_BRIDGE_PORT_ATTR_TAGGING_MODE": "SAI_BRIDGE_PORT_TAGGING_MODE_TAGGED",
-      "SAI_BRIDGE_PORT_ATTR_VLAN_ID": "",
-      "SAI_BRIDGE_PORT_ATTR_RIF_ID": "",
-      "SAI_BRIDGE_PORT_ATTR_TUNNEL_ID": "",
-      "SAI_BRIDGE_PORT_ATTR_BRIDGE_ID": "",
+      "SAI_BRIDGE_PORT_ATTR_PORT_ID": {
+        "condition": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": [
+              "SAI_BRIDGE_PORT_TYPE_PORT",
+              "SAI_BRIDGE_PORT_TYPE_SUB_PORT"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_BRIDGE_PORT_ATTR_TAGGING_MODE": {
+        "validonly": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": "SAI_BRIDGE_PORT_TYPE_SUB_PORT"
+          }
+        ],
+        "def_value": "SAI_BRIDGE_PORT_TAGGING_MODE_TAGGED"
+      },
+      "SAI_BRIDGE_PORT_ATTR_VLAN_ID": {
+        "condition": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": "SAI_BRIDGE_PORT_TYPE_SUB_PORT"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_BRIDGE_PORT_ATTR_RIF_ID": {
+        "condition": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": "SAI_BRIDGE_PORT_TYPE_1D_ROUTER"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_BRIDGE_PORT_ATTR_TUNNEL_ID": {
+        "condition": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": "SAI_BRIDGE_PORT_TYPE_TUNNEL"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_BRIDGE_PORT_ATTR_BRIDGE_ID": {
+        "condition": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": [
+              "SAI_BRIDGE_PORT_TYPE_SUB_PORT",
+              "SAI_BRIDGE_PORT_TYPE_1D_ROUTER",
+              "SAI_BRIDGE_PORT_TYPE_TUNNEL",
+              "SAI_BRIDGE_PORT_TYPE_BRIDGE_PORT_NEXT_HOP_GROUP"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_BRIDGE_PORT_ATTR_FDB_LEARNING_MODE": "SAI_BRIDGE_PORT_FDB_LEARNING_MODE_HW",
       "SAI_BRIDGE_PORT_ATTR_MAX_LEARNED_ADDRESSES": "0",
       "SAI_BRIDGE_PORT_ATTR_FDB_LEARNING_LIMIT_VIOLATION_PACKET_ACTION": "SAI_PACKET_ACTION_DROP",
       "SAI_BRIDGE_PORT_ATTR_ADMIN_STATE": "false",
       "SAI_BRIDGE_PORT_ATTR_INGRESS_FILTERING": "false",
-      "SAI_BRIDGE_PORT_ATTR_EGRESS_FILTERING": "false",
+      "SAI_BRIDGE_PORT_ATTR_EGRESS_FILTERING": {
+        "validonly": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": "SAI_BRIDGE_PORT_TYPE_PORT"
+          }
+        ],
+        "def_value": "false"
+      },
       "SAI_BRIDGE_PORT_ATTR_ISOLATION_GROUP": "SAI_NULL_OBJECT_ID",
       "SAI_BRIDGE_PORT_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
       "SAI_BRIDGE_PORT_ATTR_SELECTIVE_COUNTER_LIST": "empty",
-      "SAI_BRIDGE_PORT_ATTR_BRIDGE_PORT_NEXT_HOP_GROUP_ID": "",
-      "SAI_BRIDGE_PORT_ATTR_TUNNEL_TERM_BUM_TX_DROP": "false",
-      "SAI_BRIDGE_PORT_ATTR_RX_DROP": "false",
-      "SAI_BRIDGE_PORT_ATTR_TX_DROP": "false",
+      "SAI_BRIDGE_PORT_ATTR_BRIDGE_PORT_NEXT_HOP_GROUP_ID": {
+        "condition": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": "SAI_BRIDGE_PORT_TYPE_BRIDGE_PORT_NEXT_HOP_GROUP"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_BRIDGE_PORT_ATTR_TUNNEL_TERM_BUM_TX_DROP": {
+        "validonly": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": [
+              "SAI_BRIDGE_PORT_TYPE_PORT",
+              "SAI_BRIDGE_PORT_TYPE_SUB_PORT",
+              "SAI_BRIDGE_PORT_TYPE_TUNNEL"
+            ]
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_BRIDGE_PORT_ATTR_RX_DROP": {
+        "validonly": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": [
+              "SAI_BRIDGE_PORT_TYPE_PORT",
+              "SAI_BRIDGE_PORT_TYPE_SUB_PORT",
+              "SAI_BRIDGE_PORT_TYPE_TUNNEL"
+            ]
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_BRIDGE_PORT_ATTR_TX_DROP": {
+        "validonly": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": [
+              "SAI_BRIDGE_PORT_TYPE_PORT",
+              "SAI_BRIDGE_PORT_TYPE_SUB_PORT",
+              "SAI_BRIDGE_PORT_TYPE_TUNNEL"
+            ]
+          }
+        ],
+        "def_value": "false"
+      },
       "SAI_BRIDGE_PORT_ATTR_BRIDGE_PORT_PROTECTION_NEXT_HOP_GROUP_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_BRIDGE_PORT_ATTR_BRIDGE_PORT_SET_SWITCHOVER": "false"
+      "SAI_BRIDGE_PORT_ATTR_BRIDGE_PORT_SET_SWITCHOVER": {
+        "validonly": [
+          {
+            "SAI_BRIDGE_PORT_ATTR_TYPE": "SAI_BRIDGE_PORT_TYPE_PORT"
+          }
+        ],
+        "def_value": "false"
+      }
     }
   },
   "SAI_OBJECT_TYPE_BUFFER_POOL": {
@@ -594,8 +903,22 @@
       "SAI_BUFFER_PROFILE_ATTR_RESERVED_BUFFER_SIZE": "",
       "SAI_BUFFER_PROFILE_ATTR_BUFFER_SIZE": "",
       "SAI_BUFFER_PROFILE_ATTR_THRESHOLD_MODE": "SAI_BUFFER_PROFILE_THRESHOLD_MODE_STATIC",
-      "SAI_BUFFER_PROFILE_ATTR_SHARED_DYNAMIC_TH": "",
-      "SAI_BUFFER_PROFILE_ATTR_SHARED_STATIC_TH": "",
+      "SAI_BUFFER_PROFILE_ATTR_SHARED_DYNAMIC_TH": {
+        "condition": [
+          {
+            "SAI_BUFFER_PROFILE_ATTR_THRESHOLD_MODE": "SAI_BUFFER_PROFILE_THRESHOLD_MODE_DYNAMIC"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_BUFFER_PROFILE_ATTR_SHARED_STATIC_TH": {
+        "condition": [
+          {
+            "SAI_BUFFER_PROFILE_ATTR_THRESHOLD_MODE": "SAI_BUFFER_PROFILE_THRESHOLD_MODE_STATIC"
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_BUFFER_PROFILE_ATTR_XOFF_TH": "0",
       "SAI_BUFFER_PROFILE_ATTR_XON_TH": "0",
       "SAI_BUFFER_PROFILE_ATTR_XON_OFFSET_TH": "0",
@@ -617,8 +940,22 @@
       "SAI_COUNTER_ATTR_LABEL": "\"\"",
       "SAI_COUNTER_ATTR_ENABLE_PACKET_COUNT": "true",
       "SAI_COUNTER_ATTR_ENABLE_BYTE_COUNT": "true",
-      "SAI_COUNTER_ATTR_OBJECT_TYPE": "SAI_OBJECT_TYPE_PORT",
-      "SAI_COUNTER_ATTR_STAT_ID_LIST": "empty"
+      "SAI_COUNTER_ATTR_OBJECT_TYPE": {
+        "condition": [
+          {
+            "SAI_COUNTER_ATTR_TYPE": "SAI_COUNTER_TYPE_SELECTIVE"
+          }
+        ],
+        "def_value": "SAI_OBJECT_TYPE_PORT"
+      },
+      "SAI_COUNTER_ATTR_STAT_ID_LIST": {
+        "validonly": [
+          {
+            "SAI_COUNTER_ATTR_TYPE": "SAI_COUNTER_TYPE_SELECTIVE"
+          }
+        ],
+        "def_value": "empty"
+      }
     }
   },
   "SAI_OBJECT_TYPE_DEBUG_COUNTER": {
@@ -632,8 +969,28 @@
       "SAI_DEBUG_COUNTER_ATTR_INDEX": "",
       "SAI_DEBUG_COUNTER_ATTR_TYPE": "SAI_DEBUG_COUNTER_TYPE_PORT_IN_DROP_REASONS",
       "SAI_DEBUG_COUNTER_ATTR_BIND_METHOD": "SAI_DEBUG_COUNTER_BIND_METHOD_AUTOMATIC",
-      "SAI_DEBUG_COUNTER_ATTR_IN_DROP_REASON_LIST": "empty",
-      "SAI_DEBUG_COUNTER_ATTR_OUT_DROP_REASON_LIST": "empty"
+      "SAI_DEBUG_COUNTER_ATTR_IN_DROP_REASON_LIST": {
+        "validonly": [
+          {
+            "SAI_DEBUG_COUNTER_ATTR_TYPE": [
+              "SAI_DEBUG_COUNTER_TYPE_PORT_IN_DROP_REASONS",
+              "SAI_DEBUG_COUNTER_TYPE_SWITCH_IN_DROP_REASONS"
+            ]
+          }
+        ],
+        "def_value": "empty"
+      },
+      "SAI_DEBUG_COUNTER_ATTR_OUT_DROP_REASON_LIST": {
+        "validonly": [
+          {
+            "SAI_DEBUG_COUNTER_ATTR_TYPE": [
+              "SAI_DEBUG_COUNTER_TYPE_PORT_OUT_DROP_REASONS",
+              "SAI_DEBUG_COUNTER_TYPE_SWITCH_OUT_DROP_REASONS"
+            ]
+          }
+        ],
+        "def_value": "empty"
+      }
     }
   },
   "SAI_OBJECT_TYPE_DTEL": {
@@ -735,7 +1092,14 @@
       "SAI_FDB_ENTRY_ATTR_META_DATA": "0",
       "SAI_FDB_ENTRY_ATTR_ENDPOINT_IP": "0.0.0.0",
       "SAI_FDB_ENTRY_ATTR_COUNTER_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_FDB_ENTRY_ATTR_ALLOW_MAC_MOVE": "false"
+      "SAI_FDB_ENTRY_ATTR_ALLOW_MAC_MOVE": {
+        "validonly": [
+          {
+            "SAI_FDB_ENTRY_ATTR_TYPE": "SAI_FDB_ENTRY_TYPE_STATIC"
+          }
+        ],
+        "def_value": "false"
+      }
     }
   },
   "SAI_OBJECT_TYPE_FDB_FLUSH": {
@@ -755,8 +1119,32 @@
     ],
     "attributes": {
       "SAI_FINE_GRAINED_HASH_FIELD_ATTR_NATIVE_HASH_FIELD": "SAI_NATIVE_HASH_FIELD_NONE",
-      "SAI_FINE_GRAINED_HASH_FIELD_ATTR_IPV4_MASK": "",
-      "SAI_FINE_GRAINED_HASH_FIELD_ATTR_IPV6_MASK": "",
+      "SAI_FINE_GRAINED_HASH_FIELD_ATTR_IPV4_MASK": {
+        "condition": [
+          {
+            "SAI_FINE_GRAINED_HASH_FIELD_ATTR_NATIVE_HASH_FIELD": [
+              "SAI_NATIVE_HASH_FIELD_SRC_IPV4",
+              "SAI_NATIVE_HASH_FIELD_DST_IPV4",
+              "SAI_NATIVE_HASH_FIELD_INNER_SRC_IPV4",
+              "SAI_NATIVE_HASH_FIELD_INNER_DST_IPV4"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_FINE_GRAINED_HASH_FIELD_ATTR_IPV6_MASK": {
+        "condition": [
+          {
+            "SAI_FINE_GRAINED_HASH_FIELD_ATTR_NATIVE_HASH_FIELD": [
+              "SAI_NATIVE_HASH_FIELD_SRC_IPV6",
+              "SAI_NATIVE_HASH_FIELD_DST_IPV6",
+              "SAI_NATIVE_HASH_FIELD_INNER_SRC_IPV6",
+              "SAI_NATIVE_HASH_FIELD_INNER_DST_IPV6"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_FINE_GRAINED_HASH_FIELD_ATTR_SEQUENCE_ID": "0"
     }
   },
@@ -795,12 +1183,43 @@
     ],
     "attributes": {
       "SAI_HOSTIF_ATTR_TYPE": "SAI_HOSTIF_TYPE_NETDEV",
-      "SAI_HOSTIF_ATTR_OBJ_ID": "",
-      "SAI_HOSTIF_ATTR_NAME": "",
+      "SAI_HOSTIF_ATTR_OBJ_ID": {
+        "condition": [
+          {
+            "SAI_HOSTIF_ATTR_TYPE": "SAI_HOSTIF_TYPE_NETDEV"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_HOSTIF_ATTR_NAME": {
+        "condition": [
+          {
+            "SAI_HOSTIF_ATTR_TYPE": [
+              "SAI_HOSTIF_TYPE_NETDEV",
+              "SAI_HOSTIF_TYPE_GENETLINK"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_HOSTIF_ATTR_OPER_STATUS": "false",
       "SAI_HOSTIF_ATTR_QUEUE": "0",
-      "SAI_HOSTIF_ATTR_VLAN_TAG": "SAI_HOSTIF_VLAN_TAG_STRIP",
-      "SAI_HOSTIF_ATTR_GENETLINK_MCGRP_NAME": ""
+      "SAI_HOSTIF_ATTR_VLAN_TAG": {
+        "validonly": [
+          {
+            "SAI_HOSTIF_ATTR_TYPE": "SAI_HOSTIF_TYPE_NETDEV"
+          }
+        ],
+        "def_value": "SAI_HOSTIF_VLAN_TAG_STRIP"
+      },
+      "SAI_HOSTIF_ATTR_GENETLINK_MCGRP_NAME": {
+        "condition": [
+          {
+            "SAI_HOSTIF_ATTR_TYPE": "SAI_HOSTIF_TYPE_GENETLINK"
+          }
+        ],
+        "def_value": ""
+      }
     }
   },
   "SAI_OBJECT_TYPE_HOSTIF_PACKET": {
@@ -815,7 +1234,14 @@
       "SAI_HOSTIF_PACKET_ATTR_INGRESS_PORT": "",
       "SAI_HOSTIF_PACKET_ATTR_INGRESS_LAG": "",
       "SAI_HOSTIF_PACKET_ATTR_HOSTIF_TX_TYPE": "SAI_HOSTIF_TX_TYPE_PIPELINE_BYPASS",
-      "SAI_HOSTIF_PACKET_ATTR_EGRESS_PORT_OR_LAG": "",
+      "SAI_HOSTIF_PACKET_ATTR_EGRESS_PORT_OR_LAG": {
+        "condition": [
+          {
+            "SAI_HOSTIF_PACKET_ATTR_HOSTIF_TX_TYPE": "SAI_HOSTIF_TX_TYPE_PIPELINE_BYPASS"
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_HOSTIF_PACKET_ATTR_BRIDGE_ID": "",
       "SAI_HOSTIF_PACKET_ATTR_TIMESTAMP": "",
       "SAI_HOSTIF_PACKET_ATTR_EGRESS_QUEUE_INDEX": "0",
@@ -831,10 +1257,43 @@
     ],
     "attributes": {
       "SAI_HOSTIF_TABLE_ENTRY_ATTR_TYPE": "SAI_HOSTIF_TABLE_ENTRY_TYPE_PORT",
-      "SAI_HOSTIF_TABLE_ENTRY_ATTR_OBJ_ID": "",
-      "SAI_HOSTIF_TABLE_ENTRY_ATTR_TRAP_ID": "",
+      "SAI_HOSTIF_TABLE_ENTRY_ATTR_OBJ_ID": {
+        "condition": [
+          {
+            "SAI_HOSTIF_TABLE_ENTRY_ATTR_TYPE": [
+              "SAI_HOSTIF_TABLE_ENTRY_TYPE_PORT",
+              "SAI_HOSTIF_TABLE_ENTRY_TYPE_VLAN",
+              "SAI_HOSTIF_TABLE_ENTRY_TYPE_LAG"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_HOSTIF_TABLE_ENTRY_ATTR_TRAP_ID": {
+        "condition": [
+          {
+            "SAI_HOSTIF_TABLE_ENTRY_ATTR_TYPE": [
+              "SAI_HOSTIF_TABLE_ENTRY_TYPE_PORT",
+              "SAI_HOSTIF_TABLE_ENTRY_TYPE_VLAN",
+              "SAI_HOSTIF_TABLE_ENTRY_TYPE_LAG",
+              "SAI_HOSTIF_TABLE_ENTRY_TYPE_TRAP_ID"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_HOSTIF_TABLE_ENTRY_ATTR_CHANNEL_TYPE": "SAI_HOSTIF_TABLE_ENTRY_CHANNEL_TYPE_CB",
-      "SAI_HOSTIF_TABLE_ENTRY_ATTR_HOST_IF": ""
+      "SAI_HOSTIF_TABLE_ENTRY_ATTR_HOST_IF": {
+        "condition": [
+          {
+            "SAI_HOSTIF_TABLE_ENTRY_ATTR_CHANNEL_TYPE": [
+              "SAI_HOSTIF_TABLE_ENTRY_CHANNEL_TYPE_FD",
+              "SAI_HOSTIF_TABLE_ENTRY_CHANNEL_TYPE_GENETLINK"
+            ]
+          }
+        ],
+        "def_value": ""
+      }
     }
   },
   "SAI_OBJECT_TYPE_HOSTIF_TRAP": {
@@ -847,9 +1306,39 @@
     "attributes": {
       "SAI_HOSTIF_TRAP_ATTR_TRAP_TYPE": "SAI_HOSTIF_TRAP_TYPE_START",
       "SAI_HOSTIF_TRAP_ATTR_PACKET_ACTION": "SAI_PACKET_ACTION_DROP",
-      "SAI_HOSTIF_TRAP_ATTR_TRAP_PRIORITY": "attrvalue SAI_SWITCH_ATTR_ACL_ENTRY_MINIMUM_PRIORITY",
-      "SAI_HOSTIF_TRAP_ATTR_EXCLUDE_PORT_LIST": "empty",
-      "SAI_HOSTIF_TRAP_ATTR_TRAP_GROUP": "attrvalue SAI_SWITCH_ATTR_DEFAULT_TRAP_GROUP",
+      "SAI_HOSTIF_TRAP_ATTR_TRAP_PRIORITY": {
+        "validonly": [
+          {
+            "SAI_HOSTIF_TRAP_ATTR_PACKET_ACTION": [
+              "SAI_PACKET_ACTION_TRAP",
+              "SAI_PACKET_ACTION_COPY"
+            ]
+          }
+        ],
+        "def_value": "attrvalue SAI_SWITCH_ATTR_ACL_ENTRY_MINIMUM_PRIORITY"
+      },
+      "SAI_HOSTIF_TRAP_ATTR_EXCLUDE_PORT_LIST": {
+        "validonly": [
+          {
+            "SAI_HOSTIF_TRAP_ATTR_PACKET_ACTION": [
+              "SAI_PACKET_ACTION_TRAP",
+              "SAI_PACKET_ACTION_COPY"
+            ]
+          }
+        ],
+        "def_value": "empty"
+      },
+      "SAI_HOSTIF_TRAP_ATTR_TRAP_GROUP": {
+        "validonly": [
+          {
+            "SAI_HOSTIF_TRAP_ATTR_PACKET_ACTION": [
+              "SAI_PACKET_ACTION_TRAP",
+              "SAI_PACKET_ACTION_COPY"
+            ]
+          }
+        ],
+        "def_value": "attrvalue SAI_SWITCH_ATTR_DEFAULT_TRAP_GROUP"
+      },
       "SAI_HOSTIF_TRAP_ATTR_MIRROR_SESSION": "empty",
       "SAI_HOSTIF_TRAP_ATTR_COUNTER_ID": "SAI_NULL_OBJECT_ID"
     }
@@ -893,8 +1382,22 @@
     ],
     "attributes": {
       "SAI_ICMP_ECHO_SESSION_ATTR_HW_LOOKUP_VALID": "true",
-      "SAI_ICMP_ECHO_SESSION_ATTR_VIRTUAL_ROUTER": "",
-      "SAI_ICMP_ECHO_SESSION_ATTR_PORT": "",
+      "SAI_ICMP_ECHO_SESSION_ATTR_VIRTUAL_ROUTER": {
+        "condition": [
+          {
+            "SAI_ICMP_ECHO_SESSION_ATTR_HW_LOOKUP_VALID": "true"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_ICMP_ECHO_SESSION_ATTR_PORT": {
+        "condition": [
+          {
+            "SAI_ICMP_ECHO_SESSION_ATTR_HW_LOOKUP_VALID": "false"
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_ICMP_ECHO_SESSION_ATTR_RX_PORT": "SAI_NULL_OBJECT_ID",
       "SAI_ICMP_ECHO_SESSION_ATTR_GUID": "",
       "SAI_ICMP_ECHO_SESSION_ATTR_COOKIE": "",
@@ -903,8 +1406,22 @@
       "SAI_ICMP_ECHO_SESSION_ATTR_TTL": "255",
       "SAI_ICMP_ECHO_SESSION_ATTR_SRC_IP_ADDRESS": "",
       "SAI_ICMP_ECHO_SESSION_ATTR_DST_IP_ADDRESS": "",
-      "SAI_ICMP_ECHO_SESSION_ATTR_SRC_MAC_ADDRESS": "",
-      "SAI_ICMP_ECHO_SESSION_ATTR_DST_MAC_ADDRESS": "",
+      "SAI_ICMP_ECHO_SESSION_ATTR_SRC_MAC_ADDRESS": {
+        "condition": [
+          {
+            "SAI_ICMP_ECHO_SESSION_ATTR_HW_LOOKUP_VALID": "false"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_ICMP_ECHO_SESSION_ATTR_DST_MAC_ADDRESS": {
+        "condition": [
+          {
+            "SAI_ICMP_ECHO_SESSION_ATTR_HW_LOOKUP_VALID": "false"
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_ICMP_ECHO_SESSION_ATTR_TX_INTERVAL": "",
       "SAI_ICMP_ECHO_SESSION_ATTR_RX_INTERVAL": "",
       "SAI_ICMP_ECHO_SESSION_ATTR_SET_NEXT_HOP_GROUP_SWITCHOVER": "false",
@@ -949,8 +1466,22 @@
       "SAI_INSEG_ENTRY_ATTR_TRAP_PRIORITY": "0",
       "SAI_INSEG_ENTRY_ATTR_NEXT_HOP_ID": "SAI_NULL_OBJECT_ID",
       "SAI_INSEG_ENTRY_ATTR_PSC_TYPE": "SAI_INSEG_ENTRY_PSC_TYPE_ELSP",
-      "SAI_INSEG_ENTRY_ATTR_QOS_TC": "0",
-      "SAI_INSEG_ENTRY_ATTR_MPLS_EXP_TO_TC_MAP": "SAI_NULL_OBJECT_ID",
+      "SAI_INSEG_ENTRY_ATTR_QOS_TC": {
+        "validonly": [
+          {
+            "SAI_INSEG_ENTRY_ATTR_PSC_TYPE": "SAI_INSEG_ENTRY_PSC_TYPE_LLSP"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_INSEG_ENTRY_ATTR_MPLS_EXP_TO_TC_MAP": {
+        "validonly": [
+          {
+            "SAI_INSEG_ENTRY_ATTR_PSC_TYPE": "SAI_INSEG_ENTRY_PSC_TYPE_ELSP"
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
       "SAI_INSEG_ENTRY_ATTR_MPLS_EXP_TO_COLOR_MAP": "SAI_NULL_OBJECT_ID",
       "SAI_INSEG_ENTRY_ATTR_POP_TTL_MODE": "SAI_INSEG_ENTRY_POP_TTL_MODE_UNIFORM",
       "SAI_INSEG_ENTRY_ATTR_POP_QOS_MODE": "SAI_INSEG_ENTRY_POP_QOS_MODE_UNIFORM",
@@ -966,7 +1497,14 @@
     ],
     "attributes": {
       "SAI_IPMC_ENTRY_ATTR_PACKET_ACTION": "SAI_PACKET_ACTION_DROP",
-      "SAI_IPMC_ENTRY_ATTR_OUTPUT_GROUP_ID": "SAI_NULL_OBJECT_ID",
+      "SAI_IPMC_ENTRY_ATTR_OUTPUT_GROUP_ID": {
+        "validonly": [
+          {
+            "SAI_IPMC_ENTRY_ATTR_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD"
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
       "SAI_IPMC_ENTRY_ATTR_RPF_GROUP_ID": "",
       "SAI_IPMC_ENTRY_ATTR_COUNTER_ID": "SAI_NULL_OBJECT_ID"
     }
@@ -982,7 +1520,14 @@
       "SAI_IPMC_GROUP_ATTR_IPMC_OUTPUT_COUNT": "",
       "SAI_IPMC_GROUP_ATTR_IPMC_MEMBER_LIST": "",
       "SAI_IPMC_GROUP_ATTR_IPMC_GROUP_WITH_MEMBERS": "false",
-      "SAI_IPMC_GROUP_ATTR_IPMC_OUTPUT_LIST": "empty"
+      "SAI_IPMC_GROUP_ATTR_IPMC_OUTPUT_LIST": {
+        "validonly": [
+          {
+            "SAI_IPMC_GROUP_ATTR_IPMC_GROUP_WITH_MEMBERS": "true"
+          }
+        ],
+        "def_value": "empty"
+      }
     }
   },
   "SAI_OBJECT_TYPE_IPMC_GROUP_MEMBER": {
@@ -1074,15 +1619,84 @@
       "SAI_IPSEC_SA_ATTR_ENCRYPT_KEY": "",
       "SAI_IPSEC_SA_ATTR_SALT": "",
       "SAI_IPSEC_SA_ATTR_AUTH_KEY": "",
-      "SAI_IPSEC_SA_ATTR_IPSEC_REPLAY_PROTECTION_ENABLE": "false",
-      "SAI_IPSEC_SA_ATTR_IPSEC_REPLAY_PROTECTION_WINDOW": "0",
-      "SAI_IPSEC_SA_ATTR_TERM_DST_IP": "",
-      "SAI_IPSEC_SA_ATTR_TERM_VLAN_ID_ENABLE": "false",
-      "SAI_IPSEC_SA_ATTR_TERM_VLAN_ID": "",
-      "SAI_IPSEC_SA_ATTR_TERM_SRC_IP_ENABLE": "false",
-      "SAI_IPSEC_SA_ATTR_TERM_SRC_IP": "",
-      "SAI_IPSEC_SA_ATTR_EGRESS_ESN": "0",
-      "SAI_IPSEC_SA_ATTR_MINIMUM_INGRESS_ESN": "1",
+      "SAI_IPSEC_SA_ATTR_IPSEC_REPLAY_PROTECTION_ENABLE": {
+        "validonly": [
+          {
+            "SAI_IPSEC_SA_ATTR_IPSEC_DIRECTION": "SAI_IPSEC_DIRECTION_INGRESS"
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_IPSEC_SA_ATTR_IPSEC_REPLAY_PROTECTION_WINDOW": {
+        "validonly": [
+          {
+            "SAI_IPSEC_SA_ATTR_IPSEC_DIRECTION": "SAI_IPSEC_DIRECTION_INGRESS"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_IPSEC_SA_ATTR_TERM_DST_IP": {
+        "condition": [
+          {
+            "SAI_IPSEC_SA_ATTR_IPSEC_DIRECTION": "SAI_IPSEC_DIRECTION_INGRESS"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_IPSEC_SA_ATTR_TERM_VLAN_ID_ENABLE": {
+        "validonly": [
+          {
+            "SAI_IPSEC_SA_ATTR_IPSEC_DIRECTION": "SAI_IPSEC_DIRECTION_INGRESS"
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_IPSEC_SA_ATTR_TERM_VLAN_ID": {
+        "condition": [
+          {
+            "SAI_IPSEC_SA_ATTR_IPSEC_DIRECTION": "SAI_IPSEC_DIRECTION_INGRESS"
+          },
+          {
+            "SAI_IPSEC_SA_ATTR_TERM_VLAN_ID_ENABLE": "true"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_IPSEC_SA_ATTR_TERM_SRC_IP_ENABLE": {
+        "validonly": [
+          {
+            "SAI_IPSEC_SA_ATTR_IPSEC_DIRECTION": "SAI_IPSEC_DIRECTION_INGRESS"
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_IPSEC_SA_ATTR_TERM_SRC_IP": {
+        "condition": [
+          {
+            "SAI_IPSEC_SA_ATTR_IPSEC_DIRECTION": "SAI_IPSEC_DIRECTION_INGRESS"
+          },
+          {
+            "SAI_IPSEC_SA_ATTR_TERM_SRC_IP_ENABLE": "true"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_IPSEC_SA_ATTR_EGRESS_ESN": {
+        "validonly": [
+          {
+            "SAI_IPSEC_SA_ATTR_IPSEC_DIRECTION": "SAI_IPSEC_DIRECTION_EGRESS"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_IPSEC_SA_ATTR_MINIMUM_INGRESS_ESN": {
+        "validonly": [
+          {
+            "SAI_IPSEC_SA_ATTR_IPSEC_DIRECTION": "SAI_IPSEC_DIRECTION_INGRESS"
+          }
+        ],
+        "def_value": "1"
+      },
       "SAI_IPSEC_SA_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
       "SAI_IPSEC_SA_ATTR_SELECTIVE_COUNTER_LIST": "empty"
     }
@@ -1120,7 +1734,14 @@
     ],
     "attributes": {
       "SAI_L2MC_ENTRY_ATTR_PACKET_ACTION": "SAI_PACKET_ACTION_DROP",
-      "SAI_L2MC_ENTRY_ATTR_OUTPUT_GROUP_ID": "SAI_NULL_OBJECT_ID"
+      "SAI_L2MC_ENTRY_ATTR_OUTPUT_GROUP_ID": {
+        "validonly": [
+          {
+            "SAI_L2MC_ENTRY_ATTR_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD"
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      }
     }
   },
   "SAI_OBJECT_TYPE_L2MC_GROUP": {
@@ -1281,10 +1902,24 @@
       "SAI_MACSEC_SA_ATTR_SAK": "",
       "SAI_MACSEC_SA_ATTR_SALT": "",
       "SAI_MACSEC_SA_ATTR_AUTH_KEY": "",
-      "SAI_MACSEC_SA_ATTR_CONFIGURED_EGRESS_XPN": "0",
+      "SAI_MACSEC_SA_ATTR_CONFIGURED_EGRESS_XPN": {
+        "validonly": [
+          {
+            "SAI_MACSEC_SA_ATTR_MACSEC_DIRECTION": "SAI_MACSEC_DIRECTION_EGRESS"
+          }
+        ],
+        "def_value": "0"
+      },
       "SAI_MACSEC_SA_ATTR_CURRENT_XPN": "",
       "SAI_MACSEC_SA_ATTR_XPN": "",
-      "SAI_MACSEC_SA_ATTR_MINIMUM_INGRESS_XPN": "1",
+      "SAI_MACSEC_SA_ATTR_MINIMUM_INGRESS_XPN": {
+        "validonly": [
+          {
+            "SAI_MACSEC_SA_ATTR_MACSEC_DIRECTION": "SAI_MACSEC_DIRECTION_INGRESS"
+          }
+        ],
+        "def_value": "1"
+      },
       "SAI_MACSEC_SA_ATTR_MINIMUM_XPN": "",
       "SAI_MACSEC_SA_ATTR_MACSEC_SSCI": ""
     }
@@ -1303,11 +1938,32 @@
       "SAI_MACSEC_SC_ATTR_MACSEC_DIRECTION": "SAI_MACSEC_DIRECTION_EGRESS",
       "SAI_MACSEC_SC_ATTR_FLOW_ID": "",
       "SAI_MACSEC_SC_ATTR_MACSEC_SCI": "",
-      "SAI_MACSEC_SC_ATTR_MACSEC_EXPLICIT_SCI_ENABLE": "false",
+      "SAI_MACSEC_SC_ATTR_MACSEC_EXPLICIT_SCI_ENABLE": {
+        "validonly": [
+          {
+            "SAI_MACSEC_SC_ATTR_MACSEC_DIRECTION": "SAI_MACSEC_DIRECTION_EGRESS"
+          }
+        ],
+        "def_value": "false"
+      },
       "SAI_MACSEC_SC_ATTR_MACSEC_SECTAG_OFFSET": "0",
       "SAI_MACSEC_SC_ATTR_ACTIVE_EGRESS_SA_ID": "",
-      "SAI_MACSEC_SC_ATTR_MACSEC_REPLAY_PROTECTION_ENABLE": "true",
-      "SAI_MACSEC_SC_ATTR_MACSEC_REPLAY_PROTECTION_WINDOW": "0",
+      "SAI_MACSEC_SC_ATTR_MACSEC_REPLAY_PROTECTION_ENABLE": {
+        "validonly": [
+          {
+            "SAI_MACSEC_SC_ATTR_MACSEC_DIRECTION": "SAI_MACSEC_DIRECTION_INGRESS"
+          }
+        ],
+        "def_value": "true"
+      },
+      "SAI_MACSEC_SC_ATTR_MACSEC_REPLAY_PROTECTION_WINDOW": {
+        "validonly": [
+          {
+            "SAI_MACSEC_SC_ATTR_MACSEC_DIRECTION": "SAI_MACSEC_DIRECTION_INGRESS"
+          }
+        ],
+        "def_value": "0"
+      },
       "SAI_MACSEC_SC_ATTR_SA_LIST": "",
       "SAI_MACSEC_SC_ATTR_MACSEC_CIPHER_SUITE": "SAI_MACSEC_CIPHER_SUITE_GCM_AES_128",
       "SAI_MACSEC_SC_ATTR_ENCRYPTION_ENABLE": "true",
@@ -1336,33 +1992,169 @@
     ],
     "attributes": {
       "SAI_MIRROR_SESSION_ATTR_TYPE": "SAI_MIRROR_SESSION_TYPE_LOCAL",
-      "SAI_MIRROR_SESSION_ATTR_MONITOR_PORT": "",
+      "SAI_MIRROR_SESSION_ATTR_MONITOR_PORT": {
+        "condition": [
+          {
+            "SAI_MIRROR_SESSION_ATTR_MONITOR_PORTLIST_VALID": "false"
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_MIRROR_SESSION_ATTR_TRUNCATE_SIZE": "0",
       "SAI_MIRROR_SESSION_ATTR_SAMPLE_RATE": "1",
       "SAI_MIRROR_SESSION_ATTR_CONGESTION_MODE": "SAI_MIRROR_SESSION_CONGESTION_MODE_INDEPENDENT",
       "SAI_MIRROR_SESSION_ATTR_TC": "0",
-      "SAI_MIRROR_SESSION_ATTR_VLAN_TPID": "0x8100",
-      "SAI_MIRROR_SESSION_ATTR_VLAN_ID": "0",
-      "SAI_MIRROR_SESSION_ATTR_VLAN_PRI": "0",
-      "SAI_MIRROR_SESSION_ATTR_VLAN_CFI": "0",
-      "SAI_MIRROR_SESSION_ATTR_VLAN_HEADER_VALID": "false",
-      "SAI_MIRROR_SESSION_ATTR_ERSPAN_ENCAPSULATION_TYPE": "SAI_ERSPAN_ENCAPSULATION_TYPE_MIRROR_L3_GRE_TUNNEL",
-      "SAI_MIRROR_SESSION_ATTR_IPHDR_VERSION": "",
-      "SAI_MIRROR_SESSION_ATTR_TOS": "",
+      "SAI_MIRROR_SESSION_ATTR_VLAN_TPID": {
+        "validonly": [
+          {
+            "_raw": "SAI_MIRROR_SESSION_ATTR_VLAN_HEADER_VALID == true or SAI_MIRROR_SESSION_ATTR_TYPE == SAI_MIRROR_SESSION_TYPE_REMOTE"
+          }
+        ],
+        "def_value": "0x8100"
+      },
+      "SAI_MIRROR_SESSION_ATTR_VLAN_ID": {
+        "validonly": [
+          {
+            "_raw": "SAI_MIRROR_SESSION_ATTR_VLAN_HEADER_VALID == true or SAI_MIRROR_SESSION_ATTR_TYPE == SAI_MIRROR_SESSION_TYPE_REMOTE"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_MIRROR_SESSION_ATTR_VLAN_PRI": {
+        "validonly": [
+          {
+            "_raw": "SAI_MIRROR_SESSION_ATTR_VLAN_HEADER_VALID == true or SAI_MIRROR_SESSION_ATTR_TYPE == SAI_MIRROR_SESSION_TYPE_REMOTE"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_MIRROR_SESSION_ATTR_VLAN_CFI": {
+        "validonly": [
+          {
+            "_raw": "SAI_MIRROR_SESSION_ATTR_VLAN_HEADER_VALID == true or SAI_MIRROR_SESSION_ATTR_TYPE == SAI_MIRROR_SESSION_TYPE_REMOTE"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_MIRROR_SESSION_ATTR_VLAN_HEADER_VALID": {
+        "validonly": [
+          {
+            "SAI_MIRROR_SESSION_ATTR_TYPE": "SAI_MIRROR_SESSION_TYPE_ENHANCED_REMOTE"
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_MIRROR_SESSION_ATTR_ERSPAN_ENCAPSULATION_TYPE": {
+        "condition": [
+          {
+            "SAI_MIRROR_SESSION_ATTR_TYPE": "SAI_MIRROR_SESSION_TYPE_ENHANCED_REMOTE"
+          }
+        ],
+        "def_value": "SAI_ERSPAN_ENCAPSULATION_TYPE_MIRROR_L3_GRE_TUNNEL"
+      },
+      "SAI_MIRROR_SESSION_ATTR_IPHDR_VERSION": {
+        "condition": [
+          {
+            "SAI_MIRROR_SESSION_ATTR_TYPE": "SAI_MIRROR_SESSION_TYPE_ENHANCED_REMOTE"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_MIRROR_SESSION_ATTR_TOS": {
+        "condition": [
+          {
+            "SAI_MIRROR_SESSION_ATTR_TYPE": "SAI_MIRROR_SESSION_TYPE_ENHANCED_REMOTE"
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_MIRROR_SESSION_ATTR_TTL": "255",
-      "SAI_MIRROR_SESSION_ATTR_SRC_IP_ADDRESS": "",
-      "SAI_MIRROR_SESSION_ATTR_DST_IP_ADDRESS": "",
-      "SAI_MIRROR_SESSION_ATTR_SRC_MAC_ADDRESS": "",
-      "SAI_MIRROR_SESSION_ATTR_DST_MAC_ADDRESS": "",
-      "SAI_MIRROR_SESSION_ATTR_GRE_PROTOCOL_TYPE": "",
+      "SAI_MIRROR_SESSION_ATTR_SRC_IP_ADDRESS": {
+        "condition": [
+          {
+            "SAI_MIRROR_SESSION_ATTR_TYPE": "SAI_MIRROR_SESSION_TYPE_ENHANCED_REMOTE"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_MIRROR_SESSION_ATTR_DST_IP_ADDRESS": {
+        "condition": [
+          {
+            "SAI_MIRROR_SESSION_ATTR_TYPE": "SAI_MIRROR_SESSION_TYPE_ENHANCED_REMOTE"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_MIRROR_SESSION_ATTR_SRC_MAC_ADDRESS": {
+        "condition": [
+          {
+            "SAI_MIRROR_SESSION_ATTR_TYPE": "SAI_MIRROR_SESSION_TYPE_ENHANCED_REMOTE"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_MIRROR_SESSION_ATTR_DST_MAC_ADDRESS": {
+        "condition": [
+          {
+            "SAI_MIRROR_SESSION_ATTR_TYPE": "SAI_MIRROR_SESSION_TYPE_ENHANCED_REMOTE"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_MIRROR_SESSION_ATTR_GRE_PROTOCOL_TYPE": {
+        "condition": [
+          {
+            "SAI_MIRROR_SESSION_ATTR_TYPE": "SAI_MIRROR_SESSION_TYPE_ENHANCED_REMOTE"
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_MIRROR_SESSION_ATTR_MONITOR_PORTLIST_VALID": "false",
-      "SAI_MIRROR_SESSION_ATTR_MONITOR_PORTLIST": "",
+      "SAI_MIRROR_SESSION_ATTR_MONITOR_PORTLIST": {
+        "condition": [
+          {
+            "SAI_MIRROR_SESSION_ATTR_MONITOR_PORTLIST_VALID": "true"
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_MIRROR_SESSION_ATTR_POLICER": "SAI_NULL_OBJECT_ID",
-      "SAI_MIRROR_SESSION_ATTR_UDP_SRC_PORT": "",
-      "SAI_MIRROR_SESSION_ATTR_UDP_DST_PORT": "",
+      "SAI_MIRROR_SESSION_ATTR_UDP_SRC_PORT": {
+        "condition": [
+          {
+            "SAI_MIRROR_SESSION_ATTR_TYPE": "SAI_MIRROR_SESSION_TYPE_SFLOW"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_MIRROR_SESSION_ATTR_UDP_DST_PORT": {
+        "condition": [
+          {
+            "SAI_MIRROR_SESSION_ATTR_TYPE": "SAI_MIRROR_SESSION_TYPE_SFLOW"
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_MIRROR_SESSION_ATTR_COUNTER_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_MIRROR_SESSION_ATTR_ERSPAN_SESSION_ID": "0",
-      "SAI_MIRROR_SESSION_ATTR_GRE_HEADER_FIRST_16BIT": "0",
+      "SAI_MIRROR_SESSION_ATTR_ERSPAN_SESSION_ID": {
+        "validonly": [
+          {
+            "SAI_MIRROR_SESSION_ATTR_ERSPAN_ENCAPSULATION_TYPE": [
+              "SAI_ERSPAN_ENCAPSULATION_TYPE_II",
+              "SAI_ERSPAN_ENCAPSULATION_TYPE_III"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_MIRROR_SESSION_ATTR_GRE_HEADER_FIRST_16BIT": {
+        "validonly": [
+          {
+            "SAI_MIRROR_SESSION_ATTR_TYPE": "SAI_MIRROR_SESSION_TYPE_ENHANCED_REMOTE"
+          }
+        ],
+        "def_value": "0"
+      },
       "SAI_MIRROR_SESSION_ATTR_LABEL": "\"\""
     }
   },
@@ -1394,12 +2186,63 @@
     ],
     "attributes": {
       "SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR": "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_E",
-      "SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR_FLAVOR": "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_FLAVOR_NONE",
+      "SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR_FLAVOR": {
+        "validonly": [
+          {
+            "SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR": [
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_E",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_X",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_T",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UN",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UA"
+            ]
+          }
+        ],
+        "def_value": "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_FLAVOR_NONE"
+      },
       "SAI_MY_SID_ENTRY_ATTR_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD",
       "SAI_MY_SID_ENTRY_ATTR_TRAP_PRIORITY": "0",
-      "SAI_MY_SID_ENTRY_ATTR_NEXT_HOP_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_MY_SID_ENTRY_ATTR_TUNNEL_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_MY_SID_ENTRY_ATTR_VRF": "SAI_NULL_OBJECT_ID",
+      "SAI_MY_SID_ENTRY_ATTR_NEXT_HOP_ID": {
+        "validonly": [
+          {
+            "SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR": [
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_X",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DX4",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DX6",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_B6_ENCAPS",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_B6_ENCAPS_RED",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_B6_INSERT",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_B6_INSERT_RED",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UA"
+            ]
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_MY_SID_ENTRY_ATTR_TUNNEL_ID": {
+        "validonly": [
+          {
+            "_raw": "SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR_FLAVOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_FLAVOR_USD or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR_FLAVOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_FLAVOR_USD_AND_USP or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR_FLAVOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_FLAVOR_PSP_AND_USD or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR_FLAVOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_FLAVOR_PSP_AND_USP_AND_USD or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DT4 or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DT6 or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DT46 or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UDT4 or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UDT6 or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UDT46"
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_MY_SID_ENTRY_ATTR_VRF": {
+        "validonly": [
+          {
+            "SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR": [
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_T",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DT4",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DT6",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DT46",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UDT4",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UDT6",
+              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UDT46"
+            ]
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
       "SAI_MY_SID_ENTRY_ATTR_COUNTER_ID": "SAI_NULL_OBJECT_ID"
     }
   },
@@ -1416,11 +2259,61 @@
     ],
     "attributes": {
       "SAI_NAT_ENTRY_ATTR_NAT_TYPE": "SAI_NAT_TYPE_NONE",
-      "SAI_NAT_ENTRY_ATTR_SRC_IP": "0.0.0.0",
-      "SAI_NAT_ENTRY_ATTR_SRC_IP_MASK": "0.0.0.0",
-      "SAI_NAT_ENTRY_ATTR_VR_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_NAT_ENTRY_ATTR_DST_IP": "0.0.0.0",
-      "SAI_NAT_ENTRY_ATTR_DST_IP_MASK": "0.0.0.0",
+      "SAI_NAT_ENTRY_ATTR_SRC_IP": {
+        "validonly": [
+          {
+            "SAI_NAT_ENTRY_ATTR_NAT_TYPE": [
+              "SAI_NAT_TYPE_SOURCE_NAT",
+              "SAI_NAT_TYPE_DOUBLE_NAT"
+            ]
+          }
+        ],
+        "def_value": "0.0.0.0"
+      },
+      "SAI_NAT_ENTRY_ATTR_SRC_IP_MASK": {
+        "validonly": [
+          {
+            "SAI_NAT_ENTRY_ATTR_NAT_TYPE": [
+              "SAI_NAT_TYPE_SOURCE_NAT",
+              "SAI_NAT_TYPE_DOUBLE_NAT"
+            ]
+          }
+        ],
+        "def_value": "0.0.0.0"
+      },
+      "SAI_NAT_ENTRY_ATTR_VR_ID": {
+        "validonly": [
+          {
+            "SAI_NAT_ENTRY_ATTR_NAT_TYPE": [
+              "SAI_NAT_TYPE_DESTINATION_NAT",
+              "SAI_NAT_TYPE_DOUBLE_NAT"
+            ]
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_NAT_ENTRY_ATTR_DST_IP": {
+        "validonly": [
+          {
+            "SAI_NAT_ENTRY_ATTR_NAT_TYPE": [
+              "SAI_NAT_TYPE_DESTINATION_NAT",
+              "SAI_NAT_TYPE_DOUBLE_NAT"
+            ]
+          }
+        ],
+        "def_value": "0.0.0.0"
+      },
+      "SAI_NAT_ENTRY_ATTR_DST_IP_MASK": {
+        "validonly": [
+          {
+            "SAI_NAT_ENTRY_ATTR_NAT_TYPE": [
+              "SAI_NAT_TYPE_DESTINATION_NAT",
+              "SAI_NAT_TYPE_DOUBLE_NAT"
+            ]
+          }
+        ],
+        "def_value": "0.0.0.0"
+      },
       "SAI_NAT_ENTRY_ATTR_L4_SRC_PORT": "0",
       "SAI_NAT_ENTRY_ATTR_L4_DST_PORT": "0",
       "SAI_NAT_ENTRY_ATTR_ENABLE_PACKET_COUNT": "false",
@@ -1484,21 +2377,150 @@
     ],
     "attributes": {
       "SAI_NEXT_HOP_ATTR_TYPE": "SAI_NEXT_HOP_TYPE_IP",
-      "SAI_NEXT_HOP_ATTR_IP": "",
-      "SAI_NEXT_HOP_ATTR_ROUTER_INTERFACE_ID": "",
-      "SAI_NEXT_HOP_ATTR_TUNNEL_ID": "",
-      "SAI_NEXT_HOP_ATTR_TUNNEL_VNI": "0",
-      "SAI_NEXT_HOP_ATTR_TUNNEL_MAC": "attrvalue SAI_SWITCH_ATTR_VXLAN_DEFAULT_ROUTER_MAC",
-      "SAI_NEXT_HOP_ATTR_SRV6_SIDLIST_ID": "",
-      "SAI_NEXT_HOP_ATTR_LABELSTACK": "",
+      "SAI_NEXT_HOP_ATTR_IP": {
+        "condition": [
+          {
+            "SAI_NEXT_HOP_ATTR_TYPE": [
+              "SAI_NEXT_HOP_TYPE_IP",
+              "SAI_NEXT_HOP_TYPE_MPLS",
+              "SAI_NEXT_HOP_TYPE_TUNNEL_ENCAP",
+              "SAI_NEXT_HOP_TYPE_IPMC",
+              "SAI_NEXT_HOP_TYPE_BRIDGE_PORT"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_NEXT_HOP_ATTR_ROUTER_INTERFACE_ID": {
+        "condition": [
+          {
+            "SAI_NEXT_HOP_ATTR_TYPE": [
+              "SAI_NEXT_HOP_TYPE_IP",
+              "SAI_NEXT_HOP_TYPE_MPLS",
+              "SAI_NEXT_HOP_TYPE_IPMC"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_NEXT_HOP_ATTR_TUNNEL_ID": {
+        "condition": [
+          {
+            "SAI_NEXT_HOP_ATTR_TYPE": [
+              "SAI_NEXT_HOP_TYPE_TUNNEL_ENCAP",
+              "SAI_NEXT_HOP_TYPE_SRV6_SIDLIST",
+              "SAI_NEXT_HOP_TYPE_BRIDGE_PORT"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_NEXT_HOP_ATTR_TUNNEL_VNI": {
+        "validonly": [
+          {
+            "SAI_NEXT_HOP_ATTR_TYPE": "SAI_NEXT_HOP_TYPE_TUNNEL_ENCAP"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_NEXT_HOP_ATTR_TUNNEL_MAC": {
+        "validonly": [
+          {
+            "SAI_NEXT_HOP_ATTR_TYPE": "SAI_NEXT_HOP_TYPE_TUNNEL_ENCAP"
+          }
+        ],
+        "def_value": "attrvalue SAI_SWITCH_ATTR_VXLAN_DEFAULT_ROUTER_MAC"
+      },
+      "SAI_NEXT_HOP_ATTR_SRV6_SIDLIST_ID": {
+        "condition": [
+          {
+            "SAI_NEXT_HOP_ATTR_TYPE": "SAI_NEXT_HOP_TYPE_SRV6_SIDLIST"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_NEXT_HOP_ATTR_LABELSTACK": {
+        "condition": [
+          {
+            "SAI_NEXT_HOP_ATTR_TYPE": "SAI_NEXT_HOP_TYPE_MPLS"
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_NEXT_HOP_ATTR_COUNTER_ID": "SAI_NULL_OBJECT_ID",
       "SAI_NEXT_HOP_ATTR_DISABLE_DECREMENT_TTL": "false",
-      "SAI_NEXT_HOP_ATTR_OUTSEG_TYPE": "SAI_OUTSEG_TYPE_SWAP",
-      "SAI_NEXT_HOP_ATTR_OUTSEG_TTL_MODE": "SAI_OUTSEG_TTL_MODE_UNIFORM",
-      "SAI_NEXT_HOP_ATTR_OUTSEG_TTL_VALUE": "255",
-      "SAI_NEXT_HOP_ATTR_OUTSEG_EXP_MODE": "SAI_OUTSEG_EXP_MODE_UNIFORM",
-      "SAI_NEXT_HOP_ATTR_OUTSEG_EXP_VALUE": "0",
-      "SAI_NEXT_HOP_ATTR_QOS_TC_AND_COLOR_TO_MPLS_EXP_MAP": "SAI_NULL_OBJECT_ID",
+      "SAI_NEXT_HOP_ATTR_OUTSEG_TYPE": {
+        "validonly": [
+          {
+            "SAI_NEXT_HOP_ATTR_TYPE": "SAI_NEXT_HOP_TYPE_MPLS"
+          }
+        ],
+        "def_value": "SAI_OUTSEG_TYPE_SWAP"
+      },
+      "SAI_NEXT_HOP_ATTR_OUTSEG_TTL_MODE": {
+        "validonly": [
+          {
+            "SAI_NEXT_HOP_ATTR_TYPE": "SAI_NEXT_HOP_TYPE_MPLS"
+          },
+          {
+            "SAI_NEXT_HOP_ATTR_OUTSEG_TYPE": "SAI_OUTSEG_TYPE_PUSH"
+          }
+        ],
+        "def_value": "SAI_OUTSEG_TTL_MODE_UNIFORM"
+      },
+      "SAI_NEXT_HOP_ATTR_OUTSEG_TTL_VALUE": {
+        "validonly": [
+          {
+            "SAI_NEXT_HOP_ATTR_TYPE": "SAI_NEXT_HOP_TYPE_MPLS"
+          },
+          {
+            "SAI_NEXT_HOP_ATTR_OUTSEG_TYPE": "SAI_OUTSEG_TYPE_PUSH"
+          },
+          {
+            "SAI_NEXT_HOP_ATTR_OUTSEG_TTL_MODE": "SAI_OUTSEG_TTL_MODE_PIPE"
+          }
+        ],
+        "def_value": "255"
+      },
+      "SAI_NEXT_HOP_ATTR_OUTSEG_EXP_MODE": {
+        "validonly": [
+          {
+            "SAI_NEXT_HOP_ATTR_TYPE": "SAI_NEXT_HOP_TYPE_MPLS"
+          },
+          {
+            "SAI_NEXT_HOP_ATTR_OUTSEG_TYPE": "SAI_OUTSEG_TYPE_PUSH"
+          }
+        ],
+        "def_value": "SAI_OUTSEG_EXP_MODE_UNIFORM"
+      },
+      "SAI_NEXT_HOP_ATTR_OUTSEG_EXP_VALUE": {
+        "validonly": [
+          {
+            "SAI_NEXT_HOP_ATTR_TYPE": "SAI_NEXT_HOP_TYPE_MPLS"
+          },
+          {
+            "SAI_NEXT_HOP_ATTR_OUTSEG_TYPE": "SAI_OUTSEG_TYPE_PUSH"
+          },
+          {
+            "SAI_NEXT_HOP_ATTR_OUTSEG_TTL_MODE": "SAI_OUTSEG_TTL_MODE_PIPE"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_NEXT_HOP_ATTR_QOS_TC_AND_COLOR_TO_MPLS_EXP_MAP": {
+        "validonly": [
+          {
+            "SAI_NEXT_HOP_ATTR_TYPE": "SAI_NEXT_HOP_TYPE_MPLS"
+          },
+          {
+            "SAI_NEXT_HOP_ATTR_OUTSEG_TYPE": "SAI_OUTSEG_TYPE_PUSH"
+          },
+          {
+            "SAI_NEXT_HOP_ATTR_OUTSEG_TTL_MODE": "SAI_OUTSEG_TTL_MODE_UNIFORM"
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
       "SAI_NEXT_HOP_ATTR_DISABLE_SRC_MAC_REWRITE": "false",
       "SAI_NEXT_HOP_ATTR_DISABLE_DST_MAC_REWRITE": "false",
       "SAI_NEXT_HOP_ATTR_DISABLE_VLAN_REWRITE": "false",
@@ -1516,22 +2538,94 @@
       "SAI_NEXT_HOP_GROUP_ATTR_NEXT_HOP_COUNT": "",
       "SAI_NEXT_HOP_GROUP_ATTR_NEXT_HOP_MEMBER_LIST": "",
       "SAI_NEXT_HOP_GROUP_ATTR_TYPE": "SAI_NEXT_HOP_GROUP_TYPE_DYNAMIC_UNORDERED_ECMP",
-      "SAI_NEXT_HOP_GROUP_ATTR_SET_SWITCHOVER": "false",
+      "SAI_NEXT_HOP_GROUP_ATTR_SET_SWITCHOVER": {
+        "validonly": [
+          {
+            "SAI_NEXT_HOP_GROUP_ATTR_TYPE": "SAI_NEXT_HOP_GROUP_TYPE_PROTECTION"
+          }
+        ],
+        "def_value": "false"
+      },
       "SAI_NEXT_HOP_GROUP_ATTR_COUNTER_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_NEXT_HOP_GROUP_ATTR_CONFIGURED_SIZE": "0",
+      "SAI_NEXT_HOP_GROUP_ATTR_CONFIGURED_SIZE": {
+        "validonly": [
+          {
+            "SAI_NEXT_HOP_GROUP_ATTR_TYPE": [
+              "SAI_NEXT_HOP_GROUP_TYPE_FINE_GRAIN_ECMP",
+              "SAI_NEXT_HOP_GROUP_TYPE_CLASS_BASED"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
       "SAI_NEXT_HOP_GROUP_ATTR_REAL_SIZE": "",
-      "SAI_NEXT_HOP_GROUP_ATTR_SELECTION_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_NEXT_HOP_GROUP_ATTR_HIERARCHICAL_NEXTHOP": "true",
+      "SAI_NEXT_HOP_GROUP_ATTR_SELECTION_MAP": {
+        "validonly": [
+          {
+            "SAI_NEXT_HOP_GROUP_ATTR_TYPE": "SAI_NEXT_HOP_GROUP_TYPE_CLASS_BASED"
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_NEXT_HOP_GROUP_ATTR_HIERARCHICAL_NEXTHOP": {
+        "validonly": [
+          {
+            "SAI_NEXT_HOP_GROUP_ATTR_TYPE": [
+              "SAI_NEXT_HOP_GROUP_TYPE_DYNAMIC_UNORDERED_ECMP",
+              "SAI_NEXT_HOP_GROUP_TYPE_DYNAMIC_ORDERED_ECMP"
+            ]
+          }
+        ],
+        "def_value": "true"
+      },
       "SAI_NEXT_HOP_GROUP_ATTR_ARS_OBJECT_ID": "SAI_NULL_OBJECT_ID",
       "SAI_NEXT_HOP_GROUP_ATTR_ARS_PACKET_DROPS": "",
       "SAI_NEXT_HOP_GROUP_ATTR_ARS_NEXT_HOP_REASSIGNMENTS": "",
       "SAI_NEXT_HOP_GROUP_ATTR_ARS_PORT_REASSIGNMENTS": "",
-      "SAI_NEXT_HOP_GROUP_ATTR_NEXT_HOP_LIST": "empty",
-      "SAI_NEXT_HOP_GROUP_ATTR_NEXT_HOP_MEMBER_WEIGHT_LIST": "empty",
-      "SAI_NEXT_HOP_GROUP_ATTR_NEXT_HOP_MEMBER_COUNTER_LIST": "empty",
-      "SAI_NEXT_HOP_GROUP_ATTR_HASH_ALGORITHM": "SAI_HASH_ALGORITHM_NONE",
+      "SAI_NEXT_HOP_GROUP_ATTR_NEXT_HOP_LIST": {
+        "validonly": [
+          {
+            "SAI_NEXT_HOP_GROUP_ATTR_TYPE": "SAI_NEXT_HOP_GROUP_TYPE_ECMP_WITH_MEMBERS"
+          }
+        ],
+        "def_value": "empty"
+      },
+      "SAI_NEXT_HOP_GROUP_ATTR_NEXT_HOP_MEMBER_WEIGHT_LIST": {
+        "validonly": [
+          {
+            "SAI_NEXT_HOP_GROUP_ATTR_TYPE": "SAI_NEXT_HOP_GROUP_TYPE_ECMP_WITH_MEMBERS"
+          }
+        ],
+        "def_value": "empty"
+      },
+      "SAI_NEXT_HOP_GROUP_ATTR_NEXT_HOP_MEMBER_COUNTER_LIST": {
+        "validonly": [
+          {
+            "SAI_NEXT_HOP_GROUP_ATTR_TYPE": "SAI_NEXT_HOP_GROUP_TYPE_ECMP_WITH_MEMBERS"
+          }
+        ],
+        "def_value": "empty"
+      },
+      "SAI_NEXT_HOP_GROUP_ATTR_HASH_ALGORITHM": {
+        "validonly": [
+          {
+            "SAI_NEXT_HOP_GROUP_ATTR_TYPE": [
+              "SAI_NEXT_HOP_GROUP_TYPE_DYNAMIC_UNORDERED_ECMP",
+              "SAI_NEXT_HOP_GROUP_TYPE_DYNAMIC_ORDERED_ECMP"
+            ]
+          }
+        ],
+        "def_value": "SAI_HASH_ALGORITHM_NONE"
+      },
       "SAI_NEXT_HOP_GROUP_ATTR_LABEL": "\"\"",
-      "SAI_NEXT_HOP_GROUP_ATTR_ADMIN_ROLE": "SAI_NEXT_HOP_GROUP_ADMIN_ROLE_AUTO"
+      "SAI_NEXT_HOP_GROUP_ATTR_ADMIN_ROLE": {
+        "validonly": [
+          {
+            "SAI_NEXT_HOP_GROUP_ATTR_TYPE": "SAI_NEXT_HOP_GROUP_TYPE_HW_PROTECTION"
+          }
+        ],
+        "def_value": "SAI_NEXT_HOP_GROUP_ADMIN_ROLE_AUTO"
+      }
     }
   },
   "SAI_OBJECT_TYPE_NEXT_HOP_GROUP_MAP": {
@@ -1634,7 +2728,14 @@
       "SAI_POLICER_ATTR_CBS": "0",
       "SAI_POLICER_ATTR_CIR": "0",
       "SAI_POLICER_ATTR_PBS": "0",
-      "SAI_POLICER_ATTR_PIR": "0",
+      "SAI_POLICER_ATTR_PIR": {
+        "validonly": [
+          {
+            "SAI_POLICER_ATTR_MODE": "SAI_POLICER_MODE_TR_TCM"
+          }
+        ],
+        "def_value": "0"
+      },
       "SAI_POLICER_ATTR_GREEN_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD",
       "SAI_POLICER_ATTR_YELLOW_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD",
       "SAI_POLICER_ATTR_RED_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD",
@@ -1700,22 +2801,60 @@
       "SAI_PORT_ATTR_ADMIN_STATE": "false",
       "SAI_PORT_ATTR_MEDIA_TYPE": "SAI_PORT_MEDIA_TYPE_NOT_PRESENT",
       "SAI_PORT_ATTR_ADVERTISED_SPEED": "empty",
-      "SAI_PORT_ATTR_ADVERTISED_FEC_MODE": "empty",
-      "SAI_PORT_ATTR_ADVERTISED_FEC_MODE_EXTENDED": "empty",
+      "SAI_PORT_ATTR_ADVERTISED_FEC_MODE": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_USE_EXTENDED_FEC": "false"
+          }
+        ],
+        "def_value": "empty"
+      },
+      "SAI_PORT_ATTR_ADVERTISED_FEC_MODE_EXTENDED": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_USE_EXTENDED_FEC": "true"
+          }
+        ],
+        "def_value": "empty"
+      },
       "SAI_PORT_ATTR_ADVERTISED_HALF_DUPLEX_SPEED": "empty",
       "SAI_PORT_ATTR_ADVERTISED_AUTO_NEG_MODE": "false",
       "SAI_PORT_ATTR_ADVERTISED_FLOW_CONTROL_MODE": "SAI_PORT_FLOW_CONTROL_MODE_DISABLE",
       "SAI_PORT_ATTR_ADVERTISED_ASYMMETRIC_PAUSE_MODE": "false",
       "SAI_PORT_ATTR_ADVERTISED_MEDIA_TYPE": "SAI_PORT_MEDIA_TYPE_UNKNOWN",
-      "SAI_PORT_ATTR_ADVERTISED_OUI_CODE": "0x6A737D",
+      "SAI_PORT_ATTR_ADVERTISED_OUI_CODE": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_SPEED": [
+              "25000",
+              "50000"
+            ]
+          }
+        ],
+        "def_value": "0x6A737D"
+      },
       "SAI_PORT_ATTR_PORT_VLAN_ID": "1",
       "SAI_PORT_ATTR_DEFAULT_VLAN_PRIORITY": "0",
       "SAI_PORT_ATTR_DROP_UNTAGGED": "false",
       "SAI_PORT_ATTR_DROP_TAGGED": "false",
       "SAI_PORT_ATTR_INTERNAL_LOOPBACK_MODE": "SAI_PORT_INTERNAL_LOOPBACK_MODE_NONE",
       "SAI_PORT_ATTR_USE_EXTENDED_FEC": "false",
-      "SAI_PORT_ATTR_FEC_MODE": "SAI_PORT_FEC_MODE_NONE",
-      "SAI_PORT_ATTR_FEC_MODE_EXTENDED": "SAI_PORT_FEC_MODE_EXTENDED_NONE",
+      "SAI_PORT_ATTR_FEC_MODE": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_USE_EXTENDED_FEC": "false"
+          }
+        ],
+        "def_value": "SAI_PORT_FEC_MODE_NONE"
+      },
+      "SAI_PORT_ATTR_FEC_MODE_EXTENDED": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_USE_EXTENDED_FEC": "true"
+          }
+        ],
+        "def_value": "SAI_PORT_FEC_MODE_EXTENDED_NONE"
+      },
       "SAI_PORT_ATTR_UPDATE_DSCP": "false",
       "SAI_PORT_ATTR_MTU": "1514",
       "SAI_PORT_ATTR_FLOOD_STORM_CONTROL_POLICER_ID": "SAI_NULL_OBJECT_ID",
@@ -1749,9 +2888,30 @@
       "SAI_PORT_ATTR_QOS_INGRESS_BUFFER_PROFILE_LIST": "empty",
       "SAI_PORT_ATTR_QOS_EGRESS_BUFFER_PROFILE_LIST": "empty",
       "SAI_PORT_ATTR_PRIORITY_FLOW_CONTROL_MODE": "SAI_PORT_PRIORITY_FLOW_CONTROL_MODE_COMBINED",
-      "SAI_PORT_ATTR_PRIORITY_FLOW_CONTROL": "0",
-      "SAI_PORT_ATTR_PRIORITY_FLOW_CONTROL_RX": "0",
-      "SAI_PORT_ATTR_PRIORITY_FLOW_CONTROL_TX": "0",
+      "SAI_PORT_ATTR_PRIORITY_FLOW_CONTROL": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_PRIORITY_FLOW_CONTROL_MODE": "SAI_PORT_PRIORITY_FLOW_CONTROL_MODE_COMBINED"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_PORT_ATTR_PRIORITY_FLOW_CONTROL_RX": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_PRIORITY_FLOW_CONTROL_MODE": "SAI_PORT_PRIORITY_FLOW_CONTROL_MODE_SEPARATE"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_PORT_ATTR_PRIORITY_FLOW_CONTROL_TX": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_PRIORITY_FLOW_CONTROL_MODE": "SAI_PORT_PRIORITY_FLOW_CONTROL_MODE_SEPARATE"
+          }
+        ],
+        "def_value": "0"
+      },
       "SAI_PORT_ATTR_META_DATA": "0",
       "SAI_PORT_ATTR_EGRESS_BLOCK_PORT_LIST": "empty",
       "SAI_PORT_ATTR_HW_PROFILE_ID": "vendor",
@@ -1796,9 +2956,36 @@
       "SAI_PORT_ATTR_LOOPBACK_MODE": "SAI_PORT_LOOPBACK_MODE_NONE",
       "SAI_PORT_ATTR_MDIX_MODE_STATUS": "SAI_PORT_MDIX_MODE_STATUS_STRAIGHT",
       "SAI_PORT_ATTR_MDIX_MODE_CONFIG": "SAI_PORT_MDIX_MODE_CONFIG_AUTO",
-      "SAI_PORT_ATTR_AUTO_NEG_CONFIG_MODE": "SAI_PORT_AUTO_NEG_CONFIG_MODE_DISABLED",
-      "SAI_PORT_ATTR_1000X_SGMII_SLAVE_AUTODETECT": "false",
-      "SAI_PORT_ATTR_MODULE_TYPE": "SAI_PORT_MODULE_TYPE_1000BASE_X",
+      "SAI_PORT_ATTR_AUTO_NEG_CONFIG_MODE": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_AUTO_NEG_MODE": "true"
+          }
+        ],
+        "def_value": "SAI_PORT_AUTO_NEG_CONFIG_MODE_DISABLED"
+      },
+      "SAI_PORT_ATTR_1000X_SGMII_SLAVE_AUTODETECT": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_MEDIA_TYPE": "SAI_PORT_MEDIA_TYPE_FIBER"
+          },
+          {
+            "SAI_PORT_ATTR_SPEED": "1000"
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_PORT_ATTR_MODULE_TYPE": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_MEDIA_TYPE": "SAI_PORT_MEDIA_TYPE_FIBER"
+          },
+          {
+            "SAI_PORT_ATTR_SPEED": "1000"
+          }
+        ],
+        "def_value": "SAI_PORT_MODULE_TYPE_1000BASE_X"
+      },
       "SAI_PORT_ATTR_DUAL_MEDIA": "SAI_PORT_DUAL_MEDIA_NONE",
       "SAI_PORT_ATTR_AUTO_NEG_FEC_MODE_EXTENDED": "SAI_PORT_FEC_MODE_EXTENDED_NONE",
       "SAI_PORT_ATTR_IPG": "96",
@@ -1819,10 +3006,38 @@
       "SAI_PORT_ATTR_FABRIC_ISOLATE": "false",
       "SAI_PORT_ATTR_MAX_FEC_SYMBOL_ERRORS_DETECTABLE": "",
       "SAI_PORT_ATTR_ARS_ENABLE": "false",
-      "SAI_PORT_ATTR_ARS_PORT_LOAD_SCALING_FACTOR": "0",
-      "SAI_PORT_ATTR_ARS_PORT_LOAD_PAST_ENABLE": "false",
-      "SAI_PORT_ATTR_ARS_PORT_LOAD_FUTURE_ENABLE": "false",
-      "SAI_PORT_ATTR_ARS_ALTERNATE_PATH": "false",
+      "SAI_PORT_ATTR_ARS_PORT_LOAD_SCALING_FACTOR": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_ARS_ENABLE": "true"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_PORT_ATTR_ARS_PORT_LOAD_PAST_ENABLE": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_ARS_ENABLE": "true"
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_PORT_ATTR_ARS_PORT_LOAD_FUTURE_ENABLE": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_ARS_ENABLE": "true"
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_PORT_ATTR_ARS_ALTERNATE_PATH": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_ARS_ENABLE": "true"
+          }
+        ],
+        "def_value": "false"
+      },
       "SAI_PORT_ATTR_JSON_FORMATTED_DEBUG_DATA": "",
       "SAI_PORT_ATTR_ECMP_HASH_ALGORITHM": "SAI_HASH_ALGORITHM_CRC",
       "SAI_PORT_ATTR_ECMP_HASH_SEED": "0",
@@ -1834,10 +3049,24 @@
       "SAI_PORT_ATTR_PATH_TRACING_TIMESTAMP_TYPE": "SAI_PORT_PATH_TRACING_TIMESTAMP_TYPE_16_23",
       "SAI_PORT_ATTR_RX_FREQUENCY_OFFSET_PPM": "",
       "SAI_PORT_ATTR_RX_SNR": "",
-      "SAI_PORT_ATTR_DATAPATH_ENABLE": "SAI_PORT_DATAPATH_ENABLE_PASS_THROUGH_MODE",
+      "SAI_PORT_ATTR_DATAPATH_ENABLE": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_USE_EXTENDED_FEC": "true"
+          }
+        ],
+        "def_value": "SAI_PORT_DATAPATH_ENABLE_PASS_THROUGH_MODE"
+      },
       "SAI_PORT_ATTR_CABLE_PAIR_STATE": "",
       "SAI_PORT_ATTR_CABLE_PAIR_LENGTH": "",
-      "SAI_PORT_ATTR_CABLE_TYPE": "SAI_PORT_CABLE_TYPE_UNKNOWN",
+      "SAI_PORT_ATTR_CABLE_TYPE": {
+        "validonly": [
+          {
+            "SAI_PORT_ATTR_MEDIA_TYPE": "SAI_PORT_MEDIA_TYPE_COPPER"
+          }
+        ],
+        "def_value": "SAI_PORT_CABLE_TYPE_UNKNOWN"
+      },
       "SAI_PORT_ATTR_ARS_PORT_LOAD_PAST_WEIGHT": "0",
       "SAI_PORT_ATTR_ARS_PORT_LOAD_FUTURE_WEIGHT": "0",
       "SAI_PORT_ATTR_POE_PORT_ID": "",
@@ -2010,11 +3239,52 @@
     "attributes": {
       "SAI_ROUTER_INTERFACE_ATTR_VIRTUAL_ROUTER_ID": "",
       "SAI_ROUTER_INTERFACE_ATTR_TYPE": "SAI_ROUTER_INTERFACE_TYPE_PORT",
-      "SAI_ROUTER_INTERFACE_ATTR_PORT_ID": "",
-      "SAI_ROUTER_INTERFACE_ATTR_VLAN_ID": "",
-      "SAI_ROUTER_INTERFACE_ATTR_OUTER_VLAN_ID": "",
-      "SAI_ROUTER_INTERFACE_ATTR_INNER_VLAN_ID": "",
-      "SAI_ROUTER_INTERFACE_ATTR_BRIDGE_ID": "",
+      "SAI_ROUTER_INTERFACE_ATTR_PORT_ID": {
+        "condition": [
+          {
+            "SAI_ROUTER_INTERFACE_ATTR_TYPE": [
+              "SAI_ROUTER_INTERFACE_TYPE_PORT",
+              "SAI_ROUTER_INTERFACE_TYPE_SUB_PORT"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_VLAN_ID": {
+        "condition": [
+          {
+            "SAI_ROUTER_INTERFACE_ATTR_TYPE": "SAI_ROUTER_INTERFACE_TYPE_VLAN"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_OUTER_VLAN_ID": {
+        "condition": [
+          {
+            "SAI_ROUTER_INTERFACE_ATTR_TYPE": [
+              "SAI_ROUTER_INTERFACE_TYPE_QINQ_PORT",
+              "SAI_ROUTER_INTERFACE_TYPE_SUB_PORT"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_INNER_VLAN_ID": {
+        "condition": [
+          {
+            "SAI_ROUTER_INTERFACE_ATTR_TYPE": "SAI_ROUTER_INTERFACE_TYPE_QINQ_PORT"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_BRIDGE_ID": {
+        "condition": [
+          {
+            "SAI_ROUTER_INTERFACE_ATTR_TYPE": "SAI_ROUTER_INTERFACE_TYPE_BRIDGE"
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_ROUTER_INTERFACE_ATTR_SRC_MAC_ADDRESS": "attrvalue SAI_VIRTUAL_ROUTER_ATTR_SRC_MAC_ADDRESS",
       "SAI_ROUTER_INTERFACE_ATTR_ADMIN_V4_STATE": "true",
       "SAI_ROUTER_INTERFACE_ATTR_ADMIN_V6_STATE": "true",
@@ -2092,7 +3362,14 @@
       "SAI_SAMPLEPACKET_ATTR_TYPE": "SAI_SAMPLEPACKET_TYPE_SLOW_PATH",
       "SAI_SAMPLEPACKET_ATTR_MODE": "SAI_SAMPLEPACKET_MODE_EXCLUSIVE",
       "SAI_SAMPLEPACKET_ATTR_TRUNCATE_ENABLE": "false",
-      "SAI_SAMPLEPACKET_ATTR_TRUNCATE_SIZE": "internal"
+      "SAI_SAMPLEPACKET_ATTR_TRUNCATE_SIZE": {
+        "validonly": [
+          {
+            "SAI_SAMPLEPACKET_ATTR_TRUNCATE_ENABLE": "true"
+          }
+        ],
+        "def_value": "internal"
+      }
     }
   },
   "SAI_OBJECT_TYPE_SCHEDULER": {
@@ -2104,7 +3381,14 @@
     ],
     "attributes": {
       "SAI_SCHEDULER_ATTR_SCHEDULING_TYPE": "SAI_SCHEDULING_TYPE_WRR",
-      "SAI_SCHEDULER_ATTR_SCHEDULING_WEIGHT": "1",
+      "SAI_SCHEDULER_ATTR_SCHEDULING_WEIGHT": {
+        "validonly": [
+          {
+            "SAI_SCHEDULER_ATTR_SCHEDULING_TYPE": "SAI_SCHEDULING_TYPE_DWRR"
+          }
+        ],
+        "def_value": "1"
+      },
       "SAI_SCHEDULER_ATTR_METER_TYPE": "SAI_METER_TYPE_BYTES",
       "SAI_SCHEDULER_ATTR_MIN_BANDWIDTH_RATE": "0",
       "SAI_SCHEDULER_ATTR_MIN_BANDWIDTH_BURST_RATE": "0",
@@ -2354,16 +3638,65 @@
       "SAI_SWITCH_ATTR_PRE_SHUTDOWN": "false",
       "SAI_SWITCH_ATTR_NAT_ZONE_COUNTER_OBJECT_ID": "SAI_NULL_OBJECT_ID",
       "SAI_SWITCH_ATTR_NAT_ENABLE": "false",
-      "SAI_SWITCH_ATTR_HARDWARE_ACCESS_BUS": "SAI_SWITCH_HARDWARE_ACCESS_BUS_MDIO",
-      "SAI_SWITCH_ATTR_PLATFROM_CONTEXT": "",
-      "SAI_SWITCH_ATTR_REGISTER_READ": "",
-      "SAI_SWITCH_ATTR_REGISTER_WRITE": "",
+      "SAI_SWITCH_ATTR_HARDWARE_ACCESS_BUS": {
+        "condition": [
+          {
+            "SAI_SWITCH_ATTR_TYPE": "SAI_SWITCH_TYPE_PHY"
+          }
+        ],
+        "def_value": "SAI_SWITCH_HARDWARE_ACCESS_BUS_MDIO"
+      },
+      "SAI_SWITCH_ATTR_PLATFROM_CONTEXT": {
+        "condition": [
+          {
+            "SAI_SWITCH_ATTR_TYPE": "SAI_SWITCH_TYPE_PHY"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_SWITCH_ATTR_REGISTER_READ": {
+        "condition": [
+          {
+            "SAI_SWITCH_ATTR_TYPE": "SAI_SWITCH_TYPE_PHY"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_SWITCH_ATTR_REGISTER_WRITE": {
+        "condition": [
+          {
+            "SAI_SWITCH_ATTR_TYPE": "SAI_SWITCH_TYPE_PHY"
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_SWITCH_ATTR_FIRMWARE_DOWNLOAD_BROADCAST": "false",
       "SAI_SWITCH_ATTR_FIRMWARE_LOAD_METHOD": "SAI_SWITCH_FIRMWARE_LOAD_METHOD_INTERNAL",
       "SAI_SWITCH_ATTR_FIRMWARE_LOAD_TYPE": "SAI_SWITCH_FIRMWARE_LOAD_TYPE_AUTO",
-      "SAI_SWITCH_ATTR_FIRMWARE_DOWNLOAD_EXECUTE": "false",
-      "SAI_SWITCH_ATTR_FIRMWARE_BROADCAST_STOP": "false",
-      "SAI_SWITCH_ATTR_FIRMWARE_VERIFY_AND_INIT_SWITCH": "false",
+      "SAI_SWITCH_ATTR_FIRMWARE_DOWNLOAD_EXECUTE": {
+        "validonly": [
+          {
+            "SAI_SWITCH_ATTR_FIRMWARE_DOWNLOAD_BROADCAST": "true"
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_SWITCH_ATTR_FIRMWARE_BROADCAST_STOP": {
+        "validonly": [
+          {
+            "SAI_SWITCH_ATTR_FIRMWARE_DOWNLOAD_BROADCAST": "true"
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_SWITCH_ATTR_FIRMWARE_VERIFY_AND_INIT_SWITCH": {
+        "validonly": [
+          {
+            "SAI_SWITCH_ATTR_FIRMWARE_DOWNLOAD_BROADCAST": "true"
+          }
+        ],
+        "def_value": "false"
+      },
       "SAI_SWITCH_ATTR_FIRMWARE_STATUS": "",
       "SAI_SWITCH_ATTR_FIRMWARE_MAJOR_VERSION": "",
       "SAI_SWITCH_ATTR_FIRMWARE_MINOR_VERSION": "",
@@ -2374,9 +3707,33 @@
       "SAI_SWITCH_ATTR_QOS_MPLS_EXP_TO_TC_MAP": "SAI_NULL_OBJECT_ID",
       "SAI_SWITCH_ATTR_QOS_MPLS_EXP_TO_COLOR_MAP": "SAI_NULL_OBJECT_ID",
       "SAI_SWITCH_ATTR_QOS_TC_AND_COLOR_TO_MPLS_EXP_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_SWITCH_ID": "",
-      "SAI_SWITCH_ATTR_MAX_SYSTEM_CORES": "",
-      "SAI_SWITCH_ATTR_SYSTEM_PORT_CONFIG_LIST": "",
+      "SAI_SWITCH_ATTR_SWITCH_ID": {
+        "condition": [
+          {
+            "SAI_SWITCH_ATTR_TYPE": [
+              "SAI_SWITCH_TYPE_VOQ",
+              "SAI_SWITCH_TYPE_FABRIC"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_SWITCH_ATTR_MAX_SYSTEM_CORES": {
+        "condition": [
+          {
+            "SAI_SWITCH_ATTR_TYPE": "SAI_SWITCH_TYPE_VOQ"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_SWITCH_ATTR_SYSTEM_PORT_CONFIG_LIST": {
+        "condition": [
+          {
+            "SAI_SWITCH_ATTR_TYPE": "SAI_SWITCH_TYPE_VOQ"
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_SWITCH_ATTR_NUMBER_OF_SYSTEM_PORTS": "",
       "SAI_SWITCH_ATTR_SYSTEM_PORT_LIST": "internal",
       "SAI_SWITCH_ATTR_NUMBER_OF_FABRIC_PORTS": "",
@@ -2390,7 +3747,14 @@
       "SAI_SWITCH_ATTR_AVAILABLE_SNAPT_ENTRY": "",
       "SAI_SWITCH_ATTR_AVAILABLE_DNAPT_ENTRY": "",
       "SAI_SWITCH_ATTR_AVAILABLE_DOUBLE_NAPT_ENTRY": "",
-      "SAI_SWITCH_ATTR_SLAVE_MDIO_ADDR_LIST": "empty",
+      "SAI_SWITCH_ATTR_SLAVE_MDIO_ADDR_LIST": {
+        "validonly": [
+          {
+            "SAI_SWITCH_ATTR_FIRMWARE_DOWNLOAD_BROADCAST": "true"
+          }
+        ],
+        "def_value": "empty"
+      },
       "SAI_SWITCH_ATTR_MY_MAC_TABLE_MINIMUM_PRIORITY": "",
       "SAI_SWITCH_ATTR_MY_MAC_TABLE_MAXIMUM_PRIORITY": "",
       "SAI_SWITCH_ATTR_MY_MAC_LIST": "",
@@ -2407,9 +3771,33 @@
       "SAI_SWITCH_ATTR_ECMP_MEMBER_COUNT": "64",
       "SAI_SWITCH_ATTR_ARS_PROFILE": "SAI_NULL_OBJECT_ID",
       "SAI_SWITCH_ATTR_ACL_STAGE_POST_INGRESS": "",
-      "SAI_SWITCH_ATTR_CREDIT_WD": "true",
-      "SAI_SWITCH_ATTR_CREDIT_WD_TIMER": "500",
-      "SAI_SWITCH_ATTR_SWITCH_ISOLATE": "false",
+      "SAI_SWITCH_ATTR_CREDIT_WD": {
+        "validonly": [
+          {
+            "SAI_SWITCH_ATTR_TYPE": "SAI_SWITCH_TYPE_VOQ"
+          }
+        ],
+        "def_value": "true"
+      },
+      "SAI_SWITCH_ATTR_CREDIT_WD_TIMER": {
+        "validonly": [
+          {
+            "SAI_SWITCH_ATTR_TYPE": "SAI_SWITCH_TYPE_VOQ"
+          }
+        ],
+        "def_value": "500"
+      },
+      "SAI_SWITCH_ATTR_SWITCH_ISOLATE": {
+        "validonly": [
+          {
+            "SAI_SWITCH_ATTR_TYPE": [
+              "SAI_SWITCH_TYPE_FABRIC",
+              "SAI_SWITCH_TYPE_VOQ"
+            ]
+          }
+        ],
+        "def_value": "false"
+      },
       "SAI_SWITCH_ATTR_HOSTIF_OPER_STATUS_UPDATE_MODE": "SAI_SWITCH_HOSTIF_OPER_STATUS_UPDATE_MODE_APPLICATION",
       "SAI_SWITCH_ATTR_SWITCH_ASIC_SDK_HEALTH_EVENT_NOTIFY": "NULL",
       "SAI_SWITCH_ATTR_REG_FATAL_SWITCH_ASIC_SDK_HEALTH_CATEGORY": "empty",
@@ -2436,9 +3824,23 @@
       "SAI_SWITCH_ATTR_TAM_ST_CHUNK_COUNT": "0",
       "SAI_SWITCH_ATTR_TAM_TEL_TYPE_CONFIG_CHANGE_NOTIFY": "NULL",
       "SAI_SWITCH_ATTR_PACKET_TRIM_SIZE": "128",
-      "SAI_SWITCH_ATTR_PACKET_TRIM_DSCP_VALUE": "0",
+      "SAI_SWITCH_ATTR_PACKET_TRIM_DSCP_VALUE": {
+        "validonly": [
+          {
+            "SAI_SWITCH_ATTR_PACKET_TRIM_DSCP_RESOLUTION_MODE": "SAI_PACKET_TRIM_DSCP_RESOLUTION_MODE_DSCP_VALUE"
+          }
+        ],
+        "def_value": "0"
+      },
       "SAI_SWITCH_ATTR_PACKET_TRIM_QUEUE_RESOLUTION_MODE": "SAI_PACKET_TRIM_QUEUE_RESOLUTION_MODE_STATIC",
-      "SAI_SWITCH_ATTR_PACKET_TRIM_QUEUE_INDEX": "0",
+      "SAI_SWITCH_ATTR_PACKET_TRIM_QUEUE_INDEX": {
+        "validonly": [
+          {
+            "SAI_SWITCH_ATTR_PACKET_TRIM_QUEUE_RESOLUTION_MODE": "SAI_PACKET_TRIM_QUEUE_RESOLUTION_MODE_STATIC"
+          }
+        ],
+        "def_value": "0"
+      },
       "SAI_SWITCH_ATTR_SHARED_BUFFER_CELL_SIZE": "",
       "SAI_SWITCH_ATTR_PORT_PTP_MODE": "SAI_PORT_PTP_MODE_NONE",
       "SAI_SWITCH_ATTR_ECMP_HASH_IPV4_RDMA": "SAI_NULL_OBJECT_ID",
@@ -2447,7 +3849,14 @@
       "SAI_SWITCH_ATTR_LAG_HASH_IPV6_RDMA": "SAI_NULL_OBJECT_ID",
       "SAI_SWITCH_ATTR_MAX_SYNCE_CLOCK_COUNT": "",
       "SAI_SWITCH_ATTR_SYNCE_CLOCK_LIST": "internal",
-      "SAI_SWITCH_ATTR_PACKET_TRIM_TC_VALUE": "0",
+      "SAI_SWITCH_ATTR_PACKET_TRIM_TC_VALUE": {
+        "validonly": [
+          {
+            "SAI_SWITCH_ATTR_PACKET_TRIM_DSCP_RESOLUTION_MODE": "SAI_PACKET_TRIM_DSCP_RESOLUTION_MODE_FROM_TC"
+          }
+        ],
+        "def_value": "0"
+      },
       "SAI_SWITCH_ATTR_PACKET_TRIM_DSCP_RESOLUTION_MODE": "SAI_PACKET_TRIM_DSCP_RESOLUTION_MODE_DSCP_VALUE",
       "SAI_SWITCH_ATTR_MACSEC_POST_STATUS_NOTIFY": "NULL",
       "SAI_SWITCH_ATTR_IPSEC_POST_STATUS_NOTIFY": "NULL",
@@ -2483,13 +3892,43 @@
       "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_DECAP_ECN_MODE": "SAI_TUNNEL_DECAP_ECN_MODE_STANDARD",
       "SAI_SWITCH_TUNNEL_ATTR_DECAP_MAPPERS": "empty",
       "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_VXLAN_UDP_SPORT_MODE": "SAI_TUNNEL_VXLAN_UDP_SPORT_MODE_EPHEMERAL",
-      "SAI_SWITCH_TUNNEL_ATTR_VXLAN_UDP_SPORT": "0",
-      "SAI_SWITCH_TUNNEL_ATTR_VXLAN_UDP_SPORT_MASK": "0",
+      "SAI_SWITCH_TUNNEL_ATTR_VXLAN_UDP_SPORT": {
+        "validonly": [
+          {
+            "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_TYPE": "SAI_TUNNEL_TYPE_VXLAN"
+          },
+          {
+            "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_VXLAN_UDP_SPORT_MODE": "SAI_TUNNEL_VXLAN_UDP_SPORT_MODE_USER_DEFINED"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_SWITCH_TUNNEL_ATTR_VXLAN_UDP_SPORT_MASK": {
+        "validonly": [
+          {
+            "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_TYPE": "SAI_TUNNEL_TYPE_VXLAN"
+          },
+          {
+            "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_VXLAN_UDP_SPORT_MODE": "SAI_TUNNEL_VXLAN_UDP_SPORT_MODE_USER_DEFINED"
+          }
+        ],
+        "def_value": "0"
+      },
       "SAI_SWITCH_TUNNEL_ATTR_ENCAP_QOS_TC_AND_COLOR_TO_DSCP_MAP": "SAI_NULL_OBJECT_ID",
       "SAI_SWITCH_TUNNEL_ATTR_ENCAP_QOS_TC_TO_QUEUE_MAP": "SAI_NULL_OBJECT_ID",
       "SAI_SWITCH_TUNNEL_ATTR_DECAP_QOS_DSCP_TO_TC_MAP": "SAI_NULL_OBJECT_ID",
       "SAI_SWITCH_TUNNEL_ATTR_DECAP_QOS_TC_TO_PRIORITY_GROUP_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_TUNNEL_ATTR_VXLAN_UDP_SPORT_SECURITY": "false"
+      "SAI_SWITCH_TUNNEL_ATTR_VXLAN_UDP_SPORT_SECURITY": {
+        "validonly": [
+          {
+            "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_TYPE": "SAI_TUNNEL_TYPE_VXLAN"
+          },
+          {
+            "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_VXLAN_UDP_SPORT_MODE": "SAI_TUNNEL_VXLAN_UDP_SPORT_MODE_USER_DEFINED"
+          }
+        ],
+        "def_value": "false"
+      }
     }
   },
   "SAI_OBJECT_TYPE_SYNCE_CLOCK": {
@@ -2552,10 +3991,24 @@
       "SAI_TAM_COLLECTOR_ATTR_TRUNCATE_SIZE": "0",
       "SAI_TAM_COLLECTOR_ATTR_TRANSPORT": "",
       "SAI_TAM_COLLECTOR_ATTR_DSCP_VALUE": "0",
-      "SAI_TAM_COLLECTOR_ATTR_HOSTIF_TRAP": "SAI_NULL_OBJECT_ID",
+      "SAI_TAM_COLLECTOR_ATTR_HOSTIF_TRAP": {
+        "validonly": [
+          {
+            "SAI_TAM_COLLECTOR_ATTR_LOCALHOST": "true"
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
       "SAI_TAM_COLLECTOR_ATTR_SRC_MAC": "vendor",
       "SAI_TAM_COLLECTOR_ATTR_DST_MAC": "vendor",
-      "SAI_TAM_COLLECTOR_ATTR_DESTINATION": "SAI_NULL_OBJECT_ID"
+      "SAI_TAM_COLLECTOR_ATTR_DESTINATION": {
+        "validonly": [
+          {
+            "SAI_TAM_COLLECTOR_ATTR_LOCALHOST": "false"
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      }
     }
   },
   "SAI_OBJECT_TYPE_TAM_COUNTER_SUBSCRIPTION": {
@@ -2626,18 +4079,90 @@
     "attributes": {
       "SAI_TAM_INT_ATTR_TYPE": "SAI_TAM_INT_TYPE_IOAM",
       "SAI_TAM_INT_ATTR_DEVICE_ID": "",
-      "SAI_TAM_INT_ATTR_IOAM_TRACE_TYPE": "0",
+      "SAI_TAM_INT_ATTR_IOAM_TRACE_TYPE": {
+        "validonly": [
+          {
+            "SAI_TAM_INT_ATTR_TYPE": "SAI_TAM_INT_TYPE_IOAM"
+          }
+        ],
+        "def_value": "0"
+      },
       "SAI_TAM_INT_ATTR_INT_PRESENCE_TYPE": "SAI_TAM_INT_PRESENCE_TYPE_UNDEFINED",
-      "SAI_TAM_INT_ATTR_INT_PRESENCE_PB1": "",
-      "SAI_TAM_INT_ATTR_INT_PRESENCE_PB2": "",
-      "SAI_TAM_INT_ATTR_INT_PRESENCE_DSCP_VALUE": "",
+      "SAI_TAM_INT_ATTR_INT_PRESENCE_PB1": {
+        "condition": [
+          {
+            "SAI_TAM_INT_ATTR_INT_PRESENCE_TYPE": "SAI_TAM_INT_PRESENCE_TYPE_PB"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TAM_INT_ATTR_INT_PRESENCE_PB2": {
+        "condition": [
+          {
+            "SAI_TAM_INT_ATTR_INT_PRESENCE_TYPE": "SAI_TAM_INT_PRESENCE_TYPE_PB"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TAM_INT_ATTR_INT_PRESENCE_DSCP_VALUE": {
+        "condition": [
+          {
+            "SAI_TAM_INT_ATTR_INT_PRESENCE_TYPE": "SAI_TAM_INT_PRESENCE_TYPE_DSCP"
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_TAM_INT_ATTR_INLINE": "",
-      "SAI_TAM_INT_ATTR_INT_PRESENCE_L3_PROTOCOL": "",
-      "SAI_TAM_INT_ATTR_TRACE_VECTOR": "0",
-      "SAI_TAM_INT_ATTR_ACTION_VECTOR": "0",
-      "SAI_TAM_INT_ATTR_P4_INT_INSTRUCTION_BITMAP": "0",
+      "SAI_TAM_INT_ATTR_INT_PRESENCE_L3_PROTOCOL": {
+        "condition": [
+          {
+            "SAI_TAM_INT_ATTR_INT_PRESENCE_TYPE": "SAI_TAM_INT_PRESENCE_TYPE_L3_PROTOCOL"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TAM_INT_ATTR_TRACE_VECTOR": {
+        "validonly": [
+          {
+            "SAI_TAM_INT_ATTR_TYPE": [
+              "SAI_TAM_INT_TYPE_IFA1",
+              "SAI_TAM_INT_TYPE_IFA2"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_TAM_INT_ATTR_ACTION_VECTOR": {
+        "validonly": [
+          {
+            "SAI_TAM_INT_ATTR_TYPE": [
+              "SAI_TAM_INT_TYPE_IFA1",
+              "SAI_TAM_INT_TYPE_IFA2"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_TAM_INT_ATTR_P4_INT_INSTRUCTION_BITMAP": {
+        "validonly": [
+          {
+            "SAI_TAM_INT_ATTR_TYPE": [
+              "SAI_TAM_INT_TYPE_P4_INT_1",
+              "SAI_TAM_INT_TYPE_P4_INT_2"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
       "SAI_TAM_INT_ATTR_METADATA_FRAGMENT_ENABLE": "false",
-      "SAI_TAM_INT_ATTR_METADATA_CHECKSUM_ENABLE": "false",
+      "SAI_TAM_INT_ATTR_METADATA_CHECKSUM_ENABLE": {
+        "validonly": [
+          {
+            "SAI_TAM_INT_ATTR_TYPE": "SAI_TAM_INT_TYPE_IFA2"
+          }
+        ],
+        "def_value": "false"
+      },
       "SAI_TAM_INT_ATTR_REPORT_ALL_PACKETS": "false",
       "SAI_TAM_INT_ATTR_FLOW_LIVENESS_PERIOD": "0",
       "SAI_TAM_INT_ATTR_LATENCY_SENSITIVITY": "20",
@@ -2672,17 +4197,80 @@
     ],
     "attributes": {
       "SAI_TAM_REPORT_ATTR_TYPE": "SAI_TAM_REPORT_TYPE_SFLOW",
-      "SAI_TAM_REPORT_ATTR_HISTOGRAM_NUMBER_OF_BINS": "0",
-      "SAI_TAM_REPORT_ATTR_HISTOGRAM_BIN_BOUNDARY": "empty",
+      "SAI_TAM_REPORT_ATTR_HISTOGRAM_NUMBER_OF_BINS": {
+        "validonly": [
+          {
+            "SAI_TAM_REPORT_ATTR_TYPE": "SAI_TAM_REPORT_TYPE_HISTOGRAM"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_TAM_REPORT_ATTR_HISTOGRAM_BIN_BOUNDARY": {
+        "validonly": [
+          {
+            "SAI_TAM_REPORT_ATTR_TYPE": "SAI_TAM_REPORT_TYPE_HISTOGRAM"
+          }
+        ],
+        "def_value": "empty"
+      },
       "SAI_TAM_REPORT_ATTR_QUOTA": "0",
       "SAI_TAM_REPORT_ATTR_REPORT_MODE": "SAI_TAM_REPORT_MODE_ALL",
-      "SAI_TAM_REPORT_ATTR_REPORT_INTERVAL": "1000",
-      "SAI_TAM_REPORT_ATTR_ENTERPRISE_NUMBER": "0",
-      "SAI_TAM_REPORT_ATTR_TEMPLATE_REPORT_INTERVAL": "15",
-      "SAI_TAM_REPORT_ATTR_REPORT_INTERVAL_UNIT": "SAI_TAM_REPORT_INTERVAL_UNIT_USEC",
-      "SAI_TAM_REPORT_ATTR_SAMPLE_RATE": "",
-      "SAI_TAM_REPORT_ATTR_MAX_REPORT_RATE": "0",
-      "SAI_TAM_REPORT_ATTR_MAX_REPORT_BURST": "0"
+      "SAI_TAM_REPORT_ATTR_REPORT_INTERVAL": {
+        "validonly": [
+          {
+            "SAI_TAM_REPORT_ATTR_REPORT_MODE": "SAI_TAM_REPORT_MODE_BULK"
+          }
+        ],
+        "def_value": "1000"
+      },
+      "SAI_TAM_REPORT_ATTR_ENTERPRISE_NUMBER": {
+        "validonly": [
+          {
+            "SAI_TAM_REPORT_ATTR_TYPE": "SAI_TAM_REPORT_TYPE_IPFIX"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_TAM_REPORT_ATTR_TEMPLATE_REPORT_INTERVAL": {
+        "validonly": [
+          {
+            "SAI_TAM_REPORT_ATTR_TYPE": "SAI_TAM_REPORT_TYPE_IPFIX"
+          }
+        ],
+        "def_value": "15"
+      },
+      "SAI_TAM_REPORT_ATTR_REPORT_INTERVAL_UNIT": {
+        "validonly": [
+          {
+            "SAI_TAM_REPORT_ATTR_REPORT_MODE": "SAI_TAM_REPORT_MODE_BULK"
+          }
+        ],
+        "def_value": "SAI_TAM_REPORT_INTERVAL_UNIT_USEC"
+      },
+      "SAI_TAM_REPORT_ATTR_SAMPLE_RATE": {
+        "condition": [
+          {
+            "SAI_TAM_REPORT_ATTR_REPORT_MODE": "SAI_TAM_REPORT_MODE_SAMPLING"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TAM_REPORT_ATTR_MAX_REPORT_RATE": {
+        "validonly": [
+          {
+            "SAI_TAM_REPORT_ATTR_REPORT_MODE": "SAI_TAM_REPORT_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_TAM_REPORT_ATTR_MAX_REPORT_BURST": {
+        "validonly": [
+          {
+            "SAI_TAM_REPORT_ATTR_REPORT_MODE": "SAI_TAM_REPORT_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      }
     }
   },
   "SAI_OBJECT_TYPE_TAM_TELEMETRY": {
@@ -2724,7 +4312,14 @@
       "SAI_TAM_TEL_TYPE_ATTR_MATH_FUNC": "SAI_NULL_OBJECT_ID",
       "SAI_TAM_TEL_TYPE_ATTR_REPORT_ID": "",
       "SAI_TAM_TEL_TYPE_ATTR_COUNTER_SUBSCRIPTION_LIST": "",
-      "SAI_TAM_TEL_TYPE_ATTR_MODE": "SAI_TAM_TEL_TYPE_MODE_SINGLE_TYPE",
+      "SAI_TAM_TEL_TYPE_ATTR_MODE": {
+        "validonly": [
+          {
+            "SAI_TAM_TEL_TYPE_ATTR_TAM_TELEMETRY_TYPE": "SAI_TAM_TELEMETRY_TYPE_COUNTER_SUBSCRIPTION"
+          }
+        ],
+        "def_value": "SAI_TAM_TEL_TYPE_MODE_SINGLE_TYPE"
+      },
       "SAI_TAM_TEL_TYPE_ATTR_STATE": "SAI_TAM_TEL_TYPE_STATE_STOP_STREAM",
       "SAI_TAM_TEL_TYPE_ATTR_IPFIX_TEMPLATES": ""
     }
@@ -2742,7 +4337,14 @@
       "SAI_TAM_TRANSPORT_ATTR_DST_PORT": "31337",
       "SAI_TAM_TRANSPORT_ATTR_TRANSPORT_AUTH_TYPE": "SAI_TAM_TRANSPORT_AUTH_TYPE_NONE",
       "SAI_TAM_TRANSPORT_ATTR_MTU": "1500",
-      "SAI_TAM_TRANSPORT_ATTR_GRE_PROTOCOL_TYPE": ""
+      "SAI_TAM_TRANSPORT_ATTR_GRE_PROTOCOL_TYPE": {
+        "condition": [
+          {
+            "SAI_TAM_TRANSPORT_ATTR_TRANSPORT_TYPE": "SAI_TAM_TRANSPORT_TYPE_GRE"
+          }
+        ],
+        "def_value": ""
+      }
     }
   },
   "SAI_OBJECT_TYPE_TUNNEL": {
@@ -2757,17 +4359,73 @@
     ],
     "attributes": {
       "SAI_TUNNEL_ATTR_TYPE": "SAI_TUNNEL_TYPE_IPINIP",
-      "SAI_TUNNEL_ATTR_UNDERLAY_INTERFACE": "",
-      "SAI_TUNNEL_ATTR_OVERLAY_INTERFACE": "",
+      "SAI_TUNNEL_ATTR_UNDERLAY_INTERFACE": {
+        "condition": [
+          {
+            "SAI_TUNNEL_ATTR_TYPE": [
+              "SAI_TUNNEL_TYPE_IPINIP",
+              "SAI_TUNNEL_TYPE_IPINIP_GRE",
+              "SAI_TUNNEL_TYPE_VXLAN",
+              "SAI_TUNNEL_TYPE_SRV6",
+              "SAI_TUNNEL_TYPE_NVGRE",
+              "SAI_TUNNEL_TYPE_IPINIP_ESP",
+              "SAI_TUNNEL_TYPE_IPINIP_UDP_ESP",
+              "SAI_TUNNEL_TYPE_VXLAN_UDP_ESP"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TUNNEL_ATTR_OVERLAY_INTERFACE": {
+        "condition": [
+          {
+            "SAI_TUNNEL_ATTR_TYPE": [
+              "SAI_TUNNEL_TYPE_IPINIP",
+              "SAI_TUNNEL_TYPE_IPINIP_GRE",
+              "SAI_TUNNEL_TYPE_IPINIP_ESP",
+              "SAI_TUNNEL_TYPE_IPINIP_UDP_ESP"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_TUNNEL_ATTR_PEER_MODE": "SAI_TUNNEL_PEER_MODE_P2MP",
       "SAI_TUNNEL_ATTR_ENCAP_SRC_IP": "0.0.0.0",
-      "SAI_TUNNEL_ATTR_ENCAP_DST_IP": "0.0.0.0",
+      "SAI_TUNNEL_ATTR_ENCAP_DST_IP": {
+        "validonly": [
+          {
+            "SAI_TUNNEL_ATTR_PEER_MODE": "SAI_TUNNEL_PEER_MODE_P2P"
+          }
+        ],
+        "def_value": "0.0.0.0"
+      },
       "SAI_TUNNEL_ATTR_ENCAP_TTL_MODE": "SAI_TUNNEL_TTL_MODE_UNIFORM_MODEL",
-      "SAI_TUNNEL_ATTR_ENCAP_TTL_VAL": "255",
+      "SAI_TUNNEL_ATTR_ENCAP_TTL_VAL": {
+        "validonly": [
+          {
+            "SAI_TUNNEL_ATTR_ENCAP_TTL_MODE": "SAI_TUNNEL_TTL_MODE_PIPE_MODEL"
+          }
+        ],
+        "def_value": "255"
+      },
       "SAI_TUNNEL_ATTR_ENCAP_DSCP_MODE": "SAI_TUNNEL_DSCP_MODE_UNIFORM_MODEL",
-      "SAI_TUNNEL_ATTR_ENCAP_DSCP_VAL": "0",
+      "SAI_TUNNEL_ATTR_ENCAP_DSCP_VAL": {
+        "validonly": [
+          {
+            "SAI_TUNNEL_ATTR_ENCAP_DSCP_MODE": "SAI_TUNNEL_DSCP_MODE_PIPE_MODEL"
+          }
+        ],
+        "def_value": "0"
+      },
       "SAI_TUNNEL_ATTR_ENCAP_GRE_KEY_VALID": "false",
-      "SAI_TUNNEL_ATTR_ENCAP_GRE_KEY": "0",
+      "SAI_TUNNEL_ATTR_ENCAP_GRE_KEY": {
+        "validonly": [
+          {
+            "SAI_TUNNEL_ATTR_ENCAP_GRE_KEY_VALID": "true"
+          }
+        ],
+        "def_value": "0"
+      },
       "SAI_TUNNEL_ATTR_ENCAP_ECN_MODE": "SAI_TUNNEL_ENCAP_ECN_MODE_STANDARD",
       "SAI_TUNNEL_ATTR_ENCAP_MAPPERS": "empty",
       "SAI_TUNNEL_ATTR_DECAP_ECN_MODE": "SAI_TUNNEL_DECAP_ECN_MODE_STANDARD",
@@ -2777,15 +4435,56 @@
       "SAI_TUNNEL_ATTR_TERM_TABLE_ENTRY_LIST": "",
       "SAI_TUNNEL_ATTR_LOOPBACK_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD",
       "SAI_TUNNEL_ATTR_VXLAN_UDP_SPORT_MODE": "SAI_TUNNEL_VXLAN_UDP_SPORT_MODE_EPHEMERAL",
-      "SAI_TUNNEL_ATTR_VXLAN_UDP_SPORT": "0",
-      "SAI_TUNNEL_ATTR_VXLAN_UDP_SPORT_MASK": "0",
-      "SAI_TUNNEL_ATTR_SA_INDEX": "0",
+      "SAI_TUNNEL_ATTR_VXLAN_UDP_SPORT": {
+        "validonly": [
+          {
+            "SAI_TUNNEL_ATTR_TYPE": "SAI_TUNNEL_TYPE_VXLAN"
+          },
+          {
+            "SAI_TUNNEL_ATTR_VXLAN_UDP_SPORT_MODE": "SAI_TUNNEL_VXLAN_UDP_SPORT_MODE_USER_DEFINED"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_TUNNEL_ATTR_VXLAN_UDP_SPORT_MASK": {
+        "validonly": [
+          {
+            "SAI_TUNNEL_ATTR_TYPE": "SAI_TUNNEL_TYPE_VXLAN"
+          },
+          {
+            "SAI_TUNNEL_ATTR_VXLAN_UDP_SPORT_MODE": "SAI_TUNNEL_VXLAN_UDP_SPORT_MODE_USER_DEFINED"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_TUNNEL_ATTR_SA_INDEX": {
+        "validonly": [
+          {
+            "SAI_TUNNEL_ATTR_TYPE": [
+              "SAI_TUNNEL_TYPE_IPINIP_ESP",
+              "SAI_TUNNEL_TYPE_IPINIP_UDP_ESP",
+              "SAI_TUNNEL_TYPE_VXLAN_UDP_ESP"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
       "SAI_TUNNEL_ATTR_IPSEC_SA_PORT_LIST": "empty",
       "SAI_TUNNEL_ATTR_ENCAP_QOS_TC_AND_COLOR_TO_DSCP_MAP": "SAI_NULL_OBJECT_ID",
       "SAI_TUNNEL_ATTR_ENCAP_QOS_TC_TO_QUEUE_MAP": "SAI_NULL_OBJECT_ID",
       "SAI_TUNNEL_ATTR_DECAP_QOS_DSCP_TO_TC_MAP": "SAI_NULL_OBJECT_ID",
       "SAI_TUNNEL_ATTR_DECAP_QOS_TC_TO_PRIORITY_GROUP_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_TUNNEL_ATTR_VXLAN_UDP_SPORT_SECURITY": "false",
+      "SAI_TUNNEL_ATTR_VXLAN_UDP_SPORT_SECURITY": {
+        "validonly": [
+          {
+            "SAI_TUNNEL_ATTR_TYPE": "SAI_TUNNEL_TYPE_VXLAN"
+          },
+          {
+            "SAI_TUNNEL_ATTR_VXLAN_UDP_SPORT_MODE": "SAI_TUNNEL_VXLAN_UDP_SPORT_MODE_USER_DEFINED"
+          }
+        ],
+        "def_value": "false"
+      },
       "SAI_TUNNEL_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
       "SAI_TUNNEL_ATTR_SELECTIVE_COUNTER_LIST": "empty"
     }
@@ -2812,22 +4511,169 @@
     "attributes": {
       "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": "SAI_TUNNEL_MAP_TYPE_OECN_TO_UECN",
       "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP": "",
-      "SAI_TUNNEL_MAP_ENTRY_ATTR_OECN_KEY": "",
-      "SAI_TUNNEL_MAP_ENTRY_ATTR_OECN_VALUE": "",
-      "SAI_TUNNEL_MAP_ENTRY_ATTR_UECN_KEY": "",
-      "SAI_TUNNEL_MAP_ENTRY_ATTR_UECN_VALUE": "",
-      "SAI_TUNNEL_MAP_ENTRY_ATTR_VLAN_ID_KEY": "",
-      "SAI_TUNNEL_MAP_ENTRY_ATTR_VLAN_ID_VALUE": "",
-      "SAI_TUNNEL_MAP_ENTRY_ATTR_VNI_ID_KEY": "",
-      "SAI_TUNNEL_MAP_ENTRY_ATTR_VNI_ID_VALUE": "",
-      "SAI_TUNNEL_MAP_ENTRY_ATTR_BRIDGE_ID_KEY": "",
-      "SAI_TUNNEL_MAP_ENTRY_ATTR_BRIDGE_ID_VALUE": "",
-      "SAI_TUNNEL_MAP_ENTRY_ATTR_VIRTUAL_ROUTER_ID_KEY": "",
-      "SAI_TUNNEL_MAP_ENTRY_ATTR_VIRTUAL_ROUTER_ID_VALUE": "",
-      "SAI_TUNNEL_MAP_ENTRY_ATTR_VSID_ID_KEY": "",
-      "SAI_TUNNEL_MAP_ENTRY_ATTR_VSID_ID_VALUE": "",
-      "SAI_TUNNEL_MAP_ENTRY_ATTR_PREFIX_AGG_ID_KEY": "",
-      "SAI_TUNNEL_MAP_ENTRY_ATTR_SRV6_VPN_SID_VALUE": ""
+      "SAI_TUNNEL_MAP_ENTRY_ATTR_OECN_KEY": {
+        "condition": [
+          {
+            "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
+              "SAI_TUNNEL_MAP_TYPE_OECN_TO_UECN",
+              "SAI_TUNNEL_MAP_TYPE_UECN_OECN_TO_OECN"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TUNNEL_MAP_ENTRY_ATTR_OECN_VALUE": {
+        "condition": [
+          {
+            "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": "SAI_TUNNEL_MAP_TYPE_UECN_OECN_TO_OECN"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TUNNEL_MAP_ENTRY_ATTR_UECN_KEY": {
+        "condition": [
+          {
+            "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": "SAI_TUNNEL_MAP_TYPE_UECN_OECN_TO_OECN"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TUNNEL_MAP_ENTRY_ATTR_UECN_VALUE": {
+        "condition": [
+          {
+            "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": "SAI_TUNNEL_MAP_TYPE_OECN_TO_UECN"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TUNNEL_MAP_ENTRY_ATTR_VLAN_ID_KEY": {
+        "condition": [
+          {
+            "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
+              "SAI_TUNNEL_MAP_TYPE_VLAN_ID_TO_VNI",
+              "SAI_TUNNEL_MAP_TYPE_VLAN_ID_TO_VSID"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TUNNEL_MAP_ENTRY_ATTR_VLAN_ID_VALUE": {
+        "condition": [
+          {
+            "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
+              "SAI_TUNNEL_MAP_TYPE_VNI_TO_VLAN_ID",
+              "SAI_TUNNEL_MAP_TYPE_VSID_TO_VLAN_ID"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TUNNEL_MAP_ENTRY_ATTR_VNI_ID_KEY": {
+        "condition": [
+          {
+            "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
+              "SAI_TUNNEL_MAP_TYPE_VNI_TO_VLAN_ID",
+              "SAI_TUNNEL_MAP_TYPE_VNI_TO_BRIDGE_IF",
+              "SAI_TUNNEL_MAP_TYPE_VNI_TO_VIRTUAL_ROUTER_ID"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TUNNEL_MAP_ENTRY_ATTR_VNI_ID_VALUE": {
+        "condition": [
+          {
+            "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
+              "SAI_TUNNEL_MAP_TYPE_VLAN_ID_TO_VNI",
+              "SAI_TUNNEL_MAP_TYPE_BRIDGE_IF_TO_VNI",
+              "SAI_TUNNEL_MAP_TYPE_VIRTUAL_ROUTER_ID_TO_VNI"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TUNNEL_MAP_ENTRY_ATTR_BRIDGE_ID_KEY": {
+        "condition": [
+          {
+            "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
+              "SAI_TUNNEL_MAP_TYPE_BRIDGE_IF_TO_VNI",
+              "SAI_TUNNEL_MAP_TYPE_BRIDGE_IF_TO_VSID"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TUNNEL_MAP_ENTRY_ATTR_BRIDGE_ID_VALUE": {
+        "condition": [
+          {
+            "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
+              "SAI_TUNNEL_MAP_TYPE_VNI_TO_BRIDGE_IF",
+              "SAI_TUNNEL_MAP_TYPE_VSID_TO_BRIDGE_IF"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TUNNEL_MAP_ENTRY_ATTR_VIRTUAL_ROUTER_ID_KEY": {
+        "condition": [
+          {
+            "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
+              "SAI_TUNNEL_MAP_TYPE_VIRTUAL_ROUTER_ID_TO_VNI",
+              "SAI_TUNNEL_MAP_TYPE_VIRTUAL_ROUTER_ID_TO_VPN_SID"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TUNNEL_MAP_ENTRY_ATTR_VIRTUAL_ROUTER_ID_VALUE": {
+        "condition": [
+          {
+            "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": "SAI_TUNNEL_MAP_TYPE_VNI_TO_VIRTUAL_ROUTER_ID"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TUNNEL_MAP_ENTRY_ATTR_VSID_ID_KEY": {
+        "condition": [
+          {
+            "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
+              "SAI_TUNNEL_MAP_TYPE_VSID_TO_VLAN_ID",
+              "SAI_TUNNEL_MAP_TYPE_VSID_TO_BRIDGE_IF"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TUNNEL_MAP_ENTRY_ATTR_VSID_ID_VALUE": {
+        "condition": [
+          {
+            "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
+              "SAI_TUNNEL_MAP_TYPE_VLAN_ID_TO_VSID",
+              "SAI_TUNNEL_MAP_TYPE_BRIDGE_IF_TO_VSID"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TUNNEL_MAP_ENTRY_ATTR_PREFIX_AGG_ID_KEY": {
+        "condition": [
+          {
+            "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": "SAI_TUNNEL_MAP_TYPE_PREFIX_AGG_ID_TO_SRV6_VPN_SID"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TUNNEL_MAP_ENTRY_ATTR_SRV6_VPN_SID_VALUE": {
+        "condition": [
+          {
+            "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
+              "SAI_TUNNEL_MAP_TYPE_PREFIX_AGG_ID_TO_SRV6_VPN_SID",
+              "SAI_TUNNEL_MAP_TYPE_VIRTUAL_ROUTER_ID_TO_VPN_SID"
+            ]
+          }
+        ],
+        "def_value": ""
+      }
     }
   },
   "SAI_OBJECT_TYPE_TUNNEL_TERM_TABLE_ENTRY": {
@@ -2840,10 +4686,50 @@
     "attributes": {
       "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_VR_ID": "",
       "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_TYPE": "SAI_TUNNEL_TERM_TABLE_ENTRY_TYPE_P2P",
-      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_DST_IP": "",
-      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_DST_IP_MASK": "0.0.0.0",
-      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_SRC_IP": "",
-      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_SRC_IP_MASK": "0.0.0.0",
+      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_DST_IP": {
+        "condition": [
+          {
+            "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_TYPE": [
+              "SAI_TUNNEL_TERM_TABLE_ENTRY_TYPE_P2P",
+              "SAI_TUNNEL_TERM_TABLE_ENTRY_TYPE_P2MP"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_DST_IP_MASK": {
+        "validonly": [
+          {
+            "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_TYPE": [
+              "SAI_TUNNEL_TERM_TABLE_ENTRY_TYPE_MP2P",
+              "SAI_TUNNEL_TERM_TABLE_ENTRY_TYPE_MP2MP"
+            ]
+          }
+        ],
+        "def_value": "0.0.0.0"
+      },
+      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_SRC_IP": {
+        "condition": [
+          {
+            "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_TYPE": [
+              "SAI_TUNNEL_TERM_TABLE_ENTRY_TYPE_P2P",
+              "SAI_TUNNEL_TERM_TABLE_ENTRY_TYPE_MP2P"
+            ]
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_SRC_IP_MASK": {
+        "validonly": [
+          {
+            "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_TYPE": [
+              "SAI_TUNNEL_TERM_TABLE_ENTRY_TYPE_P2MP",
+              "SAI_TUNNEL_TERM_TABLE_ENTRY_TYPE_MP2MP"
+            ]
+          }
+        ],
+        "def_value": "0.0.0.0"
+      },
       "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_TUNNEL_TYPE": "SAI_TUNNEL_TYPE_IPINIP",
       "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_ACTION_TUNNEL_ID": "",
       "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_IP_ADDR_FAMILY": "SAI_IP_ADDR_FAMILY_IPV4",
@@ -2866,44 +4752,254 @@
       "SAI_TWAMP_SESSION_ATTR_SESSION_ROLE": "SAI_TWAMP_SESSION_ROLE_SENDER",
       "SAI_TWAMP_SESSION_ATTR_AUTH_MODE": "SAI_TWAMP_SESSION_AUTH_MODE_UNAUTHENTICATED",
       "SAI_TWAMP_SESSION_ATTR_HW_LOOKUP_VALID": "true",
-      "SAI_TWAMP_SESSION_ATTR_VIRTUAL_ROUTER": "SAI_NULL_OBJECT_ID",
-      "SAI_TWAMP_SESSION_ATTR_SRC_MAC": "",
-      "SAI_TWAMP_SESSION_ATTR_DST_MAC": "",
-      "SAI_TWAMP_SESSION_ATTR_VLAN_ID": "",
-      "SAI_TWAMP_SESSION_ATTR_VLAN_PRI": "0",
-      "SAI_TWAMP_SESSION_ATTR_VLAN_CFI": "0",
-      "SAI_TWAMP_SESSION_ATTR_VLAN_HEADER_VALID": "false",
+      "SAI_TWAMP_SESSION_ATTR_VIRTUAL_ROUTER": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_HW_LOOKUP_VALID": "true"
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_TWAMP_SESSION_ATTR_SRC_MAC": {
+        "condition": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_HW_LOOKUP_VALID": "false"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TWAMP_SESSION_ATTR_DST_MAC": {
+        "condition": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_HW_LOOKUP_VALID": "false"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TWAMP_SESSION_ATTR_VLAN_ID": {
+        "condition": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_VLAN_HEADER_VALID": "true"
+          }
+        ],
+        "def_value": ""
+      },
+      "SAI_TWAMP_SESSION_ATTR_VLAN_PRI": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_VLAN_HEADER_VALID": "true"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_TWAMP_SESSION_ATTR_VLAN_CFI": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_VLAN_HEADER_VALID": "true"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_TWAMP_SESSION_ATTR_VLAN_HEADER_VALID": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_HW_LOOKUP_VALID": "false"
+          }
+        ],
+        "def_value": "false"
+      },
       "SAI_TWAMP_SESSION_ATTR_SRC_IP": "",
       "SAI_TWAMP_SESSION_ATTR_DST_IP": "",
       "SAI_TWAMP_SESSION_ATTR_UDP_SRC_PORT": "",
       "SAI_TWAMP_SESSION_ATTR_UDP_DST_PORT": "",
       "SAI_TWAMP_SESSION_ATTR_DSCP": "0",
       "SAI_TWAMP_SESSION_ATTR_TTL": "255",
-      "SAI_TWAMP_SESSION_ATTR_TUNNEL_SRC_MAC": "vendor",
-      "SAI_TWAMP_SESSION_ATTR_TUNNEL_DST_MAC": "vendor",
-      "SAI_TWAMP_SESSION_ATTR_TUNNEL_OUTER_VLAN_ID": "0",
-      "SAI_TWAMP_SESSION_ATTR_TUNNEL_OUTER_VLAN_PRI": "0",
-      "SAI_TWAMP_SESSION_ATTR_TUNNEL_OUTER_VLAN_CFI": "0",
-      "SAI_TWAMP_SESSION_ATTR_TUNNEL_OUTER_VLAN_HEADER_VALID": "false",
-      "SAI_TWAMP_SESSION_ATTR_TUNNEL_LABELSTACK": "empty",
-      "SAI_TWAMP_SESSION_ATTR_TUNNEL_SRC_IP": "0.0.0.0",
-      "SAI_TWAMP_SESSION_ATTR_TUNNEL_DST_IP": "0.0.0.0",
-      "SAI_TWAMP_SESSION_ATTR_TUNNEL_VNI": "0",
-      "SAI_TWAMP_SESSION_ATTR_TUNNEL_UDP_SRC_PORT": "0",
-      "SAI_TWAMP_SESSION_ATTR_TUNNEL_UDP_DST_PORT": "0",
+      "SAI_TWAMP_SESSION_ATTR_TUNNEL_SRC_MAC": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": [
+              "SAI_TWAMP_ENCAPSULATION_TYPE_MPLS_L2VPN",
+              "SAI_TWAMP_ENCAPSULATION_TYPE_MPLS_L3VPN",
+              "SAI_TWAMP_ENCAPSULATION_TYPE_VXLAN"
+            ]
+          }
+        ],
+        "def_value": "vendor"
+      },
+      "SAI_TWAMP_SESSION_ATTR_TUNNEL_DST_MAC": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": [
+              "SAI_TWAMP_ENCAPSULATION_TYPE_MPLS_L2VPN",
+              "SAI_TWAMP_ENCAPSULATION_TYPE_MPLS_L3VPN",
+              "SAI_TWAMP_ENCAPSULATION_TYPE_VXLAN"
+            ]
+          }
+        ],
+        "def_value": "vendor"
+      },
+      "SAI_TWAMP_SESSION_ATTR_TUNNEL_OUTER_VLAN_ID": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_TUNNEL_OUTER_VLAN_HEADER_VALID": "true"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_TWAMP_SESSION_ATTR_TUNNEL_OUTER_VLAN_PRI": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_TUNNEL_OUTER_VLAN_HEADER_VALID": "true"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_TWAMP_SESSION_ATTR_TUNNEL_OUTER_VLAN_CFI": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_TUNNEL_OUTER_VLAN_HEADER_VALID": "true"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_TWAMP_SESSION_ATTR_TUNNEL_OUTER_VLAN_HEADER_VALID": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": [
+              "SAI_TWAMP_ENCAPSULATION_TYPE_MPLS_L2VPN",
+              "SAI_TWAMP_ENCAPSULATION_TYPE_MPLS_L3VPN",
+              "SAI_TWAMP_ENCAPSULATION_TYPE_VXLAN"
+            ]
+          }
+        ],
+        "def_value": "false"
+      },
+      "SAI_TWAMP_SESSION_ATTR_TUNNEL_LABELSTACK": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": [
+              "SAI_TWAMP_ENCAPSULATION_TYPE_MPLS_L2VPN",
+              "SAI_TWAMP_ENCAPSULATION_TYPE_MPLS_L3VPN"
+            ]
+          }
+        ],
+        "def_value": "empty"
+      },
+      "SAI_TWAMP_SESSION_ATTR_TUNNEL_SRC_IP": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": "SAI_TWAMP_ENCAPSULATION_TYPE_VXLAN"
+          }
+        ],
+        "def_value": "0.0.0.0"
+      },
+      "SAI_TWAMP_SESSION_ATTR_TUNNEL_DST_IP": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": "SAI_TWAMP_ENCAPSULATION_TYPE_VXLAN"
+          }
+        ],
+        "def_value": "0.0.0.0"
+      },
+      "SAI_TWAMP_SESSION_ATTR_TUNNEL_VNI": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": "SAI_TWAMP_ENCAPSULATION_TYPE_VXLAN"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_TWAMP_SESSION_ATTR_TUNNEL_UDP_SRC_PORT": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": "SAI_TWAMP_ENCAPSULATION_TYPE_VXLAN"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_TWAMP_SESSION_ATTR_TUNNEL_UDP_DST_PORT": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": "SAI_TWAMP_ENCAPSULATION_TYPE_VXLAN"
+          }
+        ],
+        "def_value": "0"
+      },
       "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": "SAI_TWAMP_ENCAPSULATION_TYPE_IP",
       "SAI_TWAMP_SESSION_ATTR_TWAMP_TIMESTAMP_FORMAT": "SAI_TWAMP_TIMESTAMP_FORMAT_NTP",
-      "SAI_TWAMP_SESSION_ATTR_SESSION_ENABLE_TRANSMIT": "false",
+      "SAI_TWAMP_SESSION_ATTR_SESSION_ENABLE_TRANSMIT": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_SESSION_ROLE": "SAI_TWAMP_SESSION_ROLE_SENDER"
+          }
+        ],
+        "def_value": "false"
+      },
       "SAI_TWAMP_SESSION_ATTR_PACKET_LENGTH": "256",
       "SAI_TWAMP_SESSION_ATTR_PORT": "SAI_NULL_OBJECT_ID",
-      "SAI_TWAMP_SESSION_ATTR_TRANSMIT_PORT": "",
+      "SAI_TWAMP_SESSION_ATTR_TRANSMIT_PORT": {
+        "condition": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_HW_LOOKUP_VALID": "false"
+          }
+        ],
+        "def_value": ""
+      },
       "SAI_TWAMP_SESSION_ATTR_RECEIVE_PORT": "empty",
-      "SAI_TWAMP_SESSION_ATTR_TWAMP_PKT_TX_MODE": "SAI_TWAMP_PKT_TX_MODE_CONTINUOUS",
-      "SAI_TWAMP_SESSION_ATTR_TX_PKT_CNT": "0",
-      "SAI_TWAMP_SESSION_ATTR_TX_PKT_PERIOD": "0",
-      "SAI_TWAMP_SESSION_ATTR_TX_INTERVAL": "1000",
-      "SAI_TWAMP_SESSION_ATTR_TIMEOUT": "3",
-      "SAI_TWAMP_SESSION_ATTR_STATISTICS_INTERVAL": "10000",
+      "SAI_TWAMP_SESSION_ATTR_TWAMP_PKT_TX_MODE": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_SESSION_ROLE": "SAI_TWAMP_SESSION_ROLE_SENDER"
+          }
+        ],
+        "def_value": "SAI_TWAMP_PKT_TX_MODE_CONTINUOUS"
+      },
+      "SAI_TWAMP_SESSION_ATTR_TX_PKT_CNT": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_SESSION_ROLE": "SAI_TWAMP_SESSION_ROLE_SENDER"
+          },
+          {
+            "SAI_TWAMP_SESSION_ATTR_TWAMP_PKT_TX_MODE": "SAI_TWAMP_PKT_TX_MODE_PACKET_COUNT"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_TWAMP_SESSION_ATTR_TX_PKT_PERIOD": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_SESSION_ROLE": "SAI_TWAMP_SESSION_ROLE_SENDER"
+          },
+          {
+            "SAI_TWAMP_SESSION_ATTR_TWAMP_PKT_TX_MODE": "SAI_TWAMP_PKT_TX_MODE_PERIOD"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_TWAMP_SESSION_ATTR_TX_INTERVAL": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_SESSION_ROLE": "SAI_TWAMP_SESSION_ROLE_SENDER"
+          }
+        ],
+        "def_value": "1000"
+      },
+      "SAI_TWAMP_SESSION_ATTR_TIMEOUT": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_SESSION_ROLE": "SAI_TWAMP_SESSION_ROLE_SENDER"
+          }
+        ],
+        "def_value": "3"
+      },
+      "SAI_TWAMP_SESSION_ATTR_STATISTICS_INTERVAL": {
+        "validonly": [
+          {
+            "SAI_TWAMP_SESSION_ATTR_SESSION_ROLE": "SAI_TWAMP_SESSION_ROLE_SENDER"
+          }
+        ],
+        "def_value": "10000"
+      },
       "SAI_TWAMP_SESSION_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
       "SAI_TWAMP_SESSION_ATTR_SELECTIVE_COUNTER_LIST": "empty"
     }
@@ -2995,11 +5091,41 @@
       "SAI_VLAN_ATTR_EGRESS_ACL": "SAI_NULL_OBJECT_ID",
       "SAI_VLAN_ATTR_META_DATA": "0",
       "SAI_VLAN_ATTR_UNKNOWN_UNICAST_FLOOD_CONTROL_TYPE": "SAI_VLAN_FLOOD_CONTROL_TYPE_ALL",
-      "SAI_VLAN_ATTR_UNKNOWN_UNICAST_FLOOD_GROUP": "SAI_NULL_OBJECT_ID",
+      "SAI_VLAN_ATTR_UNKNOWN_UNICAST_FLOOD_GROUP": {
+        "validonly": [
+          {
+            "SAI_VLAN_ATTR_UNKNOWN_UNICAST_FLOOD_CONTROL_TYPE": [
+              "SAI_VLAN_FLOOD_CONTROL_TYPE_L2MC_GROUP",
+              "SAI_VLAN_FLOOD_CONTROL_TYPE_COMBINED"
+            ]
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
       "SAI_VLAN_ATTR_UNKNOWN_MULTICAST_FLOOD_CONTROL_TYPE": "SAI_VLAN_FLOOD_CONTROL_TYPE_ALL",
-      "SAI_VLAN_ATTR_UNKNOWN_MULTICAST_FLOOD_GROUP": "SAI_NULL_OBJECT_ID",
+      "SAI_VLAN_ATTR_UNKNOWN_MULTICAST_FLOOD_GROUP": {
+        "validonly": [
+          {
+            "SAI_VLAN_ATTR_UNKNOWN_MULTICAST_FLOOD_CONTROL_TYPE": [
+              "SAI_VLAN_FLOOD_CONTROL_TYPE_L2MC_GROUP",
+              "SAI_VLAN_FLOOD_CONTROL_TYPE_COMBINED"
+            ]
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
       "SAI_VLAN_ATTR_BROADCAST_FLOOD_CONTROL_TYPE": "SAI_VLAN_FLOOD_CONTROL_TYPE_ALL",
-      "SAI_VLAN_ATTR_BROADCAST_FLOOD_GROUP": "SAI_NULL_OBJECT_ID",
+      "SAI_VLAN_ATTR_BROADCAST_FLOOD_GROUP": {
+        "validonly": [
+          {
+            "SAI_VLAN_ATTR_BROADCAST_FLOOD_CONTROL_TYPE": [
+              "SAI_VLAN_FLOOD_CONTROL_TYPE_L2MC_GROUP",
+              "SAI_VLAN_FLOOD_CONTROL_TYPE_COMBINED"
+            ]
+          }
+        ],
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
       "SAI_VLAN_ATTR_CUSTOM_IGMP_SNOOPING_ENABLE": "false",
       "SAI_VLAN_ATTR_TAM_OBJECT": "empty",
       "SAI_VLAN_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
@@ -3031,45 +5157,344 @@
     ],
     "attributes": {
       "SAI_WRED_ATTR_GREEN_ENABLE": "false",
-      "SAI_WRED_ATTR_GREEN_MIN_THRESHOLD": "0",
-      "SAI_WRED_ATTR_GREEN_MAX_THRESHOLD": "0",
+      "SAI_WRED_ATTR_GREEN_MIN_THRESHOLD": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_GREEN_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_GREEN_MAX_THRESHOLD": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_GREEN_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
       "SAI_WRED_ATTR_GREEN_DROP_PROBABILITY": "100",
       "SAI_WRED_ATTR_YELLOW_ENABLE": "false",
-      "SAI_WRED_ATTR_YELLOW_MIN_THRESHOLD": "0",
-      "SAI_WRED_ATTR_YELLOW_MAX_THRESHOLD": "0",
+      "SAI_WRED_ATTR_YELLOW_MIN_THRESHOLD": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_YELLOW_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_YELLOW_MAX_THRESHOLD": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_YELLOW_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
       "SAI_WRED_ATTR_YELLOW_DROP_PROBABILITY": "100",
       "SAI_WRED_ATTR_RED_ENABLE": "false",
-      "SAI_WRED_ATTR_RED_MIN_THRESHOLD": "0",
-      "SAI_WRED_ATTR_RED_MAX_THRESHOLD": "0",
+      "SAI_WRED_ATTR_RED_MIN_THRESHOLD": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_RED_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_RED_MAX_THRESHOLD": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_RED_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
       "SAI_WRED_ATTR_RED_DROP_PROBABILITY": "100",
       "SAI_WRED_ATTR_WEIGHT": "0",
       "SAI_WRED_ATTR_ECN_MARK_MODE": "SAI_ECN_MARK_MODE_NONE",
-      "SAI_WRED_ATTR_ECN_GREEN_MIN_THRESHOLD": "0",
-      "SAI_WRED_ATTR_ECN_GREEN_MAX_THRESHOLD": "0",
-      "SAI_WRED_ATTR_ECN_GREEN_MARK_PROBABILITY": "100",
-      "SAI_WRED_ATTR_ECN_YELLOW_MIN_THRESHOLD": "0",
-      "SAI_WRED_ATTR_ECN_YELLOW_MAX_THRESHOLD": "0",
-      "SAI_WRED_ATTR_ECN_YELLOW_MARK_PROBABILITY": "100",
-      "SAI_WRED_ATTR_ECN_RED_MIN_THRESHOLD": "0",
-      "SAI_WRED_ATTR_ECN_RED_MAX_THRESHOLD": "0",
-      "SAI_WRED_ATTR_ECN_RED_MARK_PROBABILITY": "100",
-      "SAI_WRED_ATTR_ECN_COLOR_UNAWARE_MIN_THRESHOLD": "0",
-      "SAI_WRED_ATTR_ECN_COLOR_UNAWARE_MAX_THRESHOLD": "0",
-      "SAI_WRED_ATTR_ECN_COLOR_UNAWARE_MARK_PROBABILITY": "100",
-      "SAI_WRED_ATTR_GREEN_MIN_THRESHOLD_64": "0",
-      "SAI_WRED_ATTR_GREEN_MAX_THRESHOLD_64": "0",
-      "SAI_WRED_ATTR_YELLOW_MIN_THRESHOLD_64": "0",
-      "SAI_WRED_ATTR_YELLOW_MAX_THRESHOLD_64": "0",
-      "SAI_WRED_ATTR_RED_MIN_THRESHOLD_64": "0",
-      "SAI_WRED_ATTR_RED_MAX_THRESHOLD_64": "0",
-      "SAI_WRED_ATTR_ECN_GREEN_MIN_THRESHOLD_64": "0",
-      "SAI_WRED_ATTR_ECN_GREEN_MAX_THRESHOLD_64": "0",
-      "SAI_WRED_ATTR_ECN_YELLOW_MIN_THRESHOLD_64": "0",
-      "SAI_WRED_ATTR_ECN_YELLOW_MAX_THRESHOLD_64": "0",
-      "SAI_WRED_ATTR_ECN_RED_MIN_THRESHOLD_64": "0",
-      "SAI_WRED_ATTR_ECN_RED_MAX_THRESHOLD_64": "0",
-      "SAI_WRED_ATTR_ECN_COLOR_UNAWARE_MIN_THRESHOLD_64": "0",
-      "SAI_WRED_ATTR_ECN_COLOR_UNAWARE_MAX_THRESHOLD_64": "0"
+      "SAI_WRED_ATTR_ECN_GREEN_MIN_THRESHOLD": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_GREEN",
+              "SAI_ECN_MARK_MODE_GREEN_YELLOW",
+              "SAI_ECN_MARK_MODE_GREEN_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_GREEN_MAX_THRESHOLD": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_GREEN",
+              "SAI_ECN_MARK_MODE_GREEN_YELLOW",
+              "SAI_ECN_MARK_MODE_GREEN_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_GREEN_MARK_PROBABILITY": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_GREEN",
+              "SAI_ECN_MARK_MODE_GREEN_YELLOW",
+              "SAI_ECN_MARK_MODE_GREEN_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "100"
+      },
+      "SAI_WRED_ATTR_ECN_YELLOW_MIN_THRESHOLD": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_YELLOW",
+              "SAI_ECN_MARK_MODE_GREEN_YELLOW",
+              "SAI_ECN_MARK_MODE_YELLOW_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_YELLOW_MAX_THRESHOLD": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_YELLOW",
+              "SAI_ECN_MARK_MODE_GREEN_YELLOW",
+              "SAI_ECN_MARK_MODE_YELLOW_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_YELLOW_MARK_PROBABILITY": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_YELLOW",
+              "SAI_ECN_MARK_MODE_GREEN_YELLOW",
+              "SAI_ECN_MARK_MODE_YELLOW_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "100"
+      },
+      "SAI_WRED_ATTR_ECN_RED_MIN_THRESHOLD": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_RED",
+              "SAI_ECN_MARK_MODE_GREEN_RED",
+              "SAI_ECN_MARK_MODE_YELLOW_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_RED_MAX_THRESHOLD": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_RED",
+              "SAI_ECN_MARK_MODE_GREEN_RED",
+              "SAI_ECN_MARK_MODE_YELLOW_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_RED_MARK_PROBABILITY": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_RED",
+              "SAI_ECN_MARK_MODE_GREEN_RED",
+              "SAI_ECN_MARK_MODE_YELLOW_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "100"
+      },
+      "SAI_WRED_ATTR_ECN_COLOR_UNAWARE_MIN_THRESHOLD": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": "SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_COLOR_UNAWARE_MAX_THRESHOLD": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": "SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_COLOR_UNAWARE_MARK_PROBABILITY": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": "SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "100"
+      },
+      "SAI_WRED_ATTR_GREEN_MIN_THRESHOLD_64": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_GREEN_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_GREEN_MAX_THRESHOLD_64": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_GREEN_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_YELLOW_MIN_THRESHOLD_64": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_YELLOW_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_YELLOW_MAX_THRESHOLD_64": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_YELLOW_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_YELLOW or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_RED_MIN_THRESHOLD_64": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_RED_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_RED_MAX_THRESHOLD_64": {
+        "validonly": [
+          {
+            "_raw": "SAI_WRED_ATTR_RED_ENABLE == true or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_GREEN_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_YELLOW_RED or SAI_WRED_ATTR_ECN_MARK_MODE == SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_GREEN_MIN_THRESHOLD_64": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_GREEN",
+              "SAI_ECN_MARK_MODE_GREEN_YELLOW",
+              "SAI_ECN_MARK_MODE_GREEN_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_GREEN_MAX_THRESHOLD_64": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_GREEN",
+              "SAI_ECN_MARK_MODE_GREEN_YELLOW",
+              "SAI_ECN_MARK_MODE_GREEN_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_YELLOW_MIN_THRESHOLD_64": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_YELLOW",
+              "SAI_ECN_MARK_MODE_GREEN_YELLOW",
+              "SAI_ECN_MARK_MODE_YELLOW_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_YELLOW_MAX_THRESHOLD_64": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_YELLOW",
+              "SAI_ECN_MARK_MODE_GREEN_YELLOW",
+              "SAI_ECN_MARK_MODE_YELLOW_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_RED_MIN_THRESHOLD_64": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_RED",
+              "SAI_ECN_MARK_MODE_GREEN_RED",
+              "SAI_ECN_MARK_MODE_YELLOW_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_RED_MAX_THRESHOLD_64": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": [
+              "SAI_ECN_MARK_MODE_RED",
+              "SAI_ECN_MARK_MODE_GREEN_RED",
+              "SAI_ECN_MARK_MODE_YELLOW_RED",
+              "SAI_ECN_MARK_MODE_ALL"
+            ]
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_COLOR_UNAWARE_MIN_THRESHOLD_64": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": "SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      },
+      "SAI_WRED_ATTR_ECN_COLOR_UNAWARE_MAX_THRESHOLD_64": {
+        "validonly": [
+          {
+            "SAI_WRED_ATTR_ECN_MARK_MODE": "SAI_ECN_MARK_MODE_ALL"
+          }
+        ],
+        "def_value": "0"
+      }
     }
   }
 }
