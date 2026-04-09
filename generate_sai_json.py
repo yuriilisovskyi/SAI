@@ -386,10 +386,18 @@ class {class_name}(SaiApiTestBase):
 def generate_ptf_tests(stem_to_path: dict, hdr_to_objs: dict, ptf_dir: str) -> list[str]:
     """
     Write one PTF test module per header stem into ptf_dir.
-    Returns the list of generated file paths.
+    Also writes run_tests.sh with the PTF command for each test.
+    Returns the list of generated test file paths.
     """
     os.makedirs(ptf_dir, exist_ok=True)
     generated = []
+    run_lines = []
+
+    PTF_CMD = (
+        "./SAI/test/ptf/ptf"
+        " --test-dir SAI/ptf/unittests"
+        " --test-params=\"port_map_file='config/ptf_port_map.ini'\""
+    )
 
     for stem, json_path in sorted(stem_to_path.items()):
         obj_types = hdr_to_objs.get(stem, [])
@@ -414,6 +422,21 @@ def generate_ptf_tests(stem_to_path: dict, hdr_to_objs: dict, ptf_dir: str) -> l
         with open(out_path, 'w') as f:
             f.write(src)
         generated.append(out_path)
+        run_lines.append(f"{PTF_CMD} {stem}_test.{class_name}")
+
+    # Write run_tests.sh
+    run_script = os.path.join(ptf_dir, 'run_tests.sh')
+    with open(run_script, 'w') as f:
+        f.write('#!/bin/bash\n')
+        f.write('# Auto-generated list of PTF test commands for all SAI API unit tests.\n')
+        f.write('# Each line runs one per-header test class against a live SAI device.\n')
+        f.write('#\n')
+        f.write('# Usage:\n')
+        f.write('#   cd <repo-root>\n')
+        f.write('#   bash ptf/unittests/run_tests.sh\n')
+        f.write('#\n')
+        f.write('# Or execute individual lines directly.\n\n')
+        f.write('\n'.join(run_lines) + '\n')
 
     return generated
 
