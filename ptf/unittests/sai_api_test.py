@@ -617,17 +617,18 @@ class SaiApiTestBase(ThriftInterface):
         Build kwargs dict for a create call from the attributes JSON.
 
         Rules:
-          - Attributes with a "condition" field are skipped; their validity
-            depends on other attribute values that may not hold here.
-          - "empty" / "empty list" defaults are replaced with the appropriate
-            Thrift empty list/object constructed from the "type" field.
-          - If fn_callable is provided, kwargs are filtered to only the
-            parameters the function actually accepts (avoids passing read-only
-            attributes like port_list that are not in the create signature).
+          - Attributes with a "condition" field are skipped.
+          - "empty" / "empty list" defaults become Thrift empty list objects.
+          - Params not accepted by the function are filtered out.
+          - u8 params with values > 127 are skipped: Thrift serialises the u8
+            attribute_value field as TType.BYTE (signed, -128..127), so values
+            above 127 would cause a "byte format" serialisation error.
         """
         accepted = None
+        param_vtypes = {}
         if fn_callable is not None:
             accepted = set(_fn_params(fn_callable))
+            param_vtypes = _get_param_value_types(fn_callable)
 
         kwargs = {}
         for attr_name, attr_val in attributes.items():
@@ -639,8 +640,14 @@ class SaiApiTestBase(ThriftInterface):
             if accepted is not None and param not in accepted:
                 continue
             value = _attr_default(attr_val)
-            if value is not None:
-                kwargs[param] = value
+            if value is None:
+                continue
+            # u8 fields are serialised as signed TType.BYTE (-128..127);
+            # skip values that would overflow the wire format.
+            if (isinstance(value, int) and not isinstance(value, bool)
+                    and param_vtypes.get(param) == 'u8' and value > 127):
+                continue
+            kwargs[param] = value
         return kwargs
 
     def _get_kwargs(self, attributes: dict, fn_callable=None) -> dict:
