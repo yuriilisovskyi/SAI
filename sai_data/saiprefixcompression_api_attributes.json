@@ -9,7 +9,10 @@
       "sai_thrift_set_prefix_compression_entry_attribute"
     ],
     "attributes": {
-      "SAI_PREFIX_COMPRESSION_ENTRY_ATTR_META": ""
+      "SAI_PREFIX_COMPRESSION_ENTRY_ATTR_META": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      }
     }
   },
   "SAI_OBJECT_TYPE_PREFIX_COMPRESSION_TABLE": {
@@ -20,9 +23,18 @@
       "sai_thrift_set_prefix_compression_table_attribute"
     ],
     "attributes": {
-      "SAI_PREFIX_COMPRESSION_TABLE_ATTR_LABEL": "\"\"",
-      "SAI_PREFIX_COMPRESSION_TABLE_ATTR_PREFIX_COMPRESSION_STAGE": "SAI_PREFIX_COMPRESSION_STAGE_INGRESS",
-      "SAI_PREFIX_COMPRESSION_TABLE_ATTR_PREFIX_COMPRESSION_TYPE": "SAI_PREFIX_COMPRESSION_TYPE_BOTH"
+      "SAI_PREFIX_COMPRESSION_TABLE_ATTR_LABEL": {
+        "type": "char",
+        "def_value": "\"\""
+      },
+      "SAI_PREFIX_COMPRESSION_TABLE_ATTR_PREFIX_COMPRESSION_STAGE": {
+        "type": "sai_prefix_compression_stage_t",
+        "def_value": "SAI_PREFIX_COMPRESSION_STAGE_INGRESS"
+      },
+      "SAI_PREFIX_COMPRESSION_TABLE_ATTR_PREFIX_COMPRESSION_TYPE": {
+        "type": "sai_prefix_compression_type_t",
+        "def_value": "SAI_PREFIX_COMPRESSION_TYPE_BOTH"
+      }
     }
   }
 }

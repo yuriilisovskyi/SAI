@@ -10,15 +10,42 @@
       "sai_thrift_set_buffer_pool_attribute"
     ],
     "attributes": {
-      "SAI_BUFFER_POOL_ATTR_SHARED_SIZE": "",
-      "SAI_BUFFER_POOL_ATTR_TYPE": "SAI_BUFFER_POOL_TYPE_INGRESS",
-      "SAI_BUFFER_POOL_ATTR_SIZE": "",
-      "SAI_BUFFER_POOL_ATTR_THRESHOLD_MODE": "SAI_BUFFER_POOL_THRESHOLD_MODE_DYNAMIC",
-      "SAI_BUFFER_POOL_ATTR_TAM": "empty",
-      "SAI_BUFFER_POOL_ATTR_XOFF_SIZE": "0",
-      "SAI_BUFFER_POOL_ATTR_WRED_PROFILE_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_BUFFER_POOL_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
-      "SAI_BUFFER_POOL_ATTR_SELECTIVE_COUNTER_LIST": "empty"
+      "SAI_BUFFER_POOL_ATTR_SHARED_SIZE": {
+        "type": "sai_uint64_t",
+        "def_value": "0"
+      },
+      "SAI_BUFFER_POOL_ATTR_TYPE": {
+        "type": "sai_buffer_pool_type_t",
+        "def_value": "SAI_BUFFER_POOL_TYPE_INGRESS"
+      },
+      "SAI_BUFFER_POOL_ATTR_SIZE": {
+        "type": "sai_uint64_t",
+        "def_value": "0"
+      },
+      "SAI_BUFFER_POOL_ATTR_THRESHOLD_MODE": {
+        "type": "sai_buffer_pool_threshold_mode_t",
+        "def_value": "SAI_BUFFER_POOL_THRESHOLD_MODE_DYNAMIC"
+      },
+      "SAI_BUFFER_POOL_ATTR_TAM": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
+      "SAI_BUFFER_POOL_ATTR_XOFF_SIZE": {
+        "type": "sai_uint64_t",
+        "def_value": "0"
+      },
+      "SAI_BUFFER_POOL_ATTR_WRED_PROFILE_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_BUFFER_POOL_ATTR_STATS_COUNT_MODE": {
+        "type": "sai_stats_count_mode_t",
+        "def_value": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE"
+      },
+      "SAI_BUFFER_POOL_ATTR_SELECTIVE_COUNTER_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      }
     }
   },
   "SAI_OBJECT_TYPE_BUFFER_PROFILE": {
@@ -29,30 +56,56 @@
       "sai_thrift_set_buffer_profile_attribute"
     ],
     "attributes": {
-      "SAI_BUFFER_PROFILE_ATTR_POOL_ID": "",
-      "SAI_BUFFER_PROFILE_ATTR_RESERVED_BUFFER_SIZE": "",
-      "SAI_BUFFER_PROFILE_ATTR_BUFFER_SIZE": "",
-      "SAI_BUFFER_PROFILE_ATTR_THRESHOLD_MODE": "SAI_BUFFER_PROFILE_THRESHOLD_MODE_STATIC",
+      "SAI_BUFFER_PROFILE_ATTR_POOL_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_BUFFER_PROFILE_ATTR_RESERVED_BUFFER_SIZE": {
+        "type": "sai_uint64_t",
+        "def_value": "0"
+      },
+      "SAI_BUFFER_PROFILE_ATTR_BUFFER_SIZE": {
+        "type": "sai_uint64_t",
+        "def_value": "0"
+      },
+      "SAI_BUFFER_PROFILE_ATTR_THRESHOLD_MODE": {
+        "type": "sai_buffer_profile_threshold_mode_t",
+        "def_value": "SAI_BUFFER_PROFILE_THRESHOLD_MODE_STATIC"
+      },
       "SAI_BUFFER_PROFILE_ATTR_SHARED_DYNAMIC_TH": {
+        "type": "sai_int8_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_BUFFER_PROFILE_ATTR_THRESHOLD_MODE": "SAI_BUFFER_PROFILE_THRESHOLD_MODE_DYNAMIC"
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_BUFFER_PROFILE_ATTR_SHARED_STATIC_TH": {
+        "type": "sai_uint64_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_BUFFER_PROFILE_ATTR_THRESHOLD_MODE": "SAI_BUFFER_PROFILE_THRESHOLD_MODE_STATIC"
           }
-        ],
-        "def_value": ""
+        ]
       },
-      "SAI_BUFFER_PROFILE_ATTR_XOFF_TH": "0",
-      "SAI_BUFFER_PROFILE_ATTR_XON_TH": "0",
-      "SAI_BUFFER_PROFILE_ATTR_XON_OFFSET_TH": "0",
-      "SAI_BUFFER_PROFILE_ATTR_PACKET_ADMISSION_FAIL_ACTION": "SAI_BUFFER_PROFILE_PACKET_ADMISSION_FAIL_ACTION_DROP"
+      "SAI_BUFFER_PROFILE_ATTR_XOFF_TH": {
+        "type": "sai_uint64_t",
+        "def_value": "0"
+      },
+      "SAI_BUFFER_PROFILE_ATTR_XON_TH": {
+        "type": "sai_uint64_t",
+        "def_value": "0"
+      },
+      "SAI_BUFFER_PROFILE_ATTR_XON_OFFSET_TH": {
+        "type": "sai_uint64_t",
+        "def_value": "0"
+      },
+      "SAI_BUFFER_PROFILE_ATTR_PACKET_ADMISSION_FAIL_ACTION": {
+        "type": "sai_buffer_profile_packet_admission_fail_action_t",
+        "def_value": "SAI_BUFFER_PROFILE_PACKET_ADMISSION_FAIL_ACTION_DROP"
+      }
     }
   },
   "SAI_OBJECT_TYPE_INGRESS_PRIORITY_GROUP": {
@@ -66,12 +119,30 @@
       "sai_thrift_set_ingress_priority_group_attribute"
     ],
     "attributes": {
-      "SAI_INGRESS_PRIORITY_GROUP_ATTR_BUFFER_PROFILE": "SAI_NULL_OBJECT_ID",
-      "SAI_INGRESS_PRIORITY_GROUP_ATTR_PORT": "",
-      "SAI_INGRESS_PRIORITY_GROUP_ATTR_TAM": "empty",
-      "SAI_INGRESS_PRIORITY_GROUP_ATTR_INDEX": "",
-      "SAI_INGRESS_PRIORITY_GROUP_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
-      "SAI_INGRESS_PRIORITY_GROUP_ATTR_SELECTIVE_COUNTER_LIST": "empty"
+      "SAI_INGRESS_PRIORITY_GROUP_ATTR_BUFFER_PROFILE": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_INGRESS_PRIORITY_GROUP_ATTR_PORT": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_INGRESS_PRIORITY_GROUP_ATTR_TAM": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
+      "SAI_INGRESS_PRIORITY_GROUP_ATTR_INDEX": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_INGRESS_PRIORITY_GROUP_ATTR_STATS_COUNT_MODE": {
+        "type": "sai_stats_count_mode_t",
+        "def_value": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE"
+      },
+      "SAI_INGRESS_PRIORITY_GROUP_ATTR_SELECTIVE_COUNTER_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      }
     }
   }
 }

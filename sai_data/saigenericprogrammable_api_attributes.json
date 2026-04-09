@@ -7,9 +7,18 @@
       "sai_thrift_set_generic_programmable_attribute"
     ],
     "attributes": {
-      "SAI_GENERIC_PROGRAMMABLE_ATTR_OBJECT_NAME": "",
-      "SAI_GENERIC_PROGRAMMABLE_ATTR_ENTRY": "vendor",
-      "SAI_GENERIC_PROGRAMMABLE_ATTR_COUNTER_ID": "SAI_NULL_OBJECT_ID"
+      "SAI_GENERIC_PROGRAMMABLE_ATTR_OBJECT_NAME": {
+        "type": "sai_s8_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_GENERIC_PROGRAMMABLE_ATTR_ENTRY": {
+        "type": "sai_json_t",
+        "def_value": "vendor"
+      },
+      "SAI_GENERIC_PROGRAMMABLE_ATTR_COUNTER_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      }
     }
   }
 }

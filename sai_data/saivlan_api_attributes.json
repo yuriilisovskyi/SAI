@@ -10,60 +10,102 @@
       "sai_thrift_set_vlan_attribute"
     ],
     "attributes": {
-      "SAI_VLAN_ATTR_VLAN_ID": "",
-      "SAI_VLAN_ATTR_MEMBER_LIST": "",
-      "SAI_VLAN_ATTR_MAX_LEARNED_ADDRESSES": "0",
-      "SAI_VLAN_ATTR_STP_INSTANCE": "attrvalue SAI_SWITCH_ATTR_DEFAULT_STP_INST_ID",
-      "SAI_VLAN_ATTR_LEARN_DISABLE": "false",
-      "SAI_VLAN_ATTR_IPV4_MCAST_LOOKUP_KEY_TYPE": "SAI_VLAN_MCAST_LOOKUP_KEY_TYPE_MAC_DA",
-      "SAI_VLAN_ATTR_IPV6_MCAST_LOOKUP_KEY_TYPE": "SAI_VLAN_MCAST_LOOKUP_KEY_TYPE_MAC_DA",
-      "SAI_VLAN_ATTR_UNKNOWN_NON_IP_MCAST_OUTPUT_GROUP_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_VLAN_ATTR_UNKNOWN_IPV4_MCAST_OUTPUT_GROUP_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_VLAN_ATTR_UNKNOWN_IPV6_MCAST_OUTPUT_GROUP_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_VLAN_ATTR_UNKNOWN_LINKLOCAL_MCAST_OUTPUT_GROUP_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_VLAN_ATTR_INGRESS_ACL": "SAI_NULL_OBJECT_ID",
-      "SAI_VLAN_ATTR_EGRESS_ACL": "SAI_NULL_OBJECT_ID",
-      "SAI_VLAN_ATTR_META_DATA": "0",
-      "SAI_VLAN_ATTR_UNKNOWN_UNICAST_FLOOD_CONTROL_TYPE": "SAI_VLAN_FLOOD_CONTROL_TYPE_ALL",
+      "SAI_VLAN_ATTR_VLAN_ID": {
+        "type": "sai_uint16_t",
+        "def_value": "0"
+      },
+      "SAI_VLAN_ATTR_MEMBER_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_VLAN_ATTR_MAX_LEARNED_ADDRESSES": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_VLAN_ATTR_STP_INSTANCE": {
+        "type": "sai_object_id_t",
+        "def_value": "attrvalue SAI_SWITCH_ATTR_DEFAULT_STP_INST_ID"
+      },
+      "SAI_VLAN_ATTR_LEARN_DISABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_VLAN_ATTR_IPV4_MCAST_LOOKUP_KEY_TYPE": {
+        "type": "sai_vlan_mcast_lookup_key_type_t",
+        "def_value": "SAI_VLAN_MCAST_LOOKUP_KEY_TYPE_MAC_DA"
+      },
+      "SAI_VLAN_ATTR_IPV6_MCAST_LOOKUP_KEY_TYPE": {
+        "type": "sai_vlan_mcast_lookup_key_type_t",
+        "def_value": "SAI_VLAN_MCAST_LOOKUP_KEY_TYPE_MAC_DA"
+      },
+      "SAI_VLAN_ATTR_UNKNOWN_NON_IP_MCAST_OUTPUT_GROUP_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_VLAN_ATTR_UNKNOWN_IPV4_MCAST_OUTPUT_GROUP_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_VLAN_ATTR_UNKNOWN_IPV6_MCAST_OUTPUT_GROUP_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_VLAN_ATTR_UNKNOWN_LINKLOCAL_MCAST_OUTPUT_GROUP_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_VLAN_ATTR_INGRESS_ACL": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_VLAN_ATTR_EGRESS_ACL": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_VLAN_ATTR_META_DATA": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_VLAN_ATTR_UNKNOWN_UNICAST_FLOOD_CONTROL_TYPE": {
+        "type": "sai_vlan_flood_control_type_t",
+        "def_value": "SAI_VLAN_FLOOD_CONTROL_TYPE_ALL"
+      },
       "SAI_VLAN_ATTR_UNKNOWN_UNICAST_FLOOD_GROUP": {
-        "validonly": [
-          {
-            "SAI_VLAN_ATTR_UNKNOWN_UNICAST_FLOOD_CONTROL_TYPE": [
-              "SAI_VLAN_FLOOD_CONTROL_TYPE_L2MC_GROUP",
-              "SAI_VLAN_FLOOD_CONTROL_TYPE_COMBINED"
-            ]
-          }
-        ],
+        "type": "sai_object_id_t",
         "def_value": "SAI_NULL_OBJECT_ID"
       },
-      "SAI_VLAN_ATTR_UNKNOWN_MULTICAST_FLOOD_CONTROL_TYPE": "SAI_VLAN_FLOOD_CONTROL_TYPE_ALL",
+      "SAI_VLAN_ATTR_UNKNOWN_MULTICAST_FLOOD_CONTROL_TYPE": {
+        "type": "sai_vlan_flood_control_type_t",
+        "def_value": "SAI_VLAN_FLOOD_CONTROL_TYPE_ALL"
+      },
       "SAI_VLAN_ATTR_UNKNOWN_MULTICAST_FLOOD_GROUP": {
-        "validonly": [
-          {
-            "SAI_VLAN_ATTR_UNKNOWN_MULTICAST_FLOOD_CONTROL_TYPE": [
-              "SAI_VLAN_FLOOD_CONTROL_TYPE_L2MC_GROUP",
-              "SAI_VLAN_FLOOD_CONTROL_TYPE_COMBINED"
-            ]
-          }
-        ],
+        "type": "sai_object_id_t",
         "def_value": "SAI_NULL_OBJECT_ID"
       },
-      "SAI_VLAN_ATTR_BROADCAST_FLOOD_CONTROL_TYPE": "SAI_VLAN_FLOOD_CONTROL_TYPE_ALL",
+      "SAI_VLAN_ATTR_BROADCAST_FLOOD_CONTROL_TYPE": {
+        "type": "sai_vlan_flood_control_type_t",
+        "def_value": "SAI_VLAN_FLOOD_CONTROL_TYPE_ALL"
+      },
       "SAI_VLAN_ATTR_BROADCAST_FLOOD_GROUP": {
-        "validonly": [
-          {
-            "SAI_VLAN_ATTR_BROADCAST_FLOOD_CONTROL_TYPE": [
-              "SAI_VLAN_FLOOD_CONTROL_TYPE_L2MC_GROUP",
-              "SAI_VLAN_FLOOD_CONTROL_TYPE_COMBINED"
-            ]
-          }
-        ],
+        "type": "sai_object_id_t",
         "def_value": "SAI_NULL_OBJECT_ID"
       },
-      "SAI_VLAN_ATTR_CUSTOM_IGMP_SNOOPING_ENABLE": "false",
-      "SAI_VLAN_ATTR_TAM_OBJECT": "empty",
-      "SAI_VLAN_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
-      "SAI_VLAN_ATTR_SELECTIVE_COUNTER_LIST": "empty"
+      "SAI_VLAN_ATTR_CUSTOM_IGMP_SNOOPING_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_VLAN_ATTR_TAM_OBJECT": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
+      "SAI_VLAN_ATTR_STATS_COUNT_MODE": {
+        "type": "sai_stats_count_mode_t",
+        "def_value": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE"
+      },
+      "SAI_VLAN_ATTR_SELECTIVE_COUNTER_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      }
     }
   },
   "SAI_OBJECT_TYPE_VLAN_MEMBER": {
@@ -74,12 +116,30 @@
       "sai_thrift_set_vlan_member_attribute"
     ],
     "attributes": {
-      "SAI_VLAN_MEMBER_ATTR_VLAN_ID": "",
-      "SAI_VLAN_MEMBER_ATTR_BRIDGE_PORT_ID": "",
-      "SAI_VLAN_MEMBER_ATTR_VLAN_TAGGING_MODE": "SAI_VLAN_TAGGING_MODE_UNTAGGED",
-      "SAI_VLAN_MEMBER_ATTR_TUNNEL_TERM_BUM_TX_DROP": "false",
-      "SAI_VLAN_MEMBER_ATTR_RX_DROP": "false",
-      "SAI_VLAN_MEMBER_ATTR_TX_DROP": "false"
+      "SAI_VLAN_MEMBER_ATTR_VLAN_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_VLAN_MEMBER_ATTR_BRIDGE_PORT_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_VLAN_MEMBER_ATTR_VLAN_TAGGING_MODE": {
+        "type": "sai_vlan_tagging_mode_t",
+        "def_value": "SAI_VLAN_TAGGING_MODE_UNTAGGED"
+      },
+      "SAI_VLAN_MEMBER_ATTR_TUNNEL_TERM_BUM_TX_DROP": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_VLAN_MEMBER_ATTR_RX_DROP": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_VLAN_MEMBER_ATTR_TX_DROP": {
+        "type": "bool",
+        "def_value": "FALSE"
+      }
     }
   }
 }

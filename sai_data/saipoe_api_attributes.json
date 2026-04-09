@@ -7,13 +7,34 @@
       "sai_thrift_set_poe_device_attribute"
     ],
     "attributes": {
-      "SAI_POE_DEVICE_ATTR_HARDWARE_INFO": "\"\"",
-      "SAI_POE_DEVICE_ATTR_POE_PSE_LIST": "",
-      "SAI_POE_DEVICE_ATTR_POE_PORT_LIST": "",
-      "SAI_POE_DEVICE_ATTR_TOTAL_POWER": "",
-      "SAI_POE_DEVICE_ATTR_POWER_CONSUMPTION": "",
-      "SAI_POE_DEVICE_ATTR_VERSION": "",
-      "SAI_POE_DEVICE_ATTR_POWER_LIMIT_MODE": "SAI_POE_DEVICE_LIMIT_MODE_CLASS"
+      "SAI_POE_DEVICE_ATTR_HARDWARE_INFO": {
+        "type": "char",
+        "def_value": "\"\""
+      },
+      "SAI_POE_DEVICE_ATTR_POE_PSE_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_POE_DEVICE_ATTR_POE_PORT_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_POE_DEVICE_ATTR_TOTAL_POWER": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_POE_DEVICE_ATTR_POWER_CONSUMPTION": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_POE_DEVICE_ATTR_VERSION": {
+        "type": "char",
+        "def_value": "\"\""
+      },
+      "SAI_POE_DEVICE_ATTR_POWER_LIMIT_MODE": {
+        "type": "sai_poe_device_limit_mode_t",
+        "def_value": "SAI_POE_DEVICE_LIMIT_MODE_CLASS"
+      }
     }
   },
   "SAI_OBJECT_TYPE_POE_PORT": {
@@ -24,14 +45,38 @@
       "sai_thrift_set_poe_port_attribute"
     ],
     "attributes": {
-      "SAI_POE_PORT_ATTR_FRONT_PANEL_ID": "",
-      "SAI_POE_PORT_ATTR_DEVICE_ID": "",
-      "SAI_POE_PORT_ATTR_STANDARD": "SAI_POE_PORT_STANDARD_TYPE_AF",
-      "SAI_POE_PORT_ATTR_ADMIN_ENABLED_STATE": "false",
-      "SAI_POE_PORT_ATTR_POWER_LIMIT": "0",
-      "SAI_POE_PORT_ATTR_POWER_PRIORITY": "SAI_POE_PORT_POWER_PRIORITY_TYPE_HIGH",
-      "SAI_POE_PORT_ATTR_CONSUMPTION": "",
-      "SAI_POE_PORT_ATTR_STATUS": "SAI_POE_PORT_STATUS_TYPE_OFF"
+      "SAI_POE_PORT_ATTR_FRONT_PANEL_ID": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_POE_PORT_ATTR_DEVICE_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_POE_PORT_ATTR_STANDARD": {
+        "type": "sai_poe_port_standard_t",
+        "def_value": "SAI_POE_PORT_STANDARD_TYPE_AF"
+      },
+      "SAI_POE_PORT_ATTR_ADMIN_ENABLED_STATE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_POE_PORT_ATTR_POWER_LIMIT": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_POE_PORT_ATTR_POWER_PRIORITY": {
+        "type": "sai_poe_port_power_priority_t",
+        "def_value": "SAI_POE_PORT_POWER_PRIORITY_TYPE_HIGH"
+      },
+      "SAI_POE_PORT_ATTR_CONSUMPTION": {
+        "type": "sai_poe_port_power_consumption_t",
+        "def_value": "zeroed structure"
+      },
+      "SAI_POE_PORT_ATTR_STATUS": {
+        "type": "sai_poe_port_status_t",
+        "def_value": "SAI_POE_PORT_STATUS_TYPE_OFF"
+      }
     }
   },
   "SAI_OBJECT_TYPE_POE_PSE": {
@@ -42,12 +87,30 @@
       "sai_thrift_set_poe_pse_attribute"
     ],
     "attributes": {
-      "SAI_POE_PSE_ATTR_ID": "",
-      "SAI_POE_PSE_ATTR_DEVICE_ID": "",
-      "SAI_POE_PSE_ATTR_SOFTWARE_VERSION": "",
-      "SAI_POE_PSE_ATTR_HARDWARE_VERSION": "",
-      "SAI_POE_PSE_ATTR_TEMPERATURE": "",
-      "SAI_POE_PSE_ATTR_STATUS": "SAI_POE_PSE_STATUS_TYPE_ACTIVE"
+      "SAI_POE_PSE_ATTR_ID": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_POE_PSE_ATTR_DEVICE_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_POE_PSE_ATTR_SOFTWARE_VERSION": {
+        "type": "char",
+        "def_value": "\"\""
+      },
+      "SAI_POE_PSE_ATTR_HARDWARE_VERSION": {
+        "type": "char",
+        "def_value": "\"\""
+      },
+      "SAI_POE_PSE_ATTR_TEMPERATURE": {
+        "type": "sai_int16_t",
+        "def_value": "0"
+      },
+      "SAI_POE_PSE_ATTR_STATUS": {
+        "type": "sai_poe_pse_status_t",
+        "def_value": "SAI_POE_PSE_STATUS_TYPE_ACTIVE"
+      }
     }
   }
 }

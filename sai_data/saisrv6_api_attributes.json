@@ -11,65 +11,38 @@
       "sai_thrift_set_my_sid_entry_attribute"
     ],
     "attributes": {
-      "SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR": "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_E",
+      "SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR": {
+        "type": "sai_my_sid_entry_endpoint_behavior_t",
+        "def_value": "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_E"
+      },
       "SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR_FLAVOR": {
-        "validonly": [
-          {
-            "SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR": [
-              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_E",
-              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_X",
-              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_T",
-              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UN",
-              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UA"
-            ]
-          }
-        ],
+        "type": "sai_my_sid_entry_endpoint_behavior_flavor_t",
         "def_value": "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_FLAVOR_NONE"
       },
-      "SAI_MY_SID_ENTRY_ATTR_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD",
-      "SAI_MY_SID_ENTRY_ATTR_TRAP_PRIORITY": "0",
+      "SAI_MY_SID_ENTRY_ATTR_PACKET_ACTION": {
+        "type": "sai_packet_action_t",
+        "def_value": "SAI_PACKET_ACTION_FORWARD"
+      },
+      "SAI_MY_SID_ENTRY_ATTR_TRAP_PRIORITY": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
       "SAI_MY_SID_ENTRY_ATTR_NEXT_HOP_ID": {
-        "validonly": [
-          {
-            "SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR": [
-              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_X",
-              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DX4",
-              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DX6",
-              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_B6_ENCAPS",
-              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_B6_ENCAPS_RED",
-              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_B6_INSERT",
-              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_B6_INSERT_RED",
-              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UA"
-            ]
-          }
-        ],
+        "type": "sai_object_id_t",
         "def_value": "SAI_NULL_OBJECT_ID"
       },
       "SAI_MY_SID_ENTRY_ATTR_TUNNEL_ID": {
-        "validonly": [
-          {
-            "_raw": "SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR_FLAVOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_FLAVOR_USD or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR_FLAVOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_FLAVOR_USD_AND_USP or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR_FLAVOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_FLAVOR_PSP_AND_USD or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR_FLAVOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_FLAVOR_PSP_AND_USP_AND_USD or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DT4 or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DT6 or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DT46 or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UDT4 or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UDT6 or SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR == SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UDT46"
-          }
-        ],
+        "type": "sai_object_id_t",
         "def_value": "SAI_NULL_OBJECT_ID"
       },
       "SAI_MY_SID_ENTRY_ATTR_VRF": {
-        "validonly": [
-          {
-            "SAI_MY_SID_ENTRY_ATTR_ENDPOINT_BEHAVIOR": [
-              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_T",
-              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DT4",
-              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DT6",
-              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_DT46",
-              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UDT4",
-              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UDT6",
-              "SAI_MY_SID_ENTRY_ENDPOINT_BEHAVIOR_UDT46"
-            ]
-          }
-        ],
+        "type": "sai_object_id_t",
         "def_value": "SAI_NULL_OBJECT_ID"
       },
-      "SAI_MY_SID_ENTRY_ATTR_COUNTER_ID": "SAI_NULL_OBJECT_ID"
+      "SAI_MY_SID_ENTRY_ATTR_COUNTER_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      }
     }
   },
   "SAI_OBJECT_TYPE_SRV6_SIDLIST": {
@@ -83,12 +56,30 @@
       "sai_thrift_set_srv6_sidlist_attribute"
     ],
     "attributes": {
-      "SAI_SRV6_SIDLIST_ATTR_TYPE": "SAI_SRV6_SIDLIST_TYPE_INSERT",
-      "SAI_SRV6_SIDLIST_ATTR_TLV_LIST": "empty",
-      "SAI_SRV6_SIDLIST_ATTR_SEGMENT_LIST": "empty",
-      "SAI_SRV6_SIDLIST_ATTR_NEXT_HOP_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_SRV6_SIDLIST_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
-      "SAI_SRV6_SIDLIST_ATTR_SELECTIVE_COUNTER_LIST": "empty"
+      "SAI_SRV6_SIDLIST_ATTR_TYPE": {
+        "type": "sai_srv6_sidlist_type_t",
+        "def_value": "SAI_SRV6_SIDLIST_TYPE_INSERT"
+      },
+      "SAI_SRV6_SIDLIST_ATTR_TLV_LIST": {
+        "type": "sai_tlv_list_t",
+        "def_value": "empty"
+      },
+      "SAI_SRV6_SIDLIST_ATTR_SEGMENT_LIST": {
+        "type": "sai_segment_list_t",
+        "def_value": "empty"
+      },
+      "SAI_SRV6_SIDLIST_ATTR_NEXT_HOP_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SRV6_SIDLIST_ATTR_STATS_COUNT_MODE": {
+        "type": "sai_stats_count_mode_t",
+        "def_value": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE"
+      },
+      "SAI_SRV6_SIDLIST_ATTR_SELECTIVE_COUNTER_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      }
     }
   }
 }

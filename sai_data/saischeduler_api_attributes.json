@@ -7,21 +7,38 @@
       "sai_thrift_set_scheduler_attribute"
     ],
     "attributes": {
-      "SAI_SCHEDULER_ATTR_SCHEDULING_TYPE": "SAI_SCHEDULING_TYPE_WRR",
+      "SAI_SCHEDULER_ATTR_SCHEDULING_TYPE": {
+        "type": "sai_scheduling_type_t",
+        "def_value": "SAI_SCHEDULING_TYPE_WRR"
+      },
       "SAI_SCHEDULER_ATTR_SCHEDULING_WEIGHT": {
-        "validonly": [
-          {
-            "SAI_SCHEDULER_ATTR_SCHEDULING_TYPE": "SAI_SCHEDULING_TYPE_DWRR"
-          }
-        ],
+        "type": "sai_uint8_t",
         "def_value": "1"
       },
-      "SAI_SCHEDULER_ATTR_METER_TYPE": "SAI_METER_TYPE_BYTES",
-      "SAI_SCHEDULER_ATTR_MIN_BANDWIDTH_RATE": "0",
-      "SAI_SCHEDULER_ATTR_MIN_BANDWIDTH_BURST_RATE": "0",
-      "SAI_SCHEDULER_ATTR_MAX_BANDWIDTH_RATE": "0",
-      "SAI_SCHEDULER_ATTR_MAX_BANDWIDTH_BURST_RATE": "0",
-      "SAI_SCHEDULER_ATTR_LABEL": "\"\""
+      "SAI_SCHEDULER_ATTR_METER_TYPE": {
+        "type": "sai_meter_type_t",
+        "def_value": "SAI_METER_TYPE_BYTES"
+      },
+      "SAI_SCHEDULER_ATTR_MIN_BANDWIDTH_RATE": {
+        "type": "sai_uint64_t",
+        "def_value": "0"
+      },
+      "SAI_SCHEDULER_ATTR_MIN_BANDWIDTH_BURST_RATE": {
+        "type": "sai_uint64_t",
+        "def_value": "0"
+      },
+      "SAI_SCHEDULER_ATTR_MAX_BANDWIDTH_RATE": {
+        "type": "sai_uint64_t",
+        "def_value": "0"
+      },
+      "SAI_SCHEDULER_ATTR_MAX_BANDWIDTH_BURST_RATE": {
+        "type": "sai_uint64_t",
+        "def_value": "0"
+      },
+      "SAI_SCHEDULER_ATTR_LABEL": {
+        "type": "char",
+        "def_value": "\"\""
+      }
     }
   }
 }

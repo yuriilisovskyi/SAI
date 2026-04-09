@@ -7,13 +7,12 @@
       "sai_thrift_set_l2mc_entry_attribute"
     ],
     "attributes": {
-      "SAI_L2MC_ENTRY_ATTR_PACKET_ACTION": "SAI_PACKET_ACTION_DROP",
+      "SAI_L2MC_ENTRY_ATTR_PACKET_ACTION": {
+        "type": "sai_packet_action_t",
+        "def_value": "SAI_PACKET_ACTION_DROP"
+      },
       "SAI_L2MC_ENTRY_ATTR_OUTPUT_GROUP_ID": {
-        "validonly": [
-          {
-            "SAI_L2MC_ENTRY_ATTR_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD"
-          }
-        ],
+        "type": "sai_object_id_t",
         "def_value": "SAI_NULL_OBJECT_ID"
       }
     }

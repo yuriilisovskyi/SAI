@@ -7,29 +7,24 @@
       "sai_thrift_set_debug_counter_attribute"
     ],
     "attributes": {
-      "SAI_DEBUG_COUNTER_ATTR_INDEX": "",
-      "SAI_DEBUG_COUNTER_ATTR_TYPE": "SAI_DEBUG_COUNTER_TYPE_PORT_IN_DROP_REASONS",
-      "SAI_DEBUG_COUNTER_ATTR_BIND_METHOD": "SAI_DEBUG_COUNTER_BIND_METHOD_AUTOMATIC",
+      "SAI_DEBUG_COUNTER_ATTR_INDEX": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_DEBUG_COUNTER_ATTR_TYPE": {
+        "type": "sai_debug_counter_type_t",
+        "def_value": "SAI_DEBUG_COUNTER_TYPE_PORT_IN_DROP_REASONS"
+      },
+      "SAI_DEBUG_COUNTER_ATTR_BIND_METHOD": {
+        "type": "sai_debug_counter_bind_method_t",
+        "def_value": "SAI_DEBUG_COUNTER_BIND_METHOD_AUTOMATIC"
+      },
       "SAI_DEBUG_COUNTER_ATTR_IN_DROP_REASON_LIST": {
-        "validonly": [
-          {
-            "SAI_DEBUG_COUNTER_ATTR_TYPE": [
-              "SAI_DEBUG_COUNTER_TYPE_PORT_IN_DROP_REASONS",
-              "SAI_DEBUG_COUNTER_TYPE_SWITCH_IN_DROP_REASONS"
-            ]
-          }
-        ],
+        "type": "sai_s32_list_t sai_in_drop_reason_t",
         "def_value": "empty"
       },
       "SAI_DEBUG_COUNTER_ATTR_OUT_DROP_REASON_LIST": {
-        "validonly": [
-          {
-            "SAI_DEBUG_COUNTER_ATTR_TYPE": [
-              "SAI_DEBUG_COUNTER_TYPE_PORT_OUT_DROP_REASONS",
-              "SAI_DEBUG_COUNTER_TYPE_SWITCH_OUT_DROP_REASONS"
-            ]
-          }
-        ],
+        "type": "sai_s32_list_t sai_out_drop_reason_t",
         "def_value": "empty"
       }
     }

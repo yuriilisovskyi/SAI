@@ -7,10 +7,22 @@
       "sai_thrift_set_tam_attribute"
     ],
     "attributes": {
-      "SAI_TAM_ATTR_TELEMETRY_OBJECTS_LIST": "empty",
-      "SAI_TAM_ATTR_EVENT_OBJECTS_LIST": "empty",
-      "SAI_TAM_ATTR_INT_OBJECTS_LIST": "empty",
-      "SAI_TAM_ATTR_TAM_BIND_POINT_TYPE_LIST": "empty"
+      "SAI_TAM_ATTR_TELEMETRY_OBJECTS_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
+      "SAI_TAM_ATTR_EVENT_OBJECTS_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
+      "SAI_TAM_ATTR_INT_OBJECTS_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
+      "SAI_TAM_ATTR_TAM_BIND_POINT_TYPE_LIST": {
+        "type": "sai_s32_list_t sai_tam_bind_point_type_t",
+        "def_value": "empty"
+      }
     }
   },
   "SAI_OBJECT_TYPE_TAM_COLLECTOR": {
@@ -21,29 +33,48 @@
       "sai_thrift_set_tam_collector_attribute"
     ],
     "attributes": {
-      "SAI_TAM_COLLECTOR_ATTR_SRC_IP": "",
-      "SAI_TAM_COLLECTOR_ATTR_DST_IP": "",
-      "SAI_TAM_COLLECTOR_ATTR_LOCALHOST": "true",
-      "SAI_TAM_COLLECTOR_ATTR_VIRTUAL_ROUTER_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_TAM_COLLECTOR_ATTR_TRUNCATE_SIZE": "0",
-      "SAI_TAM_COLLECTOR_ATTR_TRANSPORT": "",
-      "SAI_TAM_COLLECTOR_ATTR_DSCP_VALUE": "0",
-      "SAI_TAM_COLLECTOR_ATTR_HOSTIF_TRAP": {
-        "validonly": [
-          {
-            "SAI_TAM_COLLECTOR_ATTR_LOCALHOST": "true"
-          }
-        ],
+      "SAI_TAM_COLLECTOR_ATTR_SRC_IP": {
+        "type": "sai_ip_address_t",
+        "def_value": "0"
+      },
+      "SAI_TAM_COLLECTOR_ATTR_DST_IP": {
+        "type": "sai_ip_address_t",
+        "def_value": "0"
+      },
+      "SAI_TAM_COLLECTOR_ATTR_LOCALHOST": {
+        "type": "bool",
+        "def_value": "TRUE"
+      },
+      "SAI_TAM_COLLECTOR_ATTR_VIRTUAL_ROUTER_ID": {
+        "type": "sai_object_id_t",
         "def_value": "SAI_NULL_OBJECT_ID"
       },
-      "SAI_TAM_COLLECTOR_ATTR_SRC_MAC": "vendor",
-      "SAI_TAM_COLLECTOR_ATTR_DST_MAC": "vendor",
+      "SAI_TAM_COLLECTOR_ATTR_TRUNCATE_SIZE": {
+        "type": "sai_uint16_t",
+        "def_value": "0"
+      },
+      "SAI_TAM_COLLECTOR_ATTR_TRANSPORT": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_TAM_COLLECTOR_ATTR_DSCP_VALUE": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_TAM_COLLECTOR_ATTR_HOSTIF_TRAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_TAM_COLLECTOR_ATTR_SRC_MAC": {
+        "type": "sai_mac_t",
+        "def_value": "vendor"
+      },
+      "SAI_TAM_COLLECTOR_ATTR_DST_MAC": {
+        "type": "sai_mac_t",
+        "def_value": "vendor"
+      },
       "SAI_TAM_COLLECTOR_ATTR_DESTINATION": {
-        "validonly": [
-          {
-            "SAI_TAM_COLLECTOR_ATTR_LOCALHOST": "false"
-          }
-        ],
+        "type": "sai_object_id_t",
         "def_value": "SAI_NULL_OBJECT_ID"
       }
     }
@@ -56,11 +87,26 @@
       "sai_thrift_set_tam_counter_subscription_attribute"
     ],
     "attributes": {
-      "SAI_TAM_COUNTER_SUBSCRIPTION_ATTR_TEL_TYPE": "",
-      "SAI_TAM_COUNTER_SUBSCRIPTION_ATTR_OBJECT_ID": "",
-      "SAI_TAM_COUNTER_SUBSCRIPTION_ATTR_STAT_ID": "",
-      "SAI_TAM_COUNTER_SUBSCRIPTION_ATTR_LABEL": "0",
-      "SAI_TAM_COUNTER_SUBSCRIPTION_ATTR_STATS_MODE": "SAI_STATS_MODE_READ"
+      "SAI_TAM_COUNTER_SUBSCRIPTION_ATTR_TEL_TYPE": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_TAM_COUNTER_SUBSCRIPTION_ATTR_OBJECT_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_TAM_COUNTER_SUBSCRIPTION_ATTR_STAT_ID": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_TAM_COUNTER_SUBSCRIPTION_ATTR_LABEL": {
+        "type": "sai_uint64_t",
+        "def_value": "0"
+      },
+      "SAI_TAM_COUNTER_SUBSCRIPTION_ATTR_STATS_MODE": {
+        "type": "sai_stats_mode_t",
+        "def_value": "SAI_STATS_MODE_READ"
+      }
     }
   },
   "SAI_OBJECT_TYPE_TAM_EVENT": {
@@ -71,11 +117,26 @@
       "sai_thrift_set_tam_event_attribute"
     ],
     "attributes": {
-      "SAI_TAM_EVENT_ATTR_TYPE": "SAI_TAM_EVENT_TYPE_FLOW_STATE",
-      "SAI_TAM_EVENT_ATTR_ACTION_LIST": "",
-      "SAI_TAM_EVENT_ATTR_COLLECTOR_LIST": "",
-      "SAI_TAM_EVENT_ATTR_THRESHOLD": "SAI_NULL_OBJECT_ID",
-      "SAI_TAM_EVENT_ATTR_DSCP_VALUE": "0"
+      "SAI_TAM_EVENT_ATTR_TYPE": {
+        "type": "sai_tam_event_type_t",
+        "def_value": "SAI_TAM_EVENT_TYPE_FLOW_STATE"
+      },
+      "SAI_TAM_EVENT_ATTR_ACTION_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_TAM_EVENT_ATTR_COLLECTOR_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_TAM_EVENT_ATTR_THRESHOLD": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_TAM_EVENT_ATTR_DSCP_VALUE": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      }
     }
   },
   "SAI_OBJECT_TYPE_TAM_EVENT_ACTION": {
@@ -86,8 +147,14 @@
       "sai_thrift_set_tam_event_action_attribute"
     ],
     "attributes": {
-      "SAI_TAM_EVENT_ACTION_ATTR_REPORT_TYPE": "",
-      "SAI_TAM_EVENT_ACTION_ATTR_QOS_ACTION_TYPE": "0"
+      "SAI_TAM_EVENT_ACTION_ATTR_REPORT_TYPE": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_TAM_EVENT_ACTION_ATTR_QOS_ACTION_TYPE": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      }
     }
   },
   "SAI_OBJECT_TYPE_TAM_EVENT_THRESHOLD": {
@@ -98,12 +165,30 @@
       "sai_thrift_set_tam_event_threshold_attribute"
     ],
     "attributes": {
-      "SAI_TAM_EVENT_THRESHOLD_ATTR_HIGH_WATERMARK": "90",
-      "SAI_TAM_EVENT_THRESHOLD_ATTR_LOW_WATERMARK": "10",
-      "SAI_TAM_EVENT_THRESHOLD_ATTR_LATENCY": "10",
-      "SAI_TAM_EVENT_THRESHOLD_ATTR_RATE": "0",
-      "SAI_TAM_EVENT_THRESHOLD_ATTR_ABS_VALUE": "0",
-      "SAI_TAM_EVENT_THRESHOLD_ATTR_UNIT": "SAI_TAM_EVENT_THRESHOLD_UNIT_MSEC"
+      "SAI_TAM_EVENT_THRESHOLD_ATTR_HIGH_WATERMARK": {
+        "type": "sai_uint32_t",
+        "def_value": "90"
+      },
+      "SAI_TAM_EVENT_THRESHOLD_ATTR_LOW_WATERMARK": {
+        "type": "sai_uint32_t",
+        "def_value": "10"
+      },
+      "SAI_TAM_EVENT_THRESHOLD_ATTR_LATENCY": {
+        "type": "sai_uint32_t",
+        "def_value": "10"
+      },
+      "SAI_TAM_EVENT_THRESHOLD_ATTR_RATE": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_TAM_EVENT_THRESHOLD_ATTR_ABS_VALUE": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_TAM_EVENT_THRESHOLD_ATTR_UNIT": {
+        "type": "sai_tam_event_threshold_unit_t",
+        "def_value": "SAI_TAM_EVENT_THRESHOLD_UNIT_MSEC"
+      }
     }
   },
   "SAI_OBJECT_TYPE_TAM_INT": {
@@ -114,104 +199,130 @@
       "sai_thrift_set_tam_int_attribute"
     ],
     "attributes": {
-      "SAI_TAM_INT_ATTR_TYPE": "SAI_TAM_INT_TYPE_IOAM",
-      "SAI_TAM_INT_ATTR_DEVICE_ID": "",
-      "SAI_TAM_INT_ATTR_IOAM_TRACE_TYPE": {
-        "validonly": [
-          {
-            "SAI_TAM_INT_ATTR_TYPE": "SAI_TAM_INT_TYPE_IOAM"
-          }
-        ],
+      "SAI_TAM_INT_ATTR_TYPE": {
+        "type": "sai_tam_int_type_t",
+        "def_value": "SAI_TAM_INT_TYPE_IOAM"
+      },
+      "SAI_TAM_INT_ATTR_DEVICE_ID": {
+        "type": "sai_uint32_t",
         "def_value": "0"
       },
-      "SAI_TAM_INT_ATTR_INT_PRESENCE_TYPE": "SAI_TAM_INT_PRESENCE_TYPE_UNDEFINED",
+      "SAI_TAM_INT_ATTR_IOAM_TRACE_TYPE": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_TAM_INT_ATTR_INT_PRESENCE_TYPE": {
+        "type": "sai_tam_int_presence_type_t",
+        "def_value": "SAI_TAM_INT_PRESENCE_TYPE_UNDEFINED"
+      },
       "SAI_TAM_INT_ATTR_INT_PRESENCE_PB1": {
+        "type": "sai_uint32_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_TAM_INT_ATTR_INT_PRESENCE_TYPE": "SAI_TAM_INT_PRESENCE_TYPE_PB"
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TAM_INT_ATTR_INT_PRESENCE_PB2": {
+        "type": "sai_uint32_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_TAM_INT_ATTR_INT_PRESENCE_TYPE": "SAI_TAM_INT_PRESENCE_TYPE_PB"
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TAM_INT_ATTR_INT_PRESENCE_DSCP_VALUE": {
+        "type": "sai_uint8_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_TAM_INT_ATTR_INT_PRESENCE_TYPE": "SAI_TAM_INT_PRESENCE_TYPE_DSCP"
           }
-        ],
-        "def_value": ""
+        ]
       },
-      "SAI_TAM_INT_ATTR_INLINE": "",
+      "SAI_TAM_INT_ATTR_INLINE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
       "SAI_TAM_INT_ATTR_INT_PRESENCE_L3_PROTOCOL": {
+        "type": "sai_uint8_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_TAM_INT_ATTR_INT_PRESENCE_TYPE": "SAI_TAM_INT_PRESENCE_TYPE_L3_PROTOCOL"
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TAM_INT_ATTR_TRACE_VECTOR": {
-        "validonly": [
-          {
-            "SAI_TAM_INT_ATTR_TYPE": [
-              "SAI_TAM_INT_TYPE_IFA1",
-              "SAI_TAM_INT_TYPE_IFA2"
-            ]
-          }
-        ],
+        "type": "sai_uint16_t",
         "def_value": "0"
       },
       "SAI_TAM_INT_ATTR_ACTION_VECTOR": {
-        "validonly": [
-          {
-            "SAI_TAM_INT_ATTR_TYPE": [
-              "SAI_TAM_INT_TYPE_IFA1",
-              "SAI_TAM_INT_TYPE_IFA2"
-            ]
-          }
-        ],
+        "type": "sai_uint16_t",
         "def_value": "0"
       },
       "SAI_TAM_INT_ATTR_P4_INT_INSTRUCTION_BITMAP": {
-        "validonly": [
-          {
-            "SAI_TAM_INT_ATTR_TYPE": [
-              "SAI_TAM_INT_TYPE_P4_INT_1",
-              "SAI_TAM_INT_TYPE_P4_INT_2"
-            ]
-          }
-        ],
+        "type": "sai_uint16_t",
         "def_value": "0"
       },
-      "SAI_TAM_INT_ATTR_METADATA_FRAGMENT_ENABLE": "false",
-      "SAI_TAM_INT_ATTR_METADATA_CHECKSUM_ENABLE": {
-        "validonly": [
-          {
-            "SAI_TAM_INT_ATTR_TYPE": "SAI_TAM_INT_TYPE_IFA2"
-          }
-        ],
-        "def_value": "false"
+      "SAI_TAM_INT_ATTR_METADATA_FRAGMENT_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
       },
-      "SAI_TAM_INT_ATTR_REPORT_ALL_PACKETS": "false",
-      "SAI_TAM_INT_ATTR_FLOW_LIVENESS_PERIOD": "0",
-      "SAI_TAM_INT_ATTR_LATENCY_SENSITIVITY": "20",
-      "SAI_TAM_INT_ATTR_ACL_GROUP": "SAI_NULL_OBJECT_ID",
-      "SAI_TAM_INT_ATTR_MAX_HOP_COUNT": "0",
-      "SAI_TAM_INT_ATTR_MAX_LENGTH": "0",
-      "SAI_TAM_INT_ATTR_NAME_SPACE_ID": "0",
-      "SAI_TAM_INT_ATTR_NAME_SPACE_ID_GLOBAL": "false",
-      "SAI_TAM_INT_ATTR_INGRESS_SAMPLEPACKET_ENABLE": "SAI_NULL_OBJECT_ID",
-      "SAI_TAM_INT_ATTR_COLLECTOR_LIST": "empty",
-      "SAI_TAM_INT_ATTR_MATH_FUNC": "SAI_NULL_OBJECT_ID",
-      "SAI_TAM_INT_ATTR_REPORT_ID": "SAI_NULL_OBJECT_ID"
+      "SAI_TAM_INT_ATTR_METADATA_CHECKSUM_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_TAM_INT_ATTR_REPORT_ALL_PACKETS": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_TAM_INT_ATTR_FLOW_LIVENESS_PERIOD": {
+        "type": "sai_uint16_t",
+        "def_value": "0"
+      },
+      "SAI_TAM_INT_ATTR_LATENCY_SENSITIVITY": {
+        "type": "sai_uint8_t",
+        "def_value": "20"
+      },
+      "SAI_TAM_INT_ATTR_ACL_GROUP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_TAM_INT_ATTR_MAX_HOP_COUNT": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_TAM_INT_ATTR_MAX_LENGTH": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_TAM_INT_ATTR_NAME_SPACE_ID": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_TAM_INT_ATTR_NAME_SPACE_ID_GLOBAL": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_TAM_INT_ATTR_INGRESS_SAMPLEPACKET_ENABLE": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_TAM_INT_ATTR_COLLECTOR_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
+      "SAI_TAM_INT_ATTR_MATH_FUNC": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_TAM_INT_ATTR_REPORT_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      }
     }
   },
   "SAI_OBJECT_TYPE_TAM_MATH_FUNC": {
@@ -222,7 +333,10 @@
       "sai_thrift_set_tam_math_func_attribute"
     ],
     "attributes": {
-      "SAI_TAM_MATH_FUNC_ATTR_TAM_TEL_MATH_FUNC_TYPE": "SAI_TAM_TEL_MATH_FUNC_TYPE_NONE"
+      "SAI_TAM_MATH_FUNC_ATTR_TAM_TEL_MATH_FUNC_TYPE": {
+        "type": "sai_tam_tel_math_func_type_t",
+        "def_value": "SAI_TAM_TEL_MATH_FUNC_TYPE_NONE"
+      }
     }
   },
   "SAI_OBJECT_TYPE_TAM_REPORT": {
@@ -233,79 +347,57 @@
       "sai_thrift_set_tam_report_attribute"
     ],
     "attributes": {
-      "SAI_TAM_REPORT_ATTR_TYPE": "SAI_TAM_REPORT_TYPE_SFLOW",
+      "SAI_TAM_REPORT_ATTR_TYPE": {
+        "type": "sai_tam_report_type_t",
+        "def_value": "SAI_TAM_REPORT_TYPE_SFLOW"
+      },
       "SAI_TAM_REPORT_ATTR_HISTOGRAM_NUMBER_OF_BINS": {
-        "validonly": [
-          {
-            "SAI_TAM_REPORT_ATTR_TYPE": "SAI_TAM_REPORT_TYPE_HISTOGRAM"
-          }
-        ],
+        "type": "sai_uint32_t",
         "def_value": "0"
       },
       "SAI_TAM_REPORT_ATTR_HISTOGRAM_BIN_BOUNDARY": {
-        "validonly": [
-          {
-            "SAI_TAM_REPORT_ATTR_TYPE": "SAI_TAM_REPORT_TYPE_HISTOGRAM"
-          }
-        ],
+        "type": "sai_u32_list_t",
         "def_value": "empty"
       },
-      "SAI_TAM_REPORT_ATTR_QUOTA": "0",
-      "SAI_TAM_REPORT_ATTR_REPORT_MODE": "SAI_TAM_REPORT_MODE_ALL",
+      "SAI_TAM_REPORT_ATTR_QUOTA": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_TAM_REPORT_ATTR_REPORT_MODE": {
+        "type": "sai_tam_report_mode_t",
+        "def_value": "SAI_TAM_REPORT_MODE_ALL"
+      },
       "SAI_TAM_REPORT_ATTR_REPORT_INTERVAL": {
-        "validonly": [
-          {
-            "SAI_TAM_REPORT_ATTR_REPORT_MODE": "SAI_TAM_REPORT_MODE_BULK"
-          }
-        ],
+        "type": "sai_uint32_t",
         "def_value": "1000"
       },
       "SAI_TAM_REPORT_ATTR_ENTERPRISE_NUMBER": {
-        "validonly": [
-          {
-            "SAI_TAM_REPORT_ATTR_TYPE": "SAI_TAM_REPORT_TYPE_IPFIX"
-          }
-        ],
+        "type": "sai_uint32_t",
         "def_value": "0"
       },
       "SAI_TAM_REPORT_ATTR_TEMPLATE_REPORT_INTERVAL": {
-        "validonly": [
-          {
-            "SAI_TAM_REPORT_ATTR_TYPE": "SAI_TAM_REPORT_TYPE_IPFIX"
-          }
-        ],
+        "type": "sai_uint32_t",
         "def_value": "15"
       },
       "SAI_TAM_REPORT_ATTR_REPORT_INTERVAL_UNIT": {
-        "validonly": [
-          {
-            "SAI_TAM_REPORT_ATTR_REPORT_MODE": "SAI_TAM_REPORT_MODE_BULK"
-          }
-        ],
+        "type": "sai_tam_report_interval_unit_t",
         "def_value": "SAI_TAM_REPORT_INTERVAL_UNIT_USEC"
       },
       "SAI_TAM_REPORT_ATTR_SAMPLE_RATE": {
+        "type": "sai_uint32_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_TAM_REPORT_ATTR_REPORT_MODE": "SAI_TAM_REPORT_MODE_SAMPLING"
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TAM_REPORT_ATTR_MAX_REPORT_RATE": {
-        "validonly": [
-          {
-            "SAI_TAM_REPORT_ATTR_REPORT_MODE": "SAI_TAM_REPORT_MODE_ALL"
-          }
-        ],
+        "type": "sai_uint64_t",
         "def_value": "0"
       },
       "SAI_TAM_REPORT_ATTR_MAX_REPORT_BURST": {
-        "validonly": [
-          {
-            "SAI_TAM_REPORT_ATTR_REPORT_MODE": "SAI_TAM_REPORT_MODE_ALL"
-          }
-        ],
+        "type": "sai_uint64_t",
         "def_value": "0"
       }
     }
@@ -318,10 +410,22 @@
       "sai_thrift_set_tam_telemetry_attribute"
     ],
     "attributes": {
-      "SAI_TAM_TELEMETRY_ATTR_TAM_TYPE_LIST": "empty",
-      "SAI_TAM_TELEMETRY_ATTR_COLLECTOR_LIST": "",
-      "SAI_TAM_TELEMETRY_ATTR_TAM_REPORTING_UNIT": "SAI_TAM_REPORTING_UNIT_SEC",
-      "SAI_TAM_TELEMETRY_ATTR_REPORTING_INTERVAL": "1"
+      "SAI_TAM_TELEMETRY_ATTR_TAM_TYPE_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
+      "SAI_TAM_TELEMETRY_ATTR_COLLECTOR_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_TAM_TELEMETRY_ATTR_TAM_REPORTING_UNIT": {
+        "type": "sai_tam_reporting_unit_t",
+        "def_value": "SAI_TAM_REPORTING_UNIT_SEC"
+      },
+      "SAI_TAM_TELEMETRY_ATTR_REPORTING_INTERVAL": {
+        "type": "sai_uint32_t",
+        "def_value": "1"
+      }
     }
   },
   "SAI_OBJECT_TYPE_TAM_TEL_TYPE": {
@@ -332,33 +436,86 @@
       "sai_thrift_set_tam_tel_type_attribute"
     ],
     "attributes": {
-      "SAI_TAM_TEL_TYPE_ATTR_TAM_TELEMETRY_TYPE": "SAI_TAM_TELEMETRY_TYPE_NE",
-      "SAI_TAM_TEL_TYPE_ATTR_INT_SWITCH_IDENTIFIER": "0",
-      "SAI_TAM_TEL_TYPE_ATTR_SWITCH_ENABLE_PORT_STATS": "false",
-      "SAI_TAM_TEL_TYPE_ATTR_SWITCH_ENABLE_PORT_STATS_INGRESS": "false",
-      "SAI_TAM_TEL_TYPE_ATTR_SWITCH_ENABLE_PORT_STATS_EGRESS": "false",
-      "SAI_TAM_TEL_TYPE_ATTR_SWITCH_ENABLE_VIRTUAL_QUEUE_STATS": "false",
-      "SAI_TAM_TEL_TYPE_ATTR_SWITCH_ENABLE_OUTPUT_QUEUE_STATS": "false",
-      "SAI_TAM_TEL_TYPE_ATTR_SWITCH_ENABLE_MMU_STATS": "false",
-      "SAI_TAM_TEL_TYPE_ATTR_SWITCH_ENABLE_FABRIC_STATS": "false",
-      "SAI_TAM_TEL_TYPE_ATTR_SWITCH_ENABLE_FILTER_STATS": "false",
-      "SAI_TAM_TEL_TYPE_ATTR_SWITCH_ENABLE_RESOURCE_UTILIZATION_STATS": "false",
-      "SAI_TAM_TEL_TYPE_ATTR_FABRIC_Q": "false",
-      "SAI_TAM_TEL_TYPE_ATTR_NE_ENABLE": "false",
-      "SAI_TAM_TEL_TYPE_ATTR_DSCP_VALUE": "0",
-      "SAI_TAM_TEL_TYPE_ATTR_MATH_FUNC": "SAI_NULL_OBJECT_ID",
-      "SAI_TAM_TEL_TYPE_ATTR_REPORT_ID": "",
-      "SAI_TAM_TEL_TYPE_ATTR_COUNTER_SUBSCRIPTION_LIST": "",
+      "SAI_TAM_TEL_TYPE_ATTR_TAM_TELEMETRY_TYPE": {
+        "type": "sai_tam_telemetry_type_t",
+        "def_value": "SAI_TAM_TELEMETRY_TYPE_NE"
+      },
+      "SAI_TAM_TEL_TYPE_ATTR_INT_SWITCH_IDENTIFIER": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_TAM_TEL_TYPE_ATTR_SWITCH_ENABLE_PORT_STATS": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_TAM_TEL_TYPE_ATTR_SWITCH_ENABLE_PORT_STATS_INGRESS": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_TAM_TEL_TYPE_ATTR_SWITCH_ENABLE_PORT_STATS_EGRESS": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_TAM_TEL_TYPE_ATTR_SWITCH_ENABLE_VIRTUAL_QUEUE_STATS": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_TAM_TEL_TYPE_ATTR_SWITCH_ENABLE_OUTPUT_QUEUE_STATS": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_TAM_TEL_TYPE_ATTR_SWITCH_ENABLE_MMU_STATS": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_TAM_TEL_TYPE_ATTR_SWITCH_ENABLE_FABRIC_STATS": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_TAM_TEL_TYPE_ATTR_SWITCH_ENABLE_FILTER_STATS": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_TAM_TEL_TYPE_ATTR_SWITCH_ENABLE_RESOURCE_UTILIZATION_STATS": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_TAM_TEL_TYPE_ATTR_FABRIC_Q": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_TAM_TEL_TYPE_ATTR_NE_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_TAM_TEL_TYPE_ATTR_DSCP_VALUE": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_TAM_TEL_TYPE_ATTR_MATH_FUNC": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_TAM_TEL_TYPE_ATTR_REPORT_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_TAM_TEL_TYPE_ATTR_COUNTER_SUBSCRIPTION_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      },
       "SAI_TAM_TEL_TYPE_ATTR_MODE": {
-        "validonly": [
-          {
-            "SAI_TAM_TEL_TYPE_ATTR_TAM_TELEMETRY_TYPE": "SAI_TAM_TELEMETRY_TYPE_COUNTER_SUBSCRIPTION"
-          }
-        ],
+        "type": "sai_tam_tel_type_mode_t",
         "def_value": "SAI_TAM_TEL_TYPE_MODE_SINGLE_TYPE"
       },
-      "SAI_TAM_TEL_TYPE_ATTR_STATE": "SAI_TAM_TEL_TYPE_STATE_STOP_STREAM",
-      "SAI_TAM_TEL_TYPE_ATTR_IPFIX_TEMPLATES": ""
+      "SAI_TAM_TEL_TYPE_ATTR_STATE": {
+        "type": "sai_tam_tel_type_state_t",
+        "def_value": "SAI_TAM_TEL_TYPE_STATE_STOP_STREAM"
+      },
+      "SAI_TAM_TEL_TYPE_ATTR_IPFIX_TEMPLATES": {
+        "type": "sai_u8_list_t",
+        "def_value": "empty list"
+      }
     }
   },
   "SAI_OBJECT_TYPE_TAM_TRANSPORT": {
@@ -369,18 +526,34 @@
       "sai_thrift_set_tam_transport_attribute"
     ],
     "attributes": {
-      "SAI_TAM_TRANSPORT_ATTR_TRANSPORT_TYPE": "SAI_TAM_TRANSPORT_TYPE_NONE",
-      "SAI_TAM_TRANSPORT_ATTR_SRC_PORT": "31337",
-      "SAI_TAM_TRANSPORT_ATTR_DST_PORT": "31337",
-      "SAI_TAM_TRANSPORT_ATTR_TRANSPORT_AUTH_TYPE": "SAI_TAM_TRANSPORT_AUTH_TYPE_NONE",
-      "SAI_TAM_TRANSPORT_ATTR_MTU": "1500",
+      "SAI_TAM_TRANSPORT_ATTR_TRANSPORT_TYPE": {
+        "type": "sai_tam_transport_type_t",
+        "def_value": "SAI_TAM_TRANSPORT_TYPE_NONE"
+      },
+      "SAI_TAM_TRANSPORT_ATTR_SRC_PORT": {
+        "type": "sai_uint32_t",
+        "def_value": "31337"
+      },
+      "SAI_TAM_TRANSPORT_ATTR_DST_PORT": {
+        "type": "sai_uint32_t",
+        "def_value": "31337"
+      },
+      "SAI_TAM_TRANSPORT_ATTR_TRANSPORT_AUTH_TYPE": {
+        "type": "sai_tam_transport_auth_type_t",
+        "def_value": "SAI_TAM_TRANSPORT_AUTH_TYPE_NONE"
+      },
+      "SAI_TAM_TRANSPORT_ATTR_MTU": {
+        "type": "sai_uint32_t",
+        "def_value": "1500"
+      },
       "SAI_TAM_TRANSPORT_ATTR_GRE_PROTOCOL_TYPE": {
+        "type": "sai_uint16_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_TAM_TRANSPORT_ATTR_TRANSPORT_TYPE": "SAI_TAM_TRANSPORT_TYPE_GRE"
           }
-        ],
-        "def_value": ""
+        ]
       }
     }
   }

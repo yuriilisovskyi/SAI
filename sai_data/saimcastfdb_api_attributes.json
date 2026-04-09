@@ -7,9 +7,18 @@
       "sai_thrift_set_mcast_fdb_entry_attribute"
     ],
     "attributes": {
-      "SAI_MCAST_FDB_ENTRY_ATTR_GROUP_ID": "",
-      "SAI_MCAST_FDB_ENTRY_ATTR_PACKET_ACTION": "SAI_PACKET_ACTION_DROP",
-      "SAI_MCAST_FDB_ENTRY_ATTR_META_DATA": "0"
+      "SAI_MCAST_FDB_ENTRY_ATTR_GROUP_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_MCAST_FDB_ENTRY_ATTR_PACKET_ACTION": {
+        "type": "sai_packet_action_t",
+        "def_value": "SAI_PACKET_ACTION_DROP"
+      },
+      "SAI_MCAST_FDB_ENTRY_ATTR_META_DATA": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      }
     }
   }
 }

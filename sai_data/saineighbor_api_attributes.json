@@ -12,16 +12,46 @@
       "sai_thrift_set_neighbor_entry_attribute"
     ],
     "attributes": {
-      "SAI_NEIGHBOR_ENTRY_ATTR_DST_MAC_ADDRESS": "",
-      "SAI_NEIGHBOR_ENTRY_ATTR_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD",
-      "SAI_NEIGHBOR_ENTRY_ATTR_USER_TRAP_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_NEIGHBOR_ENTRY_ATTR_NO_HOST_ROUTE": "false",
-      "SAI_NEIGHBOR_ENTRY_ATTR_META_DATA": "0",
-      "SAI_NEIGHBOR_ENTRY_ATTR_COUNTER_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_NEIGHBOR_ENTRY_ATTR_ENCAP_INDEX": "internal",
-      "SAI_NEIGHBOR_ENTRY_ATTR_ENCAP_IMPOSE_INDEX": "false",
-      "SAI_NEIGHBOR_ENTRY_ATTR_IS_LOCAL": "true",
-      "SAI_NEIGHBOR_ENTRY_ATTR_IP_ADDR_FAMILY": "SAI_IP_ADDR_FAMILY_IPV4"
+      "SAI_NEIGHBOR_ENTRY_ATTR_DST_MAC_ADDRESS": {
+        "type": "sai_mac_t",
+        "def_value": "zeroed array"
+      },
+      "SAI_NEIGHBOR_ENTRY_ATTR_PACKET_ACTION": {
+        "type": "sai_packet_action_t",
+        "def_value": "SAI_PACKET_ACTION_FORWARD"
+      },
+      "SAI_NEIGHBOR_ENTRY_ATTR_USER_TRAP_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_NEIGHBOR_ENTRY_ATTR_NO_HOST_ROUTE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_NEIGHBOR_ENTRY_ATTR_META_DATA": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_NEIGHBOR_ENTRY_ATTR_COUNTER_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_NEIGHBOR_ENTRY_ATTR_ENCAP_INDEX": {
+        "type": "sai_uint32_t",
+        "def_value": "internal"
+      },
+      "SAI_NEIGHBOR_ENTRY_ATTR_ENCAP_IMPOSE_INDEX": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_NEIGHBOR_ENTRY_ATTR_IS_LOCAL": {
+        "type": "bool",
+        "def_value": "TRUE"
+      },
+      "SAI_NEIGHBOR_ENTRY_ATTR_IP_ADDR_FAMILY": {
+        "type": "sai_ip_addr_family_t",
+        "def_value": "SAI_IP_ADDR_FAMILY_IPV4"
+      }
     }
   }
 }

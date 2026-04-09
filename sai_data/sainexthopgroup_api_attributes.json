@@ -7,95 +7,80 @@
       "sai_thrift_set_next_hop_group_attribute"
     ],
     "attributes": {
-      "SAI_NEXT_HOP_GROUP_ATTR_NEXT_HOP_COUNT": "",
-      "SAI_NEXT_HOP_GROUP_ATTR_NEXT_HOP_MEMBER_LIST": "",
-      "SAI_NEXT_HOP_GROUP_ATTR_TYPE": "SAI_NEXT_HOP_GROUP_TYPE_DYNAMIC_UNORDERED_ECMP",
-      "SAI_NEXT_HOP_GROUP_ATTR_SET_SWITCHOVER": {
-        "validonly": [
-          {
-            "SAI_NEXT_HOP_GROUP_ATTR_TYPE": "SAI_NEXT_HOP_GROUP_TYPE_PROTECTION"
-          }
-        ],
-        "def_value": "false"
-      },
-      "SAI_NEXT_HOP_GROUP_ATTR_COUNTER_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_NEXT_HOP_GROUP_ATTR_CONFIGURED_SIZE": {
-        "validonly": [
-          {
-            "SAI_NEXT_HOP_GROUP_ATTR_TYPE": [
-              "SAI_NEXT_HOP_GROUP_TYPE_FINE_GRAIN_ECMP",
-              "SAI_NEXT_HOP_GROUP_TYPE_CLASS_BASED"
-            ]
-          }
-        ],
+      "SAI_NEXT_HOP_GROUP_ATTR_NEXT_HOP_COUNT": {
+        "type": "sai_uint32_t",
         "def_value": "0"
       },
-      "SAI_NEXT_HOP_GROUP_ATTR_REAL_SIZE": "",
+      "SAI_NEXT_HOP_GROUP_ATTR_NEXT_HOP_MEMBER_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_NEXT_HOP_GROUP_ATTR_TYPE": {
+        "type": "sai_next_hop_group_type_t",
+        "def_value": "SAI_NEXT_HOP_GROUP_TYPE_DYNAMIC_UNORDERED_ECMP"
+      },
+      "SAI_NEXT_HOP_GROUP_ATTR_SET_SWITCHOVER": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_NEXT_HOP_GROUP_ATTR_COUNTER_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_NEXT_HOP_GROUP_ATTR_CONFIGURED_SIZE": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_NEXT_HOP_GROUP_ATTR_REAL_SIZE": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
       "SAI_NEXT_HOP_GROUP_ATTR_SELECTION_MAP": {
-        "validonly": [
-          {
-            "SAI_NEXT_HOP_GROUP_ATTR_TYPE": "SAI_NEXT_HOP_GROUP_TYPE_CLASS_BASED"
-          }
-        ],
+        "type": "sai_object_id_t",
         "def_value": "SAI_NULL_OBJECT_ID"
       },
       "SAI_NEXT_HOP_GROUP_ATTR_HIERARCHICAL_NEXTHOP": {
-        "validonly": [
-          {
-            "SAI_NEXT_HOP_GROUP_ATTR_TYPE": [
-              "SAI_NEXT_HOP_GROUP_TYPE_DYNAMIC_UNORDERED_ECMP",
-              "SAI_NEXT_HOP_GROUP_TYPE_DYNAMIC_ORDERED_ECMP"
-            ]
-          }
-        ],
-        "def_value": "true"
+        "type": "bool",
+        "def_value": "TRUE"
       },
-      "SAI_NEXT_HOP_GROUP_ATTR_ARS_OBJECT_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_NEXT_HOP_GROUP_ATTR_ARS_PACKET_DROPS": "",
-      "SAI_NEXT_HOP_GROUP_ATTR_ARS_NEXT_HOP_REASSIGNMENTS": "",
-      "SAI_NEXT_HOP_GROUP_ATTR_ARS_PORT_REASSIGNMENTS": "",
+      "SAI_NEXT_HOP_GROUP_ATTR_ARS_OBJECT_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_NEXT_HOP_GROUP_ATTR_ARS_PACKET_DROPS": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_NEXT_HOP_GROUP_ATTR_ARS_NEXT_HOP_REASSIGNMENTS": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_NEXT_HOP_GROUP_ATTR_ARS_PORT_REASSIGNMENTS": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
       "SAI_NEXT_HOP_GROUP_ATTR_NEXT_HOP_LIST": {
-        "validonly": [
-          {
-            "SAI_NEXT_HOP_GROUP_ATTR_TYPE": "SAI_NEXT_HOP_GROUP_TYPE_ECMP_WITH_MEMBERS"
-          }
-        ],
+        "type": "sai_object_list_t",
         "def_value": "empty"
       },
       "SAI_NEXT_HOP_GROUP_ATTR_NEXT_HOP_MEMBER_WEIGHT_LIST": {
-        "validonly": [
-          {
-            "SAI_NEXT_HOP_GROUP_ATTR_TYPE": "SAI_NEXT_HOP_GROUP_TYPE_ECMP_WITH_MEMBERS"
-          }
-        ],
+        "type": "sai_u32_list_t",
         "def_value": "empty"
       },
       "SAI_NEXT_HOP_GROUP_ATTR_NEXT_HOP_MEMBER_COUNTER_LIST": {
-        "validonly": [
-          {
-            "SAI_NEXT_HOP_GROUP_ATTR_TYPE": "SAI_NEXT_HOP_GROUP_TYPE_ECMP_WITH_MEMBERS"
-          }
-        ],
+        "type": "sai_object_list_t",
         "def_value": "empty"
       },
       "SAI_NEXT_HOP_GROUP_ATTR_HASH_ALGORITHM": {
-        "validonly": [
-          {
-            "SAI_NEXT_HOP_GROUP_ATTR_TYPE": [
-              "SAI_NEXT_HOP_GROUP_TYPE_DYNAMIC_UNORDERED_ECMP",
-              "SAI_NEXT_HOP_GROUP_TYPE_DYNAMIC_ORDERED_ECMP"
-            ]
-          }
-        ],
+        "type": "sai_hash_algorithm_t",
         "def_value": "SAI_HASH_ALGORITHM_NONE"
       },
-      "SAI_NEXT_HOP_GROUP_ATTR_LABEL": "\"\"",
+      "SAI_NEXT_HOP_GROUP_ATTR_LABEL": {
+        "type": "char",
+        "def_value": "\"\""
+      },
       "SAI_NEXT_HOP_GROUP_ATTR_ADMIN_ROLE": {
-        "validonly": [
-          {
-            "SAI_NEXT_HOP_GROUP_ATTR_TYPE": "SAI_NEXT_HOP_GROUP_TYPE_HW_PROTECTION"
-          }
-        ],
+        "type": "sai_next_hop_group_admin_role_t",
         "def_value": "SAI_NEXT_HOP_GROUP_ADMIN_ROLE_AUTO"
       }
     }
@@ -108,8 +93,14 @@
       "sai_thrift_set_next_hop_group_map_attribute"
     ],
     "attributes": {
-      "SAI_NEXT_HOP_GROUP_MAP_ATTR_TYPE": "",
-      "SAI_NEXT_HOP_GROUP_MAP_ATTR_MAP_TO_VALUE_LIST": "empty"
+      "SAI_NEXT_HOP_GROUP_MAP_ATTR_TYPE": {
+        "type": "sai_next_hop_group_map_type_t",
+        "def_value": "SAI_NEXT_HOP_GROUP_MAP_TYPE_FORWARDING_CLASS_TO_INDEX"
+      },
+      "SAI_NEXT_HOP_GROUP_MAP_ATTR_MAP_TO_VALUE_LIST": {
+        "type": "sai_map_list_t",
+        "def_value": "empty"
+      }
     }
   },
   "SAI_OBJECT_TYPE_NEXT_HOP_GROUP_MEMBER": {
@@ -120,16 +111,46 @@
       "sai_thrift_set_next_hop_group_member_attribute"
     ],
     "attributes": {
-      "SAI_NEXT_HOP_GROUP_MEMBER_ATTR_NEXT_HOP_GROUP_ID": "",
-      "SAI_NEXT_HOP_GROUP_MEMBER_ATTR_NEXT_HOP_ID": "",
-      "SAI_NEXT_HOP_GROUP_MEMBER_ATTR_WEIGHT": "1",
-      "SAI_NEXT_HOP_GROUP_MEMBER_ATTR_CONFIGURED_ROLE": "SAI_NEXT_HOP_GROUP_MEMBER_CONFIGURED_ROLE_PRIMARY",
-      "SAI_NEXT_HOP_GROUP_MEMBER_ATTR_OBSERVED_ROLE": "SAI_NEXT_HOP_GROUP_MEMBER_OBSERVED_ROLE_ACTIVE",
-      "SAI_NEXT_HOP_GROUP_MEMBER_ATTR_MONITORED_OBJECT": "SAI_NULL_OBJECT_ID",
-      "SAI_NEXT_HOP_GROUP_MEMBER_ATTR_INDEX": "0",
-      "SAI_NEXT_HOP_GROUP_MEMBER_ATTR_SEQUENCE_ID": "0",
-      "SAI_NEXT_HOP_GROUP_MEMBER_ATTR_COUNTER_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_NEXT_HOP_GROUP_MEMBER_ATTR_ARS_ALTERNATE_PATH": "false"
+      "SAI_NEXT_HOP_GROUP_MEMBER_ATTR_NEXT_HOP_GROUP_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_NEXT_HOP_GROUP_MEMBER_ATTR_NEXT_HOP_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_NEXT_HOP_GROUP_MEMBER_ATTR_WEIGHT": {
+        "type": "sai_uint32_t",
+        "def_value": "1"
+      },
+      "SAI_NEXT_HOP_GROUP_MEMBER_ATTR_CONFIGURED_ROLE": {
+        "type": "sai_next_hop_group_member_configured_role_t",
+        "def_value": "SAI_NEXT_HOP_GROUP_MEMBER_CONFIGURED_ROLE_PRIMARY"
+      },
+      "SAI_NEXT_HOP_GROUP_MEMBER_ATTR_OBSERVED_ROLE": {
+        "type": "sai_next_hop_group_member_observed_role_t",
+        "def_value": "SAI_NEXT_HOP_GROUP_MEMBER_OBSERVED_ROLE_ACTIVE"
+      },
+      "SAI_NEXT_HOP_GROUP_MEMBER_ATTR_MONITORED_OBJECT": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_NEXT_HOP_GROUP_MEMBER_ATTR_INDEX": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_NEXT_HOP_GROUP_MEMBER_ATTR_SEQUENCE_ID": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_NEXT_HOP_GROUP_MEMBER_ATTR_COUNTER_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_NEXT_HOP_GROUP_MEMBER_ATTR_ARS_ALTERNATE_PATH": {
+        "type": "bool",
+        "def_value": "FALSE"
+      }
     }
   }
 }

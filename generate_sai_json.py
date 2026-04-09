@@ -114,15 +114,28 @@ def attr_to_object_type(attr_name: str) -> str:
 
 
 def load_attributes(attr_csv):
-    """Return dict: SAI object type -> {attr_name: default_value_string}."""
-    obj_attrs: dict[str, dict[str, str]] = {}
+    """
+    Return dict: SAI object type -> {attr_name: {'type': ..., 'default_value': ...}}.
+
+    Supports both the old CSV column names (attribute_name / type / default_value)
+    and the updated names (Attribute name / Type / Default value).
+    """
+    obj_attrs: dict[str, dict] = {}
     with open(attr_csv, newline='') as f:
-        for row in csv.DictReader(f):
-            attr_name = row['attribute_name'].strip()
-            default = row['default_value'].strip()
-            obj_type = attr_to_object_type(attr_name)
+        reader = csv.DictReader(f)
+        # Normalise column names to lowercase with underscores
+        headers = {h: h.strip().lower().replace(' ', '_') for h in reader.fieldnames or []}
+        for row in reader:
+            row = {headers[k]: v.strip() for k, v in row.items()}
+            attr_name = row.get('attribute_name', '')
+            attr_type = row.get('type', '')
+            default   = row.get('default_value', '')
+            obj_type  = attr_to_object_type(attr_name)
             obj_attrs.setdefault(obj_type, {})
-            obj_attrs[obj_type][attr_name] = default
+            obj_attrs[obj_type][attr_name] = {
+                'type':          attr_type,
+                'default_value': default,
+            }
     return obj_attrs
 
 
@@ -258,7 +271,15 @@ def parse_header_annotations(inc_dir: str) -> dict[str, dict]:
 def build_combined(obj_functions, obj_attrs, annotations):
     """
     Merge functions and attributes (with annotation metadata), keyed by object type.
-    Returns a dict covering all object types seen in either source.
+
+    Every attribute entry has the structure:
+        {
+            "type":      "<SAI type string>",
+            "def_value": "<default value string>",
+            ["condition": [...]]   # only when @condition is present in the header
+        }
+
+    @validonly annotations are intentionally excluded from the output.
     """
     all_obj_types = sorted(set(obj_functions) | set(obj_attrs))
     combined = {}
@@ -268,16 +289,21 @@ def build_combined(obj_functions, obj_attrs, annotations):
 
         attrs_raw = obj_attrs.get(obj_type, {})
         attrs_out = {}
-        for attr_name, default_val in attrs_raw.items():
-            ann = annotations.get(attr_name)
-            if ann:
-                ann_key = 'validonly' if 'validonly' in ann else 'condition'
-                attrs_out[attr_name] = {
-                    ann_key: ann[ann_key],
-                    'def_value': default_val,
-                }
-            else:
-                attrs_out[attr_name] = default_val
+        for attr_name, attr_data in attrs_raw.items():
+            attr_type     = attr_data.get('type', '')
+            default_val   = attr_data.get('default_value', '')
+            ann           = annotations.get(attr_name)
+
+            entry: dict = {
+                'type':      attr_type,
+                'def_value': default_val,
+            }
+
+            # Include @condition but NOT @validonly
+            if ann and 'condition' in ann:
+                entry['condition'] = ann['condition']
+
+            attrs_out[attr_name] = entry
 
         combined[obj_type] = {
             'functions': obj_functions.get(obj_type, []),
@@ -407,18 +433,18 @@ def main():
     with open(OUTPUT_JSON, 'w') as f:
         json.dump(combined, f, indent=2)
 
-    annotated = sum(
+    with_condition = sum(
         1
         for obj_data in combined.values()
         for v in obj_data['attributes'].values()
-        if isinstance(v, dict)
+        if 'condition' in v
     )
-    fn_total = sum(len(v['functions']) for v in combined.values())
+    fn_total   = sum(len(v['functions'])  for v in combined.values())
     attr_total = sum(len(v['attributes']) for v in combined.values())
 
     print(f"Written {len(combined)} object types to {OUTPUT_JSON}")
     print(f"  {fn_total} Thrift functions, {attr_total} attributes "
-          f"({annotated} with @validonly/@condition)")
+          f"({with_condition} with @condition)")
 
     unknown_attrs = obj_attrs.get('(unknown)', {})
     if unknown_attrs:
@@ -426,6 +452,8 @@ def main():
               f"to an object type:")
         for attr in sorted(unknown_attrs):
             print(f"    {attr}")
+
+    print(f"\n  Note: @validonly annotations excluded from output (use @condition only)")
 
     # 2. Write per-header JSON files
     stem_to_path = split_by_header(combined, hdr_to_objs, SAI_DATA_DIR)

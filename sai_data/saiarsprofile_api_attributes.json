@@ -7,93 +7,186 @@
       "sai_thrift_set_ars_profile_attribute"
     ],
     "attributes": {
-      "SAI_ARS_PROFILE_ATTR_ALGO": "SAI_ARS_PROFILE_ALGO_EWMA",
-      "SAI_ARS_PROFILE_ATTR_SAMPLING_INTERVAL": "16",
-      "SAI_ARS_PROFILE_ATTR_ARS_RANDOM_SEED": "0",
-      "SAI_ARS_PROFILE_ATTR_ECMP_ARS_MAX_GROUPS": "",
-      "SAI_ARS_PROFILE_ATTR_ECMP_ARS_MAX_MEMBERS_PER_GROUP": "",
-      "SAI_ARS_PROFILE_ATTR_LAG_ARS_MAX_GROUPS": "",
-      "SAI_ARS_PROFILE_ATTR_LAG_ARS_MAX_MEMBERS_PER_GROUP": "",
+      "SAI_ARS_PROFILE_ATTR_ALGO": {
+        "type": "sai_ars_profile_algo_t",
+        "def_value": "SAI_ARS_PROFILE_ALGO_EWMA"
+      },
+      "SAI_ARS_PROFILE_ATTR_SAMPLING_INTERVAL": {
+        "type": "sai_uint32_t",
+        "def_value": "16"
+      },
+      "SAI_ARS_PROFILE_ATTR_ARS_RANDOM_SEED": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_ECMP_ARS_MAX_GROUPS": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_ECMP_ARS_MAX_MEMBERS_PER_GROUP": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_LAG_ARS_MAX_GROUPS": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_LAG_ARS_MAX_MEMBERS_PER_GROUP": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
       "SAI_ARS_PROFILE_ATTR_PORT_LOAD_PAST": {
-        "validonly": [
-          {
-            "SAI_ARS_PROFILE_ATTR_ALGO": "SAI_ARS_PROFILE_ALGO_EWMA"
-          }
-        ],
-        "def_value": "true"
+        "type": "bool",
+        "def_value": "TRUE"
       },
       "SAI_ARS_PROFILE_ATTR_PORT_LOAD_PAST_WEIGHT": {
-        "validonly": [
-          {
-            "SAI_ARS_PROFILE_ATTR_ALGO": "SAI_ARS_PROFILE_ALGO_EWMA"
-          }
-        ],
+        "type": "sai_uint8_t",
         "def_value": "16"
       },
       "SAI_ARS_PROFILE_ATTR_PORT_LOAD_FUTURE": {
-        "validonly": [
-          {
-            "SAI_ARS_PROFILE_ATTR_ALGO": "SAI_ARS_PROFILE_ALGO_EWMA"
-          }
-        ],
-        "def_value": "true"
+        "type": "bool",
+        "def_value": "TRUE"
       },
       "SAI_ARS_PROFILE_ATTR_PORT_LOAD_FUTURE_WEIGHT": {
-        "validonly": [
-          {
-            "SAI_ARS_PROFILE_ATTR_ALGO": "SAI_ARS_PROFILE_ALGO_EWMA"
-          }
-        ],
+        "type": "sai_uint8_t",
         "def_value": "16"
       },
       "SAI_ARS_PROFILE_ATTR_PORT_LOAD_CURRENT": {
-        "validonly": [
-          {
-            "SAI_ARS_PROFILE_ATTR_ALGO": "SAI_ARS_PROFILE_ALGO_EWMA"
-          }
-        ],
-        "def_value": "false"
+        "type": "bool",
+        "def_value": "FALSE"
       },
       "SAI_ARS_PROFILE_ATTR_PORT_LOAD_EXPONENT": {
-        "validonly": [
-          {
-            "SAI_ARS_PROFILE_ATTR_ALGO": "SAI_ARS_PROFILE_ALGO_EWMA"
-          }
-        ],
+        "type": "sai_uint8_t",
         "def_value": "2"
       },
-      "SAI_ARS_PROFILE_ATTR_QUANT_BANDS": "",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_0_MIN_THRESHOLD": "0",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_0_MAX_THRESHOLD": "0",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_1_MIN_THRESHOLD": "0",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_1_MAX_THRESHOLD": "0",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_2_MIN_THRESHOLD": "0",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_2_MAX_THRESHOLD": "0",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_3_MIN_THRESHOLD": "0",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_3_MAX_THRESHOLD": "0",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_4_MIN_THRESHOLD": "0",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_4_MAX_THRESHOLD": "0",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_5_MIN_THRESHOLD": "0",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_5_MAX_THRESHOLD": "0",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_6_MIN_THRESHOLD": "0",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_6_MAX_THRESHOLD": "0",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_7_MIN_THRESHOLD": "0",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_7_MAX_THRESHOLD": "0",
-      "SAI_ARS_PROFILE_ATTR_ENABLE_IPV4": "false",
-      "SAI_ARS_PROFILE_ATTR_ENABLE_IPV6": "false",
-      "SAI_ARS_PROFILE_ATTR_LOAD_PAST_MIN_VAL": "0",
-      "SAI_ARS_PROFILE_ATTR_LOAD_PAST_MAX_VAL": "0",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_MIN_THRESHOLD_LIST_LOAD_PAST": "",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_MAX_THRESHOLD_LIST_LOAD_PAST": "",
-      "SAI_ARS_PROFILE_ATTR_LOAD_FUTURE_MIN_VAL": "0",
-      "SAI_ARS_PROFILE_ATTR_LOAD_FUTURE_MAX_VAL": "0",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_MIN_THRESHOLD_LIST_LOAD_FUTURE": "",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_MAX_THRESHOLD_LIST_LOAD_FUTURE": "",
-      "SAI_ARS_PROFILE_ATTR_LOAD_CURRENT_MIN_VAL": "0",
-      "SAI_ARS_PROFILE_ATTR_LOAD_CURRENT_MAX_VAL": "0",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_MIN_THRESHOLD_LIST_LOAD_CURRENT": "",
-      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_MAX_THRESHOLD_LIST_LOAD_CURRENT": "",
-      "SAI_ARS_PROFILE_ATTR_MAX_FLOWS": "0"
+      "SAI_ARS_PROFILE_ATTR_QUANT_BANDS": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_0_MIN_THRESHOLD": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_0_MAX_THRESHOLD": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_1_MIN_THRESHOLD": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_1_MAX_THRESHOLD": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_2_MIN_THRESHOLD": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_2_MAX_THRESHOLD": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_3_MIN_THRESHOLD": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_3_MAX_THRESHOLD": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_4_MIN_THRESHOLD": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_4_MAX_THRESHOLD": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_5_MIN_THRESHOLD": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_5_MAX_THRESHOLD": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_6_MIN_THRESHOLD": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_6_MAX_THRESHOLD": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_7_MIN_THRESHOLD": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_7_MAX_THRESHOLD": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_ENABLE_IPV4": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_ARS_PROFILE_ATTR_ENABLE_IPV6": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_ARS_PROFILE_ATTR_LOAD_PAST_MIN_VAL": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_LOAD_PAST_MAX_VAL": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_MIN_THRESHOLD_LIST_LOAD_PAST": {
+        "type": "sai_u32_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_MAX_THRESHOLD_LIST_LOAD_PAST": {
+        "type": "sai_u32_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_ARS_PROFILE_ATTR_LOAD_FUTURE_MIN_VAL": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_LOAD_FUTURE_MAX_VAL": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_MIN_THRESHOLD_LIST_LOAD_FUTURE": {
+        "type": "sai_u32_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_MAX_THRESHOLD_LIST_LOAD_FUTURE": {
+        "type": "sai_u32_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_ARS_PROFILE_ATTR_LOAD_CURRENT_MIN_VAL": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_LOAD_CURRENT_MAX_VAL": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_MIN_THRESHOLD_LIST_LOAD_CURRENT": {
+        "type": "sai_u32_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_ARS_PROFILE_ATTR_QUANT_BAND_MAX_THRESHOLD_LIST_LOAD_CURRENT": {
+        "type": "sai_u32_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_ARS_PROFILE_ATTR_MAX_FLOWS": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      }
     }
   }
 }

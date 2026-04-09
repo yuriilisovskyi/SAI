@@ -7,10 +7,22 @@
       "sai_thrift_set_synce_clock_attribute"
     ],
     "attributes": {
-      "SAI_SYNCE_CLOCK_ATTR_SRC_PORT": "SAI_NULL_OBJECT_ID",
-      "SAI_SYNCE_CLOCK_ATTR_CLOCK_VALID": "",
-      "SAI_SYNCE_CLOCK_ATTR_CLOCK_HARDWARE_ID": "",
-      "SAI_SYNCE_CLOCK_ATTR_DEBUG_FORCE_SYNCE_RECOVERED_CLOCK_STATE": "SAI_SYNCE_RECOVERED_CLOCK_STATE_FORCE_VALID_DISABLE"
+      "SAI_SYNCE_CLOCK_ATTR_SRC_PORT": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SYNCE_CLOCK_ATTR_CLOCK_VALID": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_SYNCE_CLOCK_ATTR_CLOCK_HARDWARE_ID": {
+        "type": "sai_uint64_t",
+        "def_value": "0"
+      },
+      "SAI_SYNCE_CLOCK_ATTR_DEBUG_FORCE_SYNCE_RECOVERED_CLOCK_STATE": {
+        "type": "sai_synce_recovered_clock_state_t",
+        "def_value": "SAI_SYNCE_RECOVERED_CLOCK_STATE_FORCE_VALID_DISABLE"
+      }
     }
   }
 }

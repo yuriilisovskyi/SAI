@@ -7,16 +7,46 @@
       "sai_thrift_set_ars_attribute"
     ],
     "attributes": {
-      "SAI_ARS_ATTR_MODE": "SAI_ARS_MODE_FLOWLET_QUALITY",
-      "SAI_ARS_ATTR_IDLE_TIME": "256",
-      "SAI_ARS_ATTR_MAX_FLOWS": "512",
-      "SAI_ARS_ATTR_MON_ENABLE": "false",
-      "SAI_ARS_ATTR_SAMPLEPACKET_ENABLE": "SAI_NULL_OBJECT_ID",
-      "SAI_ARS_ATTR_MAX_ALT_MEMEBERS_PER_GROUP": "16",
-      "SAI_ARS_ATTR_MAX_PRIMARY_MEMEBERS_PER_GROUP": "16",
-      "SAI_ARS_ATTR_PRIMARY_PATH_QUALITY_THRESHOLD": "16",
-      "SAI_ARS_ATTR_ALTERNATE_PATH_COST": "0",
-      "SAI_ARS_ATTR_ALTERNATE_PATH_BIAS": "0"
+      "SAI_ARS_ATTR_MODE": {
+        "type": "sai_ars_mode_t",
+        "def_value": "SAI_ARS_MODE_FLOWLET_QUALITY"
+      },
+      "SAI_ARS_ATTR_IDLE_TIME": {
+        "type": "sai_uint32_t",
+        "def_value": "256"
+      },
+      "SAI_ARS_ATTR_MAX_FLOWS": {
+        "type": "sai_uint32_t",
+        "def_value": "512"
+      },
+      "SAI_ARS_ATTR_MON_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_ARS_ATTR_SAMPLEPACKET_ENABLE": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_ARS_ATTR_MAX_ALT_MEMEBERS_PER_GROUP": {
+        "type": "sai_uint32_t",
+        "def_value": "16"
+      },
+      "SAI_ARS_ATTR_MAX_PRIMARY_MEMEBERS_PER_GROUP": {
+        "type": "sai_uint32_t",
+        "def_value": "16"
+      },
+      "SAI_ARS_ATTR_PRIMARY_PATH_QUALITY_THRESHOLD": {
+        "type": "sai_uint32_t",
+        "def_value": "16"
+      },
+      "SAI_ARS_ATTR_ALTERNATE_PATH_COST": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_ARS_ATTR_ALTERNATE_PATH_BIAS": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      }
     }
   }
 }

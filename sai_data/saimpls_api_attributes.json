@@ -11,31 +11,50 @@
       "sai_thrift_set_inseg_entry_attribute"
     ],
     "attributes": {
-      "SAI_INSEG_ENTRY_ATTR_NUM_OF_POP": "0",
-      "SAI_INSEG_ENTRY_ATTR_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD",
-      "SAI_INSEG_ENTRY_ATTR_TRAP_PRIORITY": "0",
-      "SAI_INSEG_ENTRY_ATTR_NEXT_HOP_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_INSEG_ENTRY_ATTR_PSC_TYPE": "SAI_INSEG_ENTRY_PSC_TYPE_ELSP",
+      "SAI_INSEG_ENTRY_ATTR_NUM_OF_POP": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_INSEG_ENTRY_ATTR_PACKET_ACTION": {
+        "type": "sai_packet_action_t",
+        "def_value": "SAI_PACKET_ACTION_FORWARD"
+      },
+      "SAI_INSEG_ENTRY_ATTR_TRAP_PRIORITY": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_INSEG_ENTRY_ATTR_NEXT_HOP_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_INSEG_ENTRY_ATTR_PSC_TYPE": {
+        "type": "sai_inseg_entry_psc_type_t",
+        "def_value": "SAI_INSEG_ENTRY_PSC_TYPE_ELSP"
+      },
       "SAI_INSEG_ENTRY_ATTR_QOS_TC": {
-        "validonly": [
-          {
-            "SAI_INSEG_ENTRY_ATTR_PSC_TYPE": "SAI_INSEG_ENTRY_PSC_TYPE_LLSP"
-          }
-        ],
+        "type": "sai_uint8_t",
         "def_value": "0"
       },
       "SAI_INSEG_ENTRY_ATTR_MPLS_EXP_TO_TC_MAP": {
-        "validonly": [
-          {
-            "SAI_INSEG_ENTRY_ATTR_PSC_TYPE": "SAI_INSEG_ENTRY_PSC_TYPE_ELSP"
-          }
-        ],
+        "type": "sai_object_id_t",
         "def_value": "SAI_NULL_OBJECT_ID"
       },
-      "SAI_INSEG_ENTRY_ATTR_MPLS_EXP_TO_COLOR_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_INSEG_ENTRY_ATTR_POP_TTL_MODE": "SAI_INSEG_ENTRY_POP_TTL_MODE_UNIFORM",
-      "SAI_INSEG_ENTRY_ATTR_POP_QOS_MODE": "SAI_INSEG_ENTRY_POP_QOS_MODE_UNIFORM",
-      "SAI_INSEG_ENTRY_ATTR_COUNTER_ID": "SAI_NULL_OBJECT_ID"
+      "SAI_INSEG_ENTRY_ATTR_MPLS_EXP_TO_COLOR_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_INSEG_ENTRY_ATTR_POP_TTL_MODE": {
+        "type": "sai_inseg_entry_pop_ttl_mode_t",
+        "def_value": "SAI_INSEG_ENTRY_POP_TTL_MODE_UNIFORM"
+      },
+      "SAI_INSEG_ENTRY_ATTR_POP_QOS_MODE": {
+        "type": "sai_inseg_entry_pop_qos_mode_t",
+        "def_value": "SAI_INSEG_ENTRY_POP_QOS_MODE_UNIFORM"
+      },
+      "SAI_INSEG_ENTRY_ATTR_COUNTER_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      }
     }
   }
 }

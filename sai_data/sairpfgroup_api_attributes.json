@@ -7,8 +7,14 @@
       "sai_thrift_set_rpf_group_attribute"
     ],
     "attributes": {
-      "SAI_RPF_GROUP_ATTR_RPF_INTERFACE_COUNT": "",
-      "SAI_RPF_GROUP_ATTR_RPF_MEMBER_LIST": ""
+      "SAI_RPF_GROUP_ATTR_RPF_INTERFACE_COUNT": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_RPF_GROUP_ATTR_RPF_MEMBER_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      }
     }
   },
   "SAI_OBJECT_TYPE_RPF_GROUP_MEMBER": {
@@ -19,8 +25,14 @@
       "sai_thrift_set_rpf_group_member_attribute"
     ],
     "attributes": {
-      "SAI_RPF_GROUP_MEMBER_ATTR_RPF_GROUP_ID": "",
-      "SAI_RPF_GROUP_MEMBER_ATTR_RPF_INTERFACE_ID": ""
+      "SAI_RPF_GROUP_MEMBER_ATTR_RPF_GROUP_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_RPF_GROUP_MEMBER_ATTR_RPF_INTERFACE_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      }
     }
   }
 }

@@ -7,11 +7,26 @@
       "sai_thrift_set_my_mac_attribute"
     ],
     "attributes": {
-      "SAI_MY_MAC_ATTR_PRIORITY": "0",
-      "SAI_MY_MAC_ATTR_PORT_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_MY_MAC_ATTR_VLAN_ID": "0",
-      "SAI_MY_MAC_ATTR_MAC_ADDRESS": "vendor",
-      "SAI_MY_MAC_ATTR_MAC_ADDRESS_MASK": "vendor"
+      "SAI_MY_MAC_ATTR_PRIORITY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_MY_MAC_ATTR_PORT_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_MY_MAC_ATTR_VLAN_ID": {
+        "type": "sai_uint16_t",
+        "def_value": "0"
+      },
+      "SAI_MY_MAC_ATTR_MAC_ADDRESS": {
+        "type": "sai_mac_t",
+        "def_value": "vendor"
+      },
+      "SAI_MY_MAC_ATTR_MAC_ADDRESS_MASK": {
+        "type": "sai_mac_t",
+        "def_value": "vendor"
+      }
     }
   }
 }

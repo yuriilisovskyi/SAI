@@ -7,8 +7,14 @@
       "sai_thrift_set_isolation_group_attribute"
     ],
     "attributes": {
-      "SAI_ISOLATION_GROUP_ATTR_TYPE": "SAI_ISOLATION_GROUP_TYPE_PORT",
-      "SAI_ISOLATION_GROUP_ATTR_ISOLATION_MEMBER_LIST": ""
+      "SAI_ISOLATION_GROUP_ATTR_TYPE": {
+        "type": "sai_isolation_group_type_t",
+        "def_value": "SAI_ISOLATION_GROUP_TYPE_PORT"
+      },
+      "SAI_ISOLATION_GROUP_ATTR_ISOLATION_MEMBER_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      }
     }
   },
   "SAI_OBJECT_TYPE_ISOLATION_GROUP_MEMBER": {
@@ -19,8 +25,14 @@
       "sai_thrift_set_isolation_group_member_attribute"
     ],
     "attributes": {
-      "SAI_ISOLATION_GROUP_MEMBER_ATTR_ISOLATION_GROUP_ID": "",
-      "SAI_ISOLATION_GROUP_MEMBER_ATTR_ISOLATION_OBJECT": ""
+      "SAI_ISOLATION_GROUP_MEMBER_ATTR_ISOLATION_GROUP_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_ISOLATION_GROUP_MEMBER_ATTR_ISOLATION_OBJECT": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      }
     }
   }
 }

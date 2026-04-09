@@ -10,21 +10,66 @@
       "sai_thrift_set_queue_attribute"
     ],
     "attributes": {
-      "SAI_QUEUE_ATTR_TYPE": "SAI_QUEUE_TYPE_ALL",
-      "SAI_QUEUE_ATTR_PORT": "",
-      "SAI_QUEUE_ATTR_INDEX": "",
-      "SAI_QUEUE_ATTR_PARENT_SCHEDULER_NODE": "",
-      "SAI_QUEUE_ATTR_WRED_PROFILE_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_QUEUE_ATTR_BUFFER_PROFILE_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_QUEUE_ATTR_SCHEDULER_PROFILE_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_QUEUE_ATTR_PAUSE_STATUS": "",
-      "SAI_QUEUE_ATTR_ENABLE_PFC_DLDR": "false",
-      "SAI_QUEUE_ATTR_PFC_DLR_INIT": "false",
-      "SAI_QUEUE_ATTR_TAM_OBJECT": "empty",
-      "SAI_QUEUE_ATTR_PFC_DLR_PACKET_ACTION": "SAI_PACKET_ACTION_DROP",
-      "SAI_QUEUE_ATTR_PFC_CONTINUOUS_DEADLOCK_STATE": "SAI_QUEUE_PFC_CONTINUOUS_DEADLOCK_STATE_NOT_PAUSED",
-      "SAI_QUEUE_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
-      "SAI_QUEUE_ATTR_SELECTIVE_COUNTER_LIST": "empty"
+      "SAI_QUEUE_ATTR_TYPE": {
+        "type": "sai_queue_type_t",
+        "def_value": "SAI_QUEUE_TYPE_ALL"
+      },
+      "SAI_QUEUE_ATTR_PORT": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_QUEUE_ATTR_INDEX": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_QUEUE_ATTR_PARENT_SCHEDULER_NODE": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_QUEUE_ATTR_WRED_PROFILE_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_QUEUE_ATTR_BUFFER_PROFILE_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_QUEUE_ATTR_SCHEDULER_PROFILE_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_QUEUE_ATTR_PAUSE_STATUS": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_QUEUE_ATTR_ENABLE_PFC_DLDR": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_QUEUE_ATTR_PFC_DLR_INIT": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_QUEUE_ATTR_TAM_OBJECT": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
+      "SAI_QUEUE_ATTR_PFC_DLR_PACKET_ACTION": {
+        "type": "sai_packet_action_t",
+        "def_value": "SAI_PACKET_ACTION_DROP"
+      },
+      "SAI_QUEUE_ATTR_PFC_CONTINUOUS_DEADLOCK_STATE": {
+        "type": "sai_queue_pfc_continuous_deadlock_state_t",
+        "def_value": "SAI_QUEUE_PFC_CONTINUOUS_DEADLOCK_STATE_NOT_PAUSED"
+      },
+      "SAI_QUEUE_ATTR_STATS_COUNT_MODE": {
+        "type": "sai_stats_count_mode_t",
+        "def_value": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE"
+      },
+      "SAI_QUEUE_ATTR_SELECTIVE_COUNTER_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      }
     }
   }
 }

@@ -7,16 +7,46 @@
       "sai_thrift_set_dtel_attribute"
     ],
     "attributes": {
-      "SAI_DTEL_ATTR_INT_ENDPOINT_ENABLE": "false",
-      "SAI_DTEL_ATTR_INT_TRANSIT_ENABLE": "false",
-      "SAI_DTEL_ATTR_POSTCARD_ENABLE": "false",
-      "SAI_DTEL_ATTR_DROP_REPORT_ENABLE": "false",
-      "SAI_DTEL_ATTR_QUEUE_REPORT_ENABLE": "false",
-      "SAI_DTEL_ATTR_SWITCH_ID": "0",
-      "SAI_DTEL_ATTR_FLOW_STATE_CLEAR_CYCLE": "0",
-      "SAI_DTEL_ATTR_LATENCY_SENSITIVITY": "0",
-      "SAI_DTEL_ATTR_SINK_PORT_LIST": "empty",
-      "SAI_DTEL_ATTR_INT_L4_DSCP": "disabled"
+      "SAI_DTEL_ATTR_INT_ENDPOINT_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_DTEL_ATTR_INT_TRANSIT_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_DTEL_ATTR_POSTCARD_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_DTEL_ATTR_DROP_REPORT_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_DTEL_ATTR_QUEUE_REPORT_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_DTEL_ATTR_SWITCH_ID": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_DTEL_ATTR_FLOW_STATE_CLEAR_CYCLE": {
+        "type": "sai_uint16_t",
+        "def_value": "0"
+      },
+      "SAI_DTEL_ATTR_LATENCY_SENSITIVITY": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_DTEL_ATTR_SINK_PORT_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
+      "SAI_DTEL_ATTR_INT_L4_DSCP": {
+        "type": "sai_acl_field_data_t sai_uint8_t",
+        "def_value": "disabled"
+      }
     }
   },
   "SAI_OBJECT_TYPE_DTEL_EVENT": {
@@ -27,9 +57,18 @@
       "sai_thrift_set_dtel_event_attribute"
     ],
     "attributes": {
-      "SAI_DTEL_EVENT_ATTR_TYPE": "SAI_DTEL_EVENT_TYPE_FLOW_STATE",
-      "SAI_DTEL_EVENT_ATTR_REPORT_SESSION": "SAI_NULL_OBJECT_ID",
-      "SAI_DTEL_EVENT_ATTR_DSCP_VALUE": "0"
+      "SAI_DTEL_EVENT_ATTR_TYPE": {
+        "type": "sai_dtel_event_type_t",
+        "def_value": "SAI_DTEL_EVENT_TYPE_FLOW_STATE"
+      },
+      "SAI_DTEL_EVENT_ATTR_REPORT_SESSION": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_DTEL_EVENT_ATTR_DSCP_VALUE": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      }
     }
   },
   "SAI_OBJECT_TYPE_DTEL_INT_SESSION": {
@@ -40,12 +79,30 @@
       "sai_thrift_set_dtel_int_session_attribute"
     ],
     "attributes": {
-      "SAI_DTEL_INT_SESSION_ATTR_MAX_HOP_COUNT": "8",
-      "SAI_DTEL_INT_SESSION_ATTR_COLLECT_SWITCH_ID": "false",
-      "SAI_DTEL_INT_SESSION_ATTR_COLLECT_SWITCH_PORTS": "false",
-      "SAI_DTEL_INT_SESSION_ATTR_COLLECT_INGRESS_TIMESTAMP": "false",
-      "SAI_DTEL_INT_SESSION_ATTR_COLLECT_EGRESS_TIMESTAMP": "false",
-      "SAI_DTEL_INT_SESSION_ATTR_COLLECT_QUEUE_INFO": "false"
+      "SAI_DTEL_INT_SESSION_ATTR_MAX_HOP_COUNT": {
+        "type": "sai_uint8_t",
+        "def_value": "8"
+      },
+      "SAI_DTEL_INT_SESSION_ATTR_COLLECT_SWITCH_ID": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_DTEL_INT_SESSION_ATTR_COLLECT_SWITCH_PORTS": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_DTEL_INT_SESSION_ATTR_COLLECT_INGRESS_TIMESTAMP": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_DTEL_INT_SESSION_ATTR_COLLECT_EGRESS_TIMESTAMP": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_DTEL_INT_SESSION_ATTR_COLLECT_QUEUE_INFO": {
+        "type": "bool",
+        "def_value": "FALSE"
+      }
     }
   },
   "SAI_OBJECT_TYPE_DTEL_QUEUE_REPORT": {
@@ -56,11 +113,26 @@
       "sai_thrift_set_dtel_queue_report_attribute"
     ],
     "attributes": {
-      "SAI_DTEL_QUEUE_REPORT_ATTR_QUEUE_ID": "",
-      "SAI_DTEL_QUEUE_REPORT_ATTR_DEPTH_THRESHOLD": "0",
-      "SAI_DTEL_QUEUE_REPORT_ATTR_LATENCY_THRESHOLD": "0",
-      "SAI_DTEL_QUEUE_REPORT_ATTR_BREACH_QUOTA": "0",
-      "SAI_DTEL_QUEUE_REPORT_ATTR_TAIL_DROP": "false"
+      "SAI_DTEL_QUEUE_REPORT_ATTR_QUEUE_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_DTEL_QUEUE_REPORT_ATTR_DEPTH_THRESHOLD": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_DTEL_QUEUE_REPORT_ATTR_LATENCY_THRESHOLD": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_DTEL_QUEUE_REPORT_ATTR_BREACH_QUOTA": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_DTEL_QUEUE_REPORT_ATTR_TAIL_DROP": {
+        "type": "bool",
+        "def_value": "FALSE"
+      }
     }
   },
   "SAI_OBJECT_TYPE_DTEL_REPORT_SESSION": {
@@ -71,11 +143,26 @@
       "sai_thrift_set_dtel_report_session_attribute"
     ],
     "attributes": {
-      "SAI_DTEL_REPORT_SESSION_ATTR_SRC_IP": "0.0.0.0",
-      "SAI_DTEL_REPORT_SESSION_ATTR_DST_IP_LIST": "empty",
-      "SAI_DTEL_REPORT_SESSION_ATTR_VIRTUAL_ROUTER_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_DTEL_REPORT_SESSION_ATTR_TRUNCATE_SIZE": "0",
-      "SAI_DTEL_REPORT_SESSION_ATTR_UDP_DST_PORT": "0"
+      "SAI_DTEL_REPORT_SESSION_ATTR_SRC_IP": {
+        "type": "sai_ip_address_t",
+        "def_value": "0.0.0.0"
+      },
+      "SAI_DTEL_REPORT_SESSION_ATTR_DST_IP_LIST": {
+        "type": "sai_ip_address_list_t",
+        "def_value": "empty"
+      },
+      "SAI_DTEL_REPORT_SESSION_ATTR_VIRTUAL_ROUTER_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_DTEL_REPORT_SESSION_ATTR_TRUNCATE_SIZE": {
+        "type": "sai_uint16_t",
+        "def_value": "0"
+      },
+      "SAI_DTEL_REPORT_SESSION_ATTR_UDP_DST_PORT": {
+        "type": "sai_uint16_t",
+        "def_value": "0"
+      }
     }
   }
 }

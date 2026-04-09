@@ -10,260 +10,202 @@
       "sai_thrift_set_twamp_session_attribute"
     ],
     "attributes": {
-      "SAI_TWAMP_SESSION_ATTR_TWAMP_MODE": "SAI_TWAMP_MODE_FULL",
-      "SAI_TWAMP_SESSION_ATTR_SESSION_ROLE": "SAI_TWAMP_SESSION_ROLE_SENDER",
-      "SAI_TWAMP_SESSION_ATTR_AUTH_MODE": "SAI_TWAMP_SESSION_AUTH_MODE_UNAUTHENTICATED",
-      "SAI_TWAMP_SESSION_ATTR_HW_LOOKUP_VALID": "true",
+      "SAI_TWAMP_SESSION_ATTR_TWAMP_MODE": {
+        "type": "sai_twamp_mode_t",
+        "def_value": "SAI_TWAMP_MODE_FULL"
+      },
+      "SAI_TWAMP_SESSION_ATTR_SESSION_ROLE": {
+        "type": "sai_twamp_session_role_t",
+        "def_value": "SAI_TWAMP_SESSION_ROLE_SENDER"
+      },
+      "SAI_TWAMP_SESSION_ATTR_AUTH_MODE": {
+        "type": "sai_twamp_session_auth_mode_t",
+        "def_value": "SAI_TWAMP_SESSION_AUTH_MODE_UNAUTHENTICATED"
+      },
+      "SAI_TWAMP_SESSION_ATTR_HW_LOOKUP_VALID": {
+        "type": "bool",
+        "def_value": "TRUE"
+      },
       "SAI_TWAMP_SESSION_ATTR_VIRTUAL_ROUTER": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_HW_LOOKUP_VALID": "true"
-          }
-        ],
+        "type": "sai_object_id_t",
         "def_value": "SAI_NULL_OBJECT_ID"
       },
       "SAI_TWAMP_SESSION_ATTR_SRC_MAC": {
+        "type": "sai_mac_t",
+        "def_value": "zeroed array",
         "condition": [
           {
             "SAI_TWAMP_SESSION_ATTR_HW_LOOKUP_VALID": "false"
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TWAMP_SESSION_ATTR_DST_MAC": {
+        "type": "sai_mac_t",
+        "def_value": "zeroed array",
         "condition": [
           {
             "SAI_TWAMP_SESSION_ATTR_HW_LOOKUP_VALID": "false"
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TWAMP_SESSION_ATTR_VLAN_ID": {
+        "type": "sai_uint16_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_TWAMP_SESSION_ATTR_VLAN_HEADER_VALID": "true"
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TWAMP_SESSION_ATTR_VLAN_PRI": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_VLAN_HEADER_VALID": "true"
-          }
-        ],
+        "type": "sai_uint8_t",
         "def_value": "0"
       },
       "SAI_TWAMP_SESSION_ATTR_VLAN_CFI": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_VLAN_HEADER_VALID": "true"
-          }
-        ],
+        "type": "sai_uint8_t",
         "def_value": "0"
       },
       "SAI_TWAMP_SESSION_ATTR_VLAN_HEADER_VALID": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_HW_LOOKUP_VALID": "false"
-          }
-        ],
-        "def_value": "false"
+        "type": "bool",
+        "def_value": "FALSE"
       },
-      "SAI_TWAMP_SESSION_ATTR_SRC_IP": "",
-      "SAI_TWAMP_SESSION_ATTR_DST_IP": "",
-      "SAI_TWAMP_SESSION_ATTR_UDP_SRC_PORT": "",
-      "SAI_TWAMP_SESSION_ATTR_UDP_DST_PORT": "",
-      "SAI_TWAMP_SESSION_ATTR_DSCP": "0",
-      "SAI_TWAMP_SESSION_ATTR_TTL": "255",
+      "SAI_TWAMP_SESSION_ATTR_SRC_IP": {
+        "type": "sai_ip_address_t",
+        "def_value": "0"
+      },
+      "SAI_TWAMP_SESSION_ATTR_DST_IP": {
+        "type": "sai_ip_address_t",
+        "def_value": "0"
+      },
+      "SAI_TWAMP_SESSION_ATTR_UDP_SRC_PORT": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_TWAMP_SESSION_ATTR_UDP_DST_PORT": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_TWAMP_SESSION_ATTR_DSCP": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_TWAMP_SESSION_ATTR_TTL": {
+        "type": "sai_uint8_t",
+        "def_value": "255"
+      },
       "SAI_TWAMP_SESSION_ATTR_TUNNEL_SRC_MAC": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": [
-              "SAI_TWAMP_ENCAPSULATION_TYPE_MPLS_L2VPN",
-              "SAI_TWAMP_ENCAPSULATION_TYPE_MPLS_L3VPN",
-              "SAI_TWAMP_ENCAPSULATION_TYPE_VXLAN"
-            ]
-          }
-        ],
+        "type": "sai_mac_t",
         "def_value": "vendor"
       },
       "SAI_TWAMP_SESSION_ATTR_TUNNEL_DST_MAC": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": [
-              "SAI_TWAMP_ENCAPSULATION_TYPE_MPLS_L2VPN",
-              "SAI_TWAMP_ENCAPSULATION_TYPE_MPLS_L3VPN",
-              "SAI_TWAMP_ENCAPSULATION_TYPE_VXLAN"
-            ]
-          }
-        ],
+        "type": "sai_mac_t",
         "def_value": "vendor"
       },
       "SAI_TWAMP_SESSION_ATTR_TUNNEL_OUTER_VLAN_ID": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_TUNNEL_OUTER_VLAN_HEADER_VALID": "true"
-          }
-        ],
+        "type": "sai_uint16_t",
         "def_value": "0"
       },
       "SAI_TWAMP_SESSION_ATTR_TUNNEL_OUTER_VLAN_PRI": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_TUNNEL_OUTER_VLAN_HEADER_VALID": "true"
-          }
-        ],
+        "type": "sai_uint8_t",
         "def_value": "0"
       },
       "SAI_TWAMP_SESSION_ATTR_TUNNEL_OUTER_VLAN_CFI": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_TUNNEL_OUTER_VLAN_HEADER_VALID": "true"
-          }
-        ],
+        "type": "sai_uint8_t",
         "def_value": "0"
       },
       "SAI_TWAMP_SESSION_ATTR_TUNNEL_OUTER_VLAN_HEADER_VALID": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": [
-              "SAI_TWAMP_ENCAPSULATION_TYPE_MPLS_L2VPN",
-              "SAI_TWAMP_ENCAPSULATION_TYPE_MPLS_L3VPN",
-              "SAI_TWAMP_ENCAPSULATION_TYPE_VXLAN"
-            ]
-          }
-        ],
-        "def_value": "false"
+        "type": "bool",
+        "def_value": "FALSE"
       },
       "SAI_TWAMP_SESSION_ATTR_TUNNEL_LABELSTACK": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": [
-              "SAI_TWAMP_ENCAPSULATION_TYPE_MPLS_L2VPN",
-              "SAI_TWAMP_ENCAPSULATION_TYPE_MPLS_L3VPN"
-            ]
-          }
-        ],
+        "type": "sai_u32_list_t",
         "def_value": "empty"
       },
       "SAI_TWAMP_SESSION_ATTR_TUNNEL_SRC_IP": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": "SAI_TWAMP_ENCAPSULATION_TYPE_VXLAN"
-          }
-        ],
+        "type": "sai_ip_address_t",
         "def_value": "0.0.0.0"
       },
       "SAI_TWAMP_SESSION_ATTR_TUNNEL_DST_IP": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": "SAI_TWAMP_ENCAPSULATION_TYPE_VXLAN"
-          }
-        ],
+        "type": "sai_ip_address_t",
         "def_value": "0.0.0.0"
       },
       "SAI_TWAMP_SESSION_ATTR_TUNNEL_VNI": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": "SAI_TWAMP_ENCAPSULATION_TYPE_VXLAN"
-          }
-        ],
+        "type": "sai_uint32_t",
         "def_value": "0"
       },
       "SAI_TWAMP_SESSION_ATTR_TUNNEL_UDP_SRC_PORT": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": "SAI_TWAMP_ENCAPSULATION_TYPE_VXLAN"
-          }
-        ],
+        "type": "sai_uint32_t",
         "def_value": "0"
       },
       "SAI_TWAMP_SESSION_ATTR_TUNNEL_UDP_DST_PORT": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": "SAI_TWAMP_ENCAPSULATION_TYPE_VXLAN"
-          }
-        ],
+        "type": "sai_uint32_t",
         "def_value": "0"
       },
-      "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": "SAI_TWAMP_ENCAPSULATION_TYPE_IP",
-      "SAI_TWAMP_SESSION_ATTR_TWAMP_TIMESTAMP_FORMAT": "SAI_TWAMP_TIMESTAMP_FORMAT_NTP",
-      "SAI_TWAMP_SESSION_ATTR_SESSION_ENABLE_TRANSMIT": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_SESSION_ROLE": "SAI_TWAMP_SESSION_ROLE_SENDER"
-          }
-        ],
-        "def_value": "false"
+      "SAI_TWAMP_SESSION_ATTR_TWAMP_ENCAPSULATION_TYPE": {
+        "type": "sai_twamp_encapsulation_type_t",
+        "def_value": "SAI_TWAMP_ENCAPSULATION_TYPE_IP"
       },
-      "SAI_TWAMP_SESSION_ATTR_PACKET_LENGTH": "256",
-      "SAI_TWAMP_SESSION_ATTR_PORT": "SAI_NULL_OBJECT_ID",
+      "SAI_TWAMP_SESSION_ATTR_TWAMP_TIMESTAMP_FORMAT": {
+        "type": "sai_twamp_timestamp_format_t",
+        "def_value": "SAI_TWAMP_TIMESTAMP_FORMAT_NTP"
+      },
+      "SAI_TWAMP_SESSION_ATTR_SESSION_ENABLE_TRANSMIT": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_TWAMP_SESSION_ATTR_PACKET_LENGTH": {
+        "type": "sai_uint32_t",
+        "def_value": "256"
+      },
+      "SAI_TWAMP_SESSION_ATTR_PORT": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
       "SAI_TWAMP_SESSION_ATTR_TRANSMIT_PORT": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID",
         "condition": [
           {
             "SAI_TWAMP_SESSION_ATTR_HW_LOOKUP_VALID": "false"
           }
-        ],
-        "def_value": ""
+        ]
       },
-      "SAI_TWAMP_SESSION_ATTR_RECEIVE_PORT": "empty",
+      "SAI_TWAMP_SESSION_ATTR_RECEIVE_PORT": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
       "SAI_TWAMP_SESSION_ATTR_TWAMP_PKT_TX_MODE": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_SESSION_ROLE": "SAI_TWAMP_SESSION_ROLE_SENDER"
-          }
-        ],
+        "type": "sai_twamp_pkt_tx_mode_t",
         "def_value": "SAI_TWAMP_PKT_TX_MODE_CONTINUOUS"
       },
       "SAI_TWAMP_SESSION_ATTR_TX_PKT_CNT": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_SESSION_ROLE": "SAI_TWAMP_SESSION_ROLE_SENDER"
-          },
-          {
-            "SAI_TWAMP_SESSION_ATTR_TWAMP_PKT_TX_MODE": "SAI_TWAMP_PKT_TX_MODE_PACKET_COUNT"
-          }
-        ],
+        "type": "sai_uint32_t",
         "def_value": "0"
       },
       "SAI_TWAMP_SESSION_ATTR_TX_PKT_PERIOD": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_SESSION_ROLE": "SAI_TWAMP_SESSION_ROLE_SENDER"
-          },
-          {
-            "SAI_TWAMP_SESSION_ATTR_TWAMP_PKT_TX_MODE": "SAI_TWAMP_PKT_TX_MODE_PERIOD"
-          }
-        ],
+        "type": "sai_uint32_t",
         "def_value": "0"
       },
       "SAI_TWAMP_SESSION_ATTR_TX_INTERVAL": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_SESSION_ROLE": "SAI_TWAMP_SESSION_ROLE_SENDER"
-          }
-        ],
+        "type": "sai_uint32_t",
         "def_value": "1000"
       },
       "SAI_TWAMP_SESSION_ATTR_TIMEOUT": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_SESSION_ROLE": "SAI_TWAMP_SESSION_ROLE_SENDER"
-          }
-        ],
+        "type": "sai_uint32_t",
         "def_value": "3"
       },
       "SAI_TWAMP_SESSION_ATTR_STATISTICS_INTERVAL": {
-        "validonly": [
-          {
-            "SAI_TWAMP_SESSION_ATTR_SESSION_ROLE": "SAI_TWAMP_SESSION_ROLE_SENDER"
-          }
-        ],
+        "type": "sai_uint32_t",
         "def_value": "10000"
       },
-      "SAI_TWAMP_SESSION_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
-      "SAI_TWAMP_SESSION_ATTR_SELECTIVE_COUNTER_LIST": "empty"
+      "SAI_TWAMP_SESSION_ATTR_STATS_COUNT_MODE": {
+        "type": "sai_stats_count_mode_t",
+        "def_value": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE"
+      },
+      "SAI_TWAMP_SESSION_ATTR_SELECTIVE_COUNTER_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      }
     }
   }
 }

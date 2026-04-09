@@ -16,238 +16,757 @@
       "sai_thrift_switch_register_write"
     ],
     "attributes": {
-      "SAI_SWITCH_ATTR_NUMBER_OF_ACTIVE_PORTS": "",
-      "SAI_SWITCH_ATTR_PORT_NUMBER": "",
-      "SAI_SWITCH_ATTR_MAX_NUMBER_OF_SUPPORTED_PORTS": "",
-      "SAI_SWITCH_ATTR_PORT_LIST": "internal",
-      "SAI_SWITCH_ATTR_PORT_MAX_MTU": "",
-      "SAI_SWITCH_ATTR_CPU_PORT": "internal",
-      "SAI_SWITCH_ATTR_MAX_VIRTUAL_ROUTERS": "",
-      "SAI_SWITCH_ATTR_FDB_TABLE_SIZE": "",
-      "SAI_SWITCH_ATTR_L3_NEIGHBOR_TABLE_SIZE": "",
-      "SAI_SWITCH_ATTR_L3_ROUTE_TABLE_SIZE": "",
-      "SAI_SWITCH_ATTR_LAG_MEMBERS": "",
-      "SAI_SWITCH_ATTR_NUMBER_OF_LAGS": "",
-      "SAI_SWITCH_ATTR_ECMP_MEMBERS": "",
-      "SAI_SWITCH_ATTR_NUMBER_OF_ECMP_GROUPS": "",
-      "SAI_SWITCH_ATTR_NUMBER_OF_UNICAST_QUEUES": "",
-      "SAI_SWITCH_ATTR_NUMBER_OF_MULTICAST_QUEUES": "",
-      "SAI_SWITCH_ATTR_NUMBER_OF_QUEUES": "",
-      "SAI_SWITCH_ATTR_NUMBER_OF_CPU_QUEUES": "",
-      "SAI_SWITCH_ATTR_ON_LINK_ROUTE_SUPPORTED": "",
-      "SAI_SWITCH_ATTR_OPER_STATUS": "SAI_SWITCH_OPER_STATUS_UNKNOWN",
-      "SAI_SWITCH_ATTR_MAX_NUMBER_OF_TEMP_SENSORS": "",
-      "SAI_SWITCH_ATTR_TEMP_LIST": "",
-      "SAI_SWITCH_ATTR_MAX_TEMP": "",
-      "SAI_SWITCH_ATTR_AVERAGE_TEMP": "",
-      "SAI_SWITCH_ATTR_ACL_TABLE_MINIMUM_PRIORITY": "",
-      "SAI_SWITCH_ATTR_ACL_TABLE_MAXIMUM_PRIORITY": "",
-      "SAI_SWITCH_ATTR_ACL_ENTRY_MINIMUM_PRIORITY": "",
-      "SAI_SWITCH_ATTR_ACL_ENTRY_MAXIMUM_PRIORITY": "",
-      "SAI_SWITCH_ATTR_ACL_TABLE_GROUP_MINIMUM_PRIORITY": "",
-      "SAI_SWITCH_ATTR_ACL_TABLE_GROUP_MAXIMUM_PRIORITY": "",
-      "SAI_SWITCH_ATTR_FDB_DST_USER_META_DATA_RANGE": "",
-      "SAI_SWITCH_ATTR_ROUTE_DST_USER_META_DATA_RANGE": "",
-      "SAI_SWITCH_ATTR_NEIGHBOR_DST_USER_META_DATA_RANGE": "",
-      "SAI_SWITCH_ATTR_PORT_USER_META_DATA_RANGE": "",
-      "SAI_SWITCH_ATTR_VLAN_USER_META_DATA_RANGE": "",
-      "SAI_SWITCH_ATTR_ACL_USER_META_DATA_RANGE": "",
-      "SAI_SWITCH_ATTR_ACL_USER_TRAP_ID_RANGE": "",
-      "SAI_SWITCH_ATTR_DEFAULT_VLAN_ID": "internal",
-      "SAI_SWITCH_ATTR_DEFAULT_STP_INST_ID": "internal",
-      "SAI_SWITCH_ATTR_MAX_STP_INSTANCE": "",
-      "SAI_SWITCH_ATTR_DEFAULT_VIRTUAL_ROUTER_ID": "internal",
-      "SAI_SWITCH_ATTR_DEFAULT_OVERRIDE_VIRTUAL_ROUTER_ID": "internal",
-      "SAI_SWITCH_ATTR_DEFAULT_1Q_BRIDGE_ID": "internal",
-      "SAI_SWITCH_ATTR_INGRESS_ACL": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_EGRESS_ACL": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_QOS_MAX_NUMBER_OF_TRAFFIC_CLASSES": "",
-      "SAI_SWITCH_ATTR_QOS_MAX_NUMBER_OF_SCHEDULER_GROUP_HIERARCHY_LEVELS": "",
-      "SAI_SWITCH_ATTR_QOS_MAX_NUMBER_OF_SCHEDULER_GROUPS_PER_HIERARCHY_LEVEL": "",
-      "SAI_SWITCH_ATTR_QOS_MAX_NUMBER_OF_CHILDS_PER_SCHEDULER_GROUP": "",
-      "SAI_SWITCH_ATTR_TOTAL_BUFFER_SIZE": "",
-      "SAI_SWITCH_ATTR_INGRESS_BUFFER_POOL_NUM": "",
-      "SAI_SWITCH_ATTR_EGRESS_BUFFER_POOL_NUM": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_IPV4_ROUTE_ENTRY": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_IPV6_ROUTE_ENTRY": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_IPV4_NEXTHOP_ENTRY": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_IPV6_NEXTHOP_ENTRY": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_IPV4_NEIGHBOR_ENTRY": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_IPV6_NEIGHBOR_ENTRY": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_NEXT_HOP_GROUP_ENTRY": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_NEXT_HOP_GROUP_MEMBER_ENTRY": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_FDB_ENTRY": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_L2MC_ENTRY": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_IPMC_ENTRY": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_SNAT_ENTRY": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_DNAT_ENTRY": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_DOUBLE_NAT_ENTRY": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_ACL_TABLE": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_ACL_TABLE_GROUP": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_MY_SID_ENTRY": "",
-      "SAI_SWITCH_ATTR_DEFAULT_TRAP_GROUP": "internal",
-      "SAI_SWITCH_ATTR_ECMP_HASH": "internal",
-      "SAI_SWITCH_ATTR_LAG_HASH": "internal",
-      "SAI_SWITCH_ATTR_RESTART_WARM": "false",
-      "SAI_SWITCH_ATTR_WARM_RECOVER": "false",
-      "SAI_SWITCH_ATTR_RESTART_TYPE": "SAI_SWITCH_RESTART_TYPE_NONE",
-      "SAI_SWITCH_ATTR_MIN_PLANNED_RESTART_INTERVAL": "",
-      "SAI_SWITCH_ATTR_NV_STORAGE_SIZE": "",
-      "SAI_SWITCH_ATTR_MAX_ACL_ACTION_COUNT": "",
-      "SAI_SWITCH_ATTR_MAX_ACL_RANGE_COUNT": "",
-      "SAI_SWITCH_ATTR_ACL_CAPABILITY": "",
-      "SAI_SWITCH_ATTR_MCAST_SNOOPING_CAPABILITY": "SAI_SWITCH_MCAST_SNOOPING_CAPABILITY_NONE",
-      "SAI_SWITCH_ATTR_SWITCHING_MODE": "SAI_SWITCH_SWITCHING_MODE_STORE_AND_FORWARD",
-      "SAI_SWITCH_ATTR_BCAST_CPU_FLOOD_ENABLE": "false",
-      "SAI_SWITCH_ATTR_MCAST_CPU_FLOOD_ENABLE": "false",
-      "SAI_SWITCH_ATTR_SRC_MAC_ADDRESS": "vendor",
-      "SAI_SWITCH_ATTR_MAX_LEARNED_ADDRESSES": "0",
-      "SAI_SWITCH_ATTR_FDB_AGING_TIME": "0",
-      "SAI_SWITCH_ATTR_FDB_UNICAST_MISS_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD",
-      "SAI_SWITCH_ATTR_FDB_BROADCAST_MISS_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD",
-      "SAI_SWITCH_ATTR_FDB_MULTICAST_MISS_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD",
-      "SAI_SWITCH_ATTR_ECMP_DEFAULT_HASH_ALGORITHM": "SAI_HASH_ALGORITHM_CRC",
-      "SAI_SWITCH_ATTR_ECMP_DEFAULT_HASH_SEED": "0",
-      "SAI_SWITCH_ATTR_ECMP_DEFAULT_HASH_OFFSET": "0",
-      "SAI_SWITCH_ATTR_ECMP_DEFAULT_SYMMETRIC_HASH": "false",
-      "SAI_SWITCH_ATTR_ECMP_HASH_IPV4": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_ECMP_HASH_IPV4_IN_IPV4": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_ECMP_HASH_IPV6": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_LAG_DEFAULT_HASH_ALGORITHM": "SAI_HASH_ALGORITHM_CRC",
-      "SAI_SWITCH_ATTR_LAG_DEFAULT_HASH_SEED": "0",
-      "SAI_SWITCH_ATTR_LAG_DEFAULT_HASH_OFFSET": "0",
-      "SAI_SWITCH_ATTR_LAG_DEFAULT_SYMMETRIC_HASH": "false",
-      "SAI_SWITCH_ATTR_LAG_HASH_IPV4": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_LAG_HASH_IPV4_IN_IPV4": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_LAG_HASH_IPV6": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_COUNTER_REFRESH_INTERVAL": "1",
-      "SAI_SWITCH_ATTR_QOS_DEFAULT_TC": "0",
-      "SAI_SWITCH_ATTR_QOS_DOT1P_TO_TC_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_QOS_DOT1P_TO_COLOR_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_QOS_DSCP_TO_TC_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_QOS_DSCP_TO_COLOR_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_QOS_TC_TO_QUEUE_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_QOS_TC_AND_COLOR_TO_DOT1P_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_QOS_TC_AND_COLOR_TO_DSCP_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_SWITCH_SHELL_ENABLE": "false",
-      "SAI_SWITCH_ATTR_SWITCH_PROFILE_ID": "0",
-      "SAI_SWITCH_ATTR_SWITCH_HARDWARE_INFO": "empty",
-      "SAI_SWITCH_ATTR_FIRMWARE_PATH_NAME": "empty",
-      "SAI_SWITCH_ATTR_INIT_SWITCH": "",
-      "SAI_SWITCH_ATTR_SWITCH_STATE_CHANGE_NOTIFY": "NULL",
-      "SAI_SWITCH_ATTR_SWITCH_SHUTDOWN_REQUEST_NOTIFY": "NULL",
-      "SAI_SWITCH_ATTR_SHUTDOWN_REQUEST_NOTIFY": "",
-      "SAI_SWITCH_ATTR_FDB_EVENT_NOTIFY": "NULL",
-      "SAI_SWITCH_ATTR_PORT_STATE_CHANGE_NOTIFY": "NULL",
-      "SAI_SWITCH_ATTR_PACKET_EVENT_NOTIFY": "NULL",
-      "SAI_SWITCH_ATTR_FAST_API_ENABLE": "false",
-      "SAI_SWITCH_ATTR_MIRROR_TC": "255",
-      "SAI_SWITCH_ATTR_ACL_STAGE_INGRESS": "",
-      "SAI_SWITCH_ATTR_ACL_STAGE_EGRESS": "",
-      "SAI_SWITCH_ATTR_SRV6_MAX_SID_DEPTH": "",
-      "SAI_SWITCH_ATTR_SRV6_TLV_TYPE": "",
-      "SAI_SWITCH_ATTR_QOS_NUM_LOSSLESS_QUEUES": "",
-      "SAI_SWITCH_ATTR_QUEUE_PFC_DEADLOCK_NOTIFY": "NULL",
-      "SAI_SWITCH_ATTR_PFC_DLR_PACKET_ACTION": "SAI_PACKET_ACTION_DROP",
-      "SAI_SWITCH_ATTR_PFC_TC_DLD_INTERVAL_RANGE": "",
-      "SAI_SWITCH_ATTR_PFC_TC_DLD_INTERVAL": "empty",
-      "SAI_SWITCH_ATTR_PFC_TC_DLR_INTERVAL_RANGE": "",
-      "SAI_SWITCH_ATTR_PFC_TC_DLR_INTERVAL": "empty",
-      "SAI_SWITCH_ATTR_SUPPORTED_PROTECTED_OBJECT_TYPE": "",
-      "SAI_SWITCH_ATTR_TPID_OUTER_VLAN": "0x88A8",
-      "SAI_SWITCH_ATTR_TPID_INNER_VLAN": "0x8100",
-      "SAI_SWITCH_ATTR_CRC_CHECK_ENABLE": "true",
-      "SAI_SWITCH_ATTR_CRC_RECALCULATION_ENABLE": "true",
-      "SAI_SWITCH_ATTR_BFD_SESSION_STATE_CHANGE_NOTIFY": "NULL",
-      "SAI_SWITCH_ATTR_NUMBER_OF_BFD_SESSION": "",
-      "SAI_SWITCH_ATTR_MAX_BFD_SESSION": "",
-      "SAI_SWITCH_ATTR_SUPPORTED_IPV4_BFD_SESSION_OFFLOAD_TYPE": "",
-      "SAI_SWITCH_ATTR_SUPPORTED_IPV6_BFD_SESSION_OFFLOAD_TYPE": "",
-      "SAI_SWITCH_ATTR_MIN_BFD_RX": "",
-      "SAI_SWITCH_ATTR_MIN_BFD_TX": "",
-      "SAI_SWITCH_ATTR_ECN_ECT_THRESHOLD_ENABLE": "false",
-      "SAI_SWITCH_ATTR_VXLAN_DEFAULT_ROUTER_MAC": "vendor",
-      "SAI_SWITCH_ATTR_VXLAN_DEFAULT_PORT": "4789",
-      "SAI_SWITCH_ATTR_MAX_MIRROR_SESSION": "",
-      "SAI_SWITCH_ATTR_MAX_SAMPLED_MIRROR_SESSION": "",
-      "SAI_SWITCH_ATTR_SUPPORTED_EXTENDED_STATS_MODE": "",
-      "SAI_SWITCH_ATTR_UNINIT_DATA_PLANE_ON_REMOVAL": "true",
-      "SAI_SWITCH_ATTR_TAM_OBJECT_ID": "empty",
-      "SAI_SWITCH_ATTR_TAM_EVENT_NOTIFY": "NULL",
-      "SAI_SWITCH_ATTR_SUPPORTED_OBJECT_TYPE_LIST": "",
-      "SAI_SWITCH_ATTR_PRE_SHUTDOWN": "false",
-      "SAI_SWITCH_ATTR_NAT_ZONE_COUNTER_OBJECT_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_NAT_ENABLE": "false",
+      "SAI_SWITCH_ATTR_NUMBER_OF_ACTIVE_PORTS": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_PORT_NUMBER": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_MAX_NUMBER_OF_SUPPORTED_PORTS": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_PORT_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "internal"
+      },
+      "SAI_SWITCH_ATTR_PORT_MAX_MTU": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_CPU_PORT": {
+        "type": "sai_object_id_t",
+        "def_value": "internal"
+      },
+      "SAI_SWITCH_ATTR_MAX_VIRTUAL_ROUTERS": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_FDB_TABLE_SIZE": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_L3_NEIGHBOR_TABLE_SIZE": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_L3_ROUTE_TABLE_SIZE": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_LAG_MEMBERS": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_NUMBER_OF_LAGS": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_ECMP_MEMBERS": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_NUMBER_OF_ECMP_GROUPS": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_NUMBER_OF_UNICAST_QUEUES": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_NUMBER_OF_MULTICAST_QUEUES": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_NUMBER_OF_QUEUES": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_NUMBER_OF_CPU_QUEUES": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_ON_LINK_ROUTE_SUPPORTED": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_SWITCH_ATTR_OPER_STATUS": {
+        "type": "sai_switch_oper_status_t",
+        "def_value": "SAI_SWITCH_OPER_STATUS_UNKNOWN"
+      },
+      "SAI_SWITCH_ATTR_MAX_NUMBER_OF_TEMP_SENSORS": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_TEMP_LIST": {
+        "type": "sai_s32_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_SWITCH_ATTR_MAX_TEMP": {
+        "type": "sai_int32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVERAGE_TEMP": {
+        "type": "sai_int32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_ACL_TABLE_MINIMUM_PRIORITY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_ACL_TABLE_MAXIMUM_PRIORITY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_ACL_ENTRY_MINIMUM_PRIORITY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_ACL_ENTRY_MAXIMUM_PRIORITY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_ACL_TABLE_GROUP_MINIMUM_PRIORITY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_ACL_TABLE_GROUP_MAXIMUM_PRIORITY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_FDB_DST_USER_META_DATA_RANGE": {
+        "type": "sai_u32_range_t",
+        "def_value": "0-0"
+      },
+      "SAI_SWITCH_ATTR_ROUTE_DST_USER_META_DATA_RANGE": {
+        "type": "sai_u32_range_t",
+        "def_value": "0-0"
+      },
+      "SAI_SWITCH_ATTR_NEIGHBOR_DST_USER_META_DATA_RANGE": {
+        "type": "sai_u32_range_t",
+        "def_value": "0-0"
+      },
+      "SAI_SWITCH_ATTR_PORT_USER_META_DATA_RANGE": {
+        "type": "sai_u32_range_t",
+        "def_value": "0-0"
+      },
+      "SAI_SWITCH_ATTR_VLAN_USER_META_DATA_RANGE": {
+        "type": "sai_u32_range_t",
+        "def_value": "0-0"
+      },
+      "SAI_SWITCH_ATTR_ACL_USER_META_DATA_RANGE": {
+        "type": "sai_u32_range_t",
+        "def_value": "0-0"
+      },
+      "SAI_SWITCH_ATTR_ACL_USER_TRAP_ID_RANGE": {
+        "type": "sai_u32_range_t",
+        "def_value": "0-0"
+      },
+      "SAI_SWITCH_ATTR_DEFAULT_VLAN_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "internal"
+      },
+      "SAI_SWITCH_ATTR_DEFAULT_STP_INST_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "internal"
+      },
+      "SAI_SWITCH_ATTR_MAX_STP_INSTANCE": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_DEFAULT_VIRTUAL_ROUTER_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "internal"
+      },
+      "SAI_SWITCH_ATTR_DEFAULT_OVERRIDE_VIRTUAL_ROUTER_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "internal"
+      },
+      "SAI_SWITCH_ATTR_DEFAULT_1Q_BRIDGE_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "internal"
+      },
+      "SAI_SWITCH_ATTR_INGRESS_ACL": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_EGRESS_ACL": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_QOS_MAX_NUMBER_OF_TRAFFIC_CLASSES": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_QOS_MAX_NUMBER_OF_SCHEDULER_GROUP_HIERARCHY_LEVELS": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_QOS_MAX_NUMBER_OF_SCHEDULER_GROUPS_PER_HIERARCHY_LEVEL": {
+        "type": "sai_u32_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_SWITCH_ATTR_QOS_MAX_NUMBER_OF_CHILDS_PER_SCHEDULER_GROUP": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_TOTAL_BUFFER_SIZE": {
+        "type": "sai_uint64_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_INGRESS_BUFFER_POOL_NUM": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_EGRESS_BUFFER_POOL_NUM": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_IPV4_ROUTE_ENTRY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_IPV6_ROUTE_ENTRY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_IPV4_NEXTHOP_ENTRY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_IPV6_NEXTHOP_ENTRY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_IPV4_NEIGHBOR_ENTRY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_IPV6_NEIGHBOR_ENTRY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_NEXT_HOP_GROUP_ENTRY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_NEXT_HOP_GROUP_MEMBER_ENTRY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_FDB_ENTRY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_L2MC_ENTRY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_IPMC_ENTRY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_SNAT_ENTRY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_DNAT_ENTRY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_DOUBLE_NAT_ENTRY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_ACL_TABLE": {
+        "type": "sai_acl_resource_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_ACL_TABLE_GROUP": {
+        "type": "sai_acl_resource_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_MY_SID_ENTRY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_DEFAULT_TRAP_GROUP": {
+        "type": "sai_object_id_t",
+        "def_value": "internal"
+      },
+      "SAI_SWITCH_ATTR_ECMP_HASH": {
+        "type": "sai_object_id_t",
+        "def_value": "internal"
+      },
+      "SAI_SWITCH_ATTR_LAG_HASH": {
+        "type": "sai_object_id_t",
+        "def_value": "internal"
+      },
+      "SAI_SWITCH_ATTR_RESTART_WARM": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_SWITCH_ATTR_WARM_RECOVER": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_SWITCH_ATTR_RESTART_TYPE": {
+        "type": "sai_switch_restart_type_t",
+        "def_value": "SAI_SWITCH_RESTART_TYPE_NONE"
+      },
+      "SAI_SWITCH_ATTR_MIN_PLANNED_RESTART_INTERVAL": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_NV_STORAGE_SIZE": {
+        "type": "sai_uint64_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_MAX_ACL_ACTION_COUNT": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_MAX_ACL_RANGE_COUNT": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_ACL_CAPABILITY": {
+        "type": "sai_acl_capability_t",
+        "def_value": "zeroed structure"
+      },
+      "SAI_SWITCH_ATTR_MCAST_SNOOPING_CAPABILITY": {
+        "type": "sai_switch_mcast_snooping_capability_t",
+        "def_value": "SAI_SWITCH_MCAST_SNOOPING_CAPABILITY_NONE"
+      },
+      "SAI_SWITCH_ATTR_SWITCHING_MODE": {
+        "type": "sai_switch_switching_mode_t",
+        "def_value": "SAI_SWITCH_SWITCHING_MODE_STORE_AND_FORWARD"
+      },
+      "SAI_SWITCH_ATTR_BCAST_CPU_FLOOD_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_SWITCH_ATTR_MCAST_CPU_FLOOD_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_SWITCH_ATTR_SRC_MAC_ADDRESS": {
+        "type": "sai_mac_t",
+        "def_value": "vendor"
+      },
+      "SAI_SWITCH_ATTR_MAX_LEARNED_ADDRESSES": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_FDB_AGING_TIME": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_FDB_UNICAST_MISS_PACKET_ACTION": {
+        "type": "sai_packet_action_t",
+        "def_value": "SAI_PACKET_ACTION_FORWARD"
+      },
+      "SAI_SWITCH_ATTR_FDB_BROADCAST_MISS_PACKET_ACTION": {
+        "type": "sai_packet_action_t",
+        "def_value": "SAI_PACKET_ACTION_FORWARD"
+      },
+      "SAI_SWITCH_ATTR_FDB_MULTICAST_MISS_PACKET_ACTION": {
+        "type": "sai_packet_action_t",
+        "def_value": "SAI_PACKET_ACTION_FORWARD"
+      },
+      "SAI_SWITCH_ATTR_ECMP_DEFAULT_HASH_ALGORITHM": {
+        "type": "sai_hash_algorithm_t",
+        "def_value": "SAI_HASH_ALGORITHM_CRC"
+      },
+      "SAI_SWITCH_ATTR_ECMP_DEFAULT_HASH_SEED": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_ECMP_DEFAULT_HASH_OFFSET": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_ECMP_DEFAULT_SYMMETRIC_HASH": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_SWITCH_ATTR_ECMP_HASH_IPV4": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_ECMP_HASH_IPV4_IN_IPV4": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_ECMP_HASH_IPV6": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_LAG_DEFAULT_HASH_ALGORITHM": {
+        "type": "sai_hash_algorithm_t",
+        "def_value": "SAI_HASH_ALGORITHM_CRC"
+      },
+      "SAI_SWITCH_ATTR_LAG_DEFAULT_HASH_SEED": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_LAG_DEFAULT_HASH_OFFSET": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_LAG_DEFAULT_SYMMETRIC_HASH": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_SWITCH_ATTR_LAG_HASH_IPV4": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_LAG_HASH_IPV4_IN_IPV4": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_LAG_HASH_IPV6": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_COUNTER_REFRESH_INTERVAL": {
+        "type": "sai_uint32_t",
+        "def_value": "1"
+      },
+      "SAI_SWITCH_ATTR_QOS_DEFAULT_TC": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_QOS_DOT1P_TO_TC_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_QOS_DOT1P_TO_COLOR_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_QOS_DSCP_TO_TC_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_QOS_DSCP_TO_COLOR_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_QOS_TC_TO_QUEUE_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_QOS_TC_AND_COLOR_TO_DOT1P_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_QOS_TC_AND_COLOR_TO_DSCP_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_SWITCH_SHELL_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_SWITCH_ATTR_SWITCH_PROFILE_ID": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_SWITCH_HARDWARE_INFO": {
+        "type": "sai_s8_list_t",
+        "def_value": "empty"
+      },
+      "SAI_SWITCH_ATTR_FIRMWARE_PATH_NAME": {
+        "type": "sai_s8_list_t",
+        "def_value": "empty"
+      },
+      "SAI_SWITCH_ATTR_INIT_SWITCH": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_SWITCH_ATTR_SWITCH_STATE_CHANGE_NOTIFY": {
+        "type": "sai_pointer_t sai_switch_state_change_notification_fn",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_SWITCH_SHUTDOWN_REQUEST_NOTIFY": {
+        "type": "sai_pointer_t sai_switch_shutdown_request_notification_fn",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_SHUTDOWN_REQUEST_NOTIFY": {
+        "type": "sai_pointer_t",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_FDB_EVENT_NOTIFY": {
+        "type": "sai_pointer_t sai_fdb_event_notification_fn",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_PORT_STATE_CHANGE_NOTIFY": {
+        "type": "sai_pointer_t sai_port_state_change_notification_fn",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_PACKET_EVENT_NOTIFY": {
+        "type": "sai_pointer_t sai_packet_event_notification_fn",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_FAST_API_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_SWITCH_ATTR_MIRROR_TC": {
+        "type": "sai_uint8_t",
+        "def_value": "255"
+      },
+      "SAI_SWITCH_ATTR_ACL_STAGE_INGRESS": {
+        "type": "sai_acl_capability_t",
+        "def_value": "zeroed structure"
+      },
+      "SAI_SWITCH_ATTR_ACL_STAGE_EGRESS": {
+        "type": "sai_acl_capability_t",
+        "def_value": "zeroed structure"
+      },
+      "SAI_SWITCH_ATTR_SRV6_MAX_SID_DEPTH": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_SRV6_TLV_TYPE": {
+        "type": "sai_s32_list_t sai_tlv_type_t",
+        "def_value": "empty list"
+      },
+      "SAI_SWITCH_ATTR_QOS_NUM_LOSSLESS_QUEUES": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_QUEUE_PFC_DEADLOCK_NOTIFY": {
+        "type": "sai_pointer_t sai_queue_pfc_deadlock_notification_fn",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_PFC_DLR_PACKET_ACTION": {
+        "type": "sai_packet_action_t",
+        "def_value": "SAI_PACKET_ACTION_DROP"
+      },
+      "SAI_SWITCH_ATTR_PFC_TC_DLD_INTERVAL_RANGE": {
+        "type": "sai_u32_range_t",
+        "def_value": "0-0"
+      },
+      "SAI_SWITCH_ATTR_PFC_TC_DLD_INTERVAL": {
+        "type": "sai_map_list_t",
+        "def_value": "empty"
+      },
+      "SAI_SWITCH_ATTR_PFC_TC_DLR_INTERVAL_RANGE": {
+        "type": "sai_u32_range_t",
+        "def_value": "0-0"
+      },
+      "SAI_SWITCH_ATTR_PFC_TC_DLR_INTERVAL": {
+        "type": "sai_map_list_t",
+        "def_value": "empty"
+      },
+      "SAI_SWITCH_ATTR_SUPPORTED_PROTECTED_OBJECT_TYPE": {
+        "type": "sai_s32_list_t sai_object_type_t",
+        "def_value": "empty list"
+      },
+      "SAI_SWITCH_ATTR_TPID_OUTER_VLAN": {
+        "type": "sai_uint16_t",
+        "def_value": "0x88A8"
+      },
+      "SAI_SWITCH_ATTR_TPID_INNER_VLAN": {
+        "type": "sai_uint16_t",
+        "def_value": "0x8100"
+      },
+      "SAI_SWITCH_ATTR_CRC_CHECK_ENABLE": {
+        "type": "bool",
+        "def_value": "TRUE"
+      },
+      "SAI_SWITCH_ATTR_CRC_RECALCULATION_ENABLE": {
+        "type": "bool",
+        "def_value": "TRUE"
+      },
+      "SAI_SWITCH_ATTR_BFD_SESSION_STATE_CHANGE_NOTIFY": {
+        "type": "sai_pointer_t sai_bfd_session_state_change_notification_fn",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_NUMBER_OF_BFD_SESSION": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_MAX_BFD_SESSION": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_SUPPORTED_IPV4_BFD_SESSION_OFFLOAD_TYPE": {
+        "type": "sai_s32_list_t sai_bfd_session_offload_type_t",
+        "def_value": "empty list"
+      },
+      "SAI_SWITCH_ATTR_SUPPORTED_IPV6_BFD_SESSION_OFFLOAD_TYPE": {
+        "type": "sai_s32_list_t sai_bfd_session_offload_type_t",
+        "def_value": "empty list"
+      },
+      "SAI_SWITCH_ATTR_MIN_BFD_RX": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_MIN_BFD_TX": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_ECN_ECT_THRESHOLD_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_SWITCH_ATTR_VXLAN_DEFAULT_ROUTER_MAC": {
+        "type": "sai_mac_t",
+        "def_value": "vendor"
+      },
+      "SAI_SWITCH_ATTR_VXLAN_DEFAULT_PORT": {
+        "type": "sai_uint16_t",
+        "def_value": "4789"
+      },
+      "SAI_SWITCH_ATTR_MAX_MIRROR_SESSION": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_MAX_SAMPLED_MIRROR_SESSION": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_SUPPORTED_EXTENDED_STATS_MODE": {
+        "type": "sai_s32_list_t sai_stats_mode_t",
+        "def_value": "empty list"
+      },
+      "SAI_SWITCH_ATTR_UNINIT_DATA_PLANE_ON_REMOVAL": {
+        "type": "bool",
+        "def_value": "TRUE"
+      },
+      "SAI_SWITCH_ATTR_TAM_OBJECT_ID": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
+      "SAI_SWITCH_ATTR_TAM_EVENT_NOTIFY": {
+        "type": "sai_pointer_t sai_tam_event_notification_fn",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_SUPPORTED_OBJECT_TYPE_LIST": {
+        "type": "sai_s32_list_t sai_object_type_t",
+        "def_value": "empty list"
+      },
+      "SAI_SWITCH_ATTR_PRE_SHUTDOWN": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_SWITCH_ATTR_NAT_ZONE_COUNTER_OBJECT_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_NAT_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
       "SAI_SWITCH_ATTR_HARDWARE_ACCESS_BUS": {
+        "type": "sai_switch_hardware_access_bus_t",
+        "def_value": "SAI_SWITCH_HARDWARE_ACCESS_BUS_MDIO",
         "condition": [
           {
             "SAI_SWITCH_ATTR_TYPE": "SAI_SWITCH_TYPE_PHY"
           }
-        ],
-        "def_value": "SAI_SWITCH_HARDWARE_ACCESS_BUS_MDIO"
+        ]
       },
       "SAI_SWITCH_ATTR_PLATFROM_CONTEXT": {
+        "type": "sai_uint64_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_SWITCH_ATTR_TYPE": "SAI_SWITCH_TYPE_PHY"
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_SWITCH_ATTR_REGISTER_READ": {
+        "type": "sai_pointer_t sai_switch_register_read_fn",
+        "def_value": "NULL",
         "condition": [
           {
             "SAI_SWITCH_ATTR_TYPE": "SAI_SWITCH_TYPE_PHY"
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_SWITCH_ATTR_REGISTER_WRITE": {
+        "type": "sai_pointer_t sai_switch_register_write_fn",
+        "def_value": "NULL",
         "condition": [
           {
             "SAI_SWITCH_ATTR_TYPE": "SAI_SWITCH_TYPE_PHY"
           }
-        ],
-        "def_value": ""
+        ]
       },
-      "SAI_SWITCH_ATTR_FIRMWARE_DOWNLOAD_BROADCAST": "false",
-      "SAI_SWITCH_ATTR_FIRMWARE_LOAD_METHOD": "SAI_SWITCH_FIRMWARE_LOAD_METHOD_INTERNAL",
-      "SAI_SWITCH_ATTR_FIRMWARE_LOAD_TYPE": "SAI_SWITCH_FIRMWARE_LOAD_TYPE_AUTO",
+      "SAI_SWITCH_ATTR_FIRMWARE_DOWNLOAD_BROADCAST": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_SWITCH_ATTR_FIRMWARE_LOAD_METHOD": {
+        "type": "sai_switch_firmware_load_method_t",
+        "def_value": "SAI_SWITCH_FIRMWARE_LOAD_METHOD_INTERNAL"
+      },
+      "SAI_SWITCH_ATTR_FIRMWARE_LOAD_TYPE": {
+        "type": "sai_switch_firmware_load_type_t",
+        "def_value": "SAI_SWITCH_FIRMWARE_LOAD_TYPE_AUTO"
+      },
       "SAI_SWITCH_ATTR_FIRMWARE_DOWNLOAD_EXECUTE": {
-        "validonly": [
-          {
-            "SAI_SWITCH_ATTR_FIRMWARE_DOWNLOAD_BROADCAST": "true"
-          }
-        ],
-        "def_value": "false"
+        "type": "bool",
+        "def_value": "FALSE"
       },
       "SAI_SWITCH_ATTR_FIRMWARE_BROADCAST_STOP": {
-        "validonly": [
-          {
-            "SAI_SWITCH_ATTR_FIRMWARE_DOWNLOAD_BROADCAST": "true"
-          }
-        ],
-        "def_value": "false"
+        "type": "bool",
+        "def_value": "FALSE"
       },
       "SAI_SWITCH_ATTR_FIRMWARE_VERIFY_AND_INIT_SWITCH": {
-        "validonly": [
-          {
-            "SAI_SWITCH_ATTR_FIRMWARE_DOWNLOAD_BROADCAST": "true"
-          }
-        ],
-        "def_value": "false"
+        "type": "bool",
+        "def_value": "FALSE"
       },
-      "SAI_SWITCH_ATTR_FIRMWARE_STATUS": "",
-      "SAI_SWITCH_ATTR_FIRMWARE_MAJOR_VERSION": "",
-      "SAI_SWITCH_ATTR_FIRMWARE_MINOR_VERSION": "",
-      "SAI_SWITCH_ATTR_PORT_CONNECTOR_LIST": "",
-      "SAI_SWITCH_ATTR_PROPOGATE_PORT_STATE_FROM_LINE_TO_SYSTEM_PORT_SUPPORT": "",
-      "SAI_SWITCH_ATTR_TYPE": "SAI_SWITCH_TYPE_NPU",
-      "SAI_SWITCH_ATTR_MACSEC_OBJECT_LIST": "empty",
-      "SAI_SWITCH_ATTR_QOS_MPLS_EXP_TO_TC_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_QOS_MPLS_EXP_TO_COLOR_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_QOS_TC_AND_COLOR_TO_MPLS_EXP_MAP": "SAI_NULL_OBJECT_ID",
+      "SAI_SWITCH_ATTR_FIRMWARE_STATUS": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_SWITCH_ATTR_FIRMWARE_MAJOR_VERSION": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_FIRMWARE_MINOR_VERSION": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_PORT_CONNECTOR_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_SWITCH_ATTR_PROPOGATE_PORT_STATE_FROM_LINE_TO_SYSTEM_PORT_SUPPORT": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_SWITCH_ATTR_TYPE": {
+        "type": "sai_switch_type_t",
+        "def_value": "SAI_SWITCH_TYPE_NPU"
+      },
+      "SAI_SWITCH_ATTR_MACSEC_OBJECT_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
+      "SAI_SWITCH_ATTR_QOS_MPLS_EXP_TO_TC_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_QOS_MPLS_EXP_TO_COLOR_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_QOS_TC_AND_COLOR_TO_MPLS_EXP_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
       "SAI_SWITCH_ATTR_SWITCH_ID": {
+        "type": "sai_uint32_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_SWITCH_ATTR_TYPE": [
@@ -255,166 +774,382 @@
               "SAI_SWITCH_TYPE_FABRIC"
             ]
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_SWITCH_ATTR_MAX_SYSTEM_CORES": {
+        "type": "sai_uint32_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_SWITCH_ATTR_TYPE": "SAI_SWITCH_TYPE_VOQ"
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_SWITCH_ATTR_SYSTEM_PORT_CONFIG_LIST": {
+        "type": "sai_system_port_config_list_t",
+        "def_value": "empty list",
         "condition": [
           {
             "SAI_SWITCH_ATTR_TYPE": "SAI_SWITCH_TYPE_VOQ"
           }
-        ],
-        "def_value": ""
+        ]
       },
-      "SAI_SWITCH_ATTR_NUMBER_OF_SYSTEM_PORTS": "",
-      "SAI_SWITCH_ATTR_SYSTEM_PORT_LIST": "internal",
-      "SAI_SWITCH_ATTR_NUMBER_OF_FABRIC_PORTS": "",
-      "SAI_SWITCH_ATTR_FABRIC_PORT_LIST": "internal",
-      "SAI_SWITCH_ATTR_PACKET_DMA_MEMORY_POOL_SIZE": "",
-      "SAI_SWITCH_ATTR_FAILOVER_CONFIG_MODE": "SAI_SWITCH_FAILOVER_CONFIG_MODE_NO_HITLESS",
-      "SAI_SWITCH_ATTR_SUPPORTED_FAILOVER_MODE": "",
-      "SAI_SWITCH_ATTR_TUNNEL_OBJECTS_LIST": "empty",
-      "SAI_SWITCH_ATTR_PACKET_AVAILABLE_DMA_MEMORY_POOL_SIZE": "",
-      "SAI_SWITCH_ATTR_PRE_INGRESS_ACL": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_AVAILABLE_SNAPT_ENTRY": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_DNAPT_ENTRY": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_DOUBLE_NAPT_ENTRY": "",
-      "SAI_SWITCH_ATTR_SLAVE_MDIO_ADDR_LIST": {
-        "validonly": [
-          {
-            "SAI_SWITCH_ATTR_FIRMWARE_DOWNLOAD_BROADCAST": "true"
-          }
-        ],
+      "SAI_SWITCH_ATTR_NUMBER_OF_SYSTEM_PORTS": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_SYSTEM_PORT_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "internal"
+      },
+      "SAI_SWITCH_ATTR_NUMBER_OF_FABRIC_PORTS": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_FABRIC_PORT_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "internal"
+      },
+      "SAI_SWITCH_ATTR_PACKET_DMA_MEMORY_POOL_SIZE": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_FAILOVER_CONFIG_MODE": {
+        "type": "sai_switch_failover_config_mode_t",
+        "def_value": "SAI_SWITCH_FAILOVER_CONFIG_MODE_NO_HITLESS"
+      },
+      "SAI_SWITCH_ATTR_SUPPORTED_FAILOVER_MODE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_SWITCH_ATTR_TUNNEL_OBJECTS_LIST": {
+        "type": "sai_object_list_t",
         "def_value": "empty"
       },
-      "SAI_SWITCH_ATTR_MY_MAC_TABLE_MINIMUM_PRIORITY": "",
-      "SAI_SWITCH_ATTR_MY_MAC_TABLE_MAXIMUM_PRIORITY": "",
-      "SAI_SWITCH_ATTR_MY_MAC_LIST": "",
-      "SAI_SWITCH_ATTR_INSTALLED_MY_MAC_ENTRIES": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_MY_MAC_ENTRIES": "",
-      "SAI_SWITCH_ATTR_MAX_NUMBER_OF_FORWARDING_CLASSES": "",
-      "SAI_SWITCH_ATTR_QOS_DSCP_TO_FORWARDING_CLASS_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_QOS_MPLS_EXP_TO_FORWARDING_CLASS_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_IPSEC_OBJECT_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_IPSEC_SA_TAG_TPID": "0xFFFE",
-      "SAI_SWITCH_ATTR_IPSEC_SA_STATUS_CHANGE_NOTIFY": "NULL",
-      "SAI_SWITCH_ATTR_NAT_EVENT_NOTIFY": "NULL",
-      "SAI_SWITCH_ATTR_MAX_ECMP_MEMBER_COUNT": "",
-      "SAI_SWITCH_ATTR_ECMP_MEMBER_COUNT": "64",
-      "SAI_SWITCH_ATTR_ARS_PROFILE": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_ACL_STAGE_POST_INGRESS": "",
+      "SAI_SWITCH_ATTR_PACKET_AVAILABLE_DMA_MEMORY_POOL_SIZE": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_PRE_INGRESS_ACL": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_SNAPT_ENTRY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_DNAPT_ENTRY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_DOUBLE_NAPT_ENTRY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_SLAVE_MDIO_ADDR_LIST": {
+        "type": "sai_u8_list_t",
+        "def_value": "empty"
+      },
+      "SAI_SWITCH_ATTR_MY_MAC_TABLE_MINIMUM_PRIORITY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_MY_MAC_TABLE_MAXIMUM_PRIORITY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_MY_MAC_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_SWITCH_ATTR_INSTALLED_MY_MAC_ENTRIES": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_MY_MAC_ENTRIES": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_MAX_NUMBER_OF_FORWARDING_CLASSES": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_QOS_DSCP_TO_FORWARDING_CLASS_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_QOS_MPLS_EXP_TO_FORWARDING_CLASS_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_IPSEC_OBJECT_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_IPSEC_SA_TAG_TPID": {
+        "type": "sai_uint16_t",
+        "def_value": "0xFFFE"
+      },
+      "SAI_SWITCH_ATTR_IPSEC_SA_STATUS_CHANGE_NOTIFY": {
+        "type": "sai_pointer_t sai_ipsec_sa_status_change_notification_fn",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_NAT_EVENT_NOTIFY": {
+        "type": "sai_pointer_t sai_nat_event_notification_fn",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_MAX_ECMP_MEMBER_COUNT": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_ECMP_MEMBER_COUNT": {
+        "type": "sai_uint32_t",
+        "def_value": "64"
+      },
+      "SAI_SWITCH_ATTR_ARS_PROFILE": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_ACL_STAGE_POST_INGRESS": {
+        "type": "sai_acl_capability_t",
+        "def_value": "zeroed structure"
+      },
       "SAI_SWITCH_ATTR_CREDIT_WD": {
-        "validonly": [
-          {
-            "SAI_SWITCH_ATTR_TYPE": "SAI_SWITCH_TYPE_VOQ"
-          }
-        ],
-        "def_value": "true"
+        "type": "bool",
+        "def_value": "TRUE"
       },
       "SAI_SWITCH_ATTR_CREDIT_WD_TIMER": {
-        "validonly": [
-          {
-            "SAI_SWITCH_ATTR_TYPE": "SAI_SWITCH_TYPE_VOQ"
-          }
-        ],
+        "type": "sai_uint32_t",
         "def_value": "500"
       },
       "SAI_SWITCH_ATTR_SWITCH_ISOLATE": {
-        "validonly": [
-          {
-            "SAI_SWITCH_ATTR_TYPE": [
-              "SAI_SWITCH_TYPE_FABRIC",
-              "SAI_SWITCH_TYPE_VOQ"
-            ]
-          }
-        ],
-        "def_value": "false"
+        "type": "bool",
+        "def_value": "FALSE"
       },
-      "SAI_SWITCH_ATTR_HOSTIF_OPER_STATUS_UPDATE_MODE": "SAI_SWITCH_HOSTIF_OPER_STATUS_UPDATE_MODE_APPLICATION",
-      "SAI_SWITCH_ATTR_SWITCH_ASIC_SDK_HEALTH_EVENT_NOTIFY": "NULL",
-      "SAI_SWITCH_ATTR_REG_FATAL_SWITCH_ASIC_SDK_HEALTH_CATEGORY": "empty",
-      "SAI_SWITCH_ATTR_REG_WARNING_SWITCH_ASIC_SDK_HEALTH_CATEGORY": "empty",
-      "SAI_SWITCH_ATTR_REG_NOTICE_SWITCH_ASIC_SDK_HEALTH_CATEGORY": "empty",
-      "SAI_SWITCH_ATTR_ACL_CHAIN_LIST": "",
-      "SAI_SWITCH_ATTR_PORT_HOST_TX_READY_NOTIFY": "NULL",
-      "SAI_SWITCH_ATTR_TUNNEL_TERM_TABLE_ENTRY_MINIMUM_PRIORITY": "",
-      "SAI_SWITCH_ATTR_TUNNEL_TERM_TABLE_ENTRY_MAXIMUM_PRIORITY": "",
-      "SAI_SWITCH_ATTR_TWAMP_SESSION_EVENT_NOTIFY": "NULL",
-      "SAI_SWITCH_ATTR_AVAILABLE_TWAMP_SESSION": "",
-      "SAI_SWITCH_ATTR_MAX_TWAMP_SESSION": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_IP_NEXT_HOP_GROUP_MEMBER_ENTRY": "",
-      "SAI_SWITCH_ATTR_AVAILABLE_SYSTEM_VOQS": "",
-      "SAI_SWITCH_ATTR_ACL_STAGE_PRE_INGRESS": "",
-      "SAI_SWITCH_ATTR_POE_DEVICE_LIST": "empty",
-      "SAI_SWITCH_ATTR_ICMP_ECHO_SESSION_STATE_CHANGE_NOTIFY": "NULL",
-      "SAI_SWITCH_ATTR_AVAILABLE_ICMP_ECHO_SESSION": "",
-      "SAI_SWITCH_ATTR_MAX_ICMP_ECHO_SESSION": "",
-      "SAI_SWITCH_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
-      "SAI_SWITCH_ATTR_SELECTIVE_COUNTER_LIST": "empty",
-      "SAI_SWITCH_ATTR_EXTENDED_PORT_STATE_CHANGE_NOTIFY": "NULL",
-      "SAI_SWITCH_ATTR_TAM_ST_REPORT_CHUNK_SIZE": "65535",
-      "SAI_SWITCH_ATTR_TAM_ST_CHUNK_COUNT": "0",
-      "SAI_SWITCH_ATTR_TAM_TEL_TYPE_CONFIG_CHANGE_NOTIFY": "NULL",
-      "SAI_SWITCH_ATTR_PACKET_TRIM_SIZE": "128",
+      "SAI_SWITCH_ATTR_HOSTIF_OPER_STATUS_UPDATE_MODE": {
+        "type": "sai_switch_hostif_oper_status_update_mode_t",
+        "def_value": "SAI_SWITCH_HOSTIF_OPER_STATUS_UPDATE_MODE_APPLICATION"
+      },
+      "SAI_SWITCH_ATTR_SWITCH_ASIC_SDK_HEALTH_EVENT_NOTIFY": {
+        "type": "sai_pointer_t sai_switch_asic_sdk_health_event_notification_fn",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_REG_FATAL_SWITCH_ASIC_SDK_HEALTH_CATEGORY": {
+        "type": "sai_s32_list_t sai_switch_asic_sdk_health_category_t",
+        "def_value": "empty"
+      },
+      "SAI_SWITCH_ATTR_REG_WARNING_SWITCH_ASIC_SDK_HEALTH_CATEGORY": {
+        "type": "sai_s32_list_t sai_switch_asic_sdk_health_category_t",
+        "def_value": "empty"
+      },
+      "SAI_SWITCH_ATTR_REG_NOTICE_SWITCH_ASIC_SDK_HEALTH_CATEGORY": {
+        "type": "sai_s32_list_t sai_switch_asic_sdk_health_category_t",
+        "def_value": "empty"
+      },
+      "SAI_SWITCH_ATTR_ACL_CHAIN_LIST": {
+        "type": "sai_acl_chain_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_SWITCH_ATTR_PORT_HOST_TX_READY_NOTIFY": {
+        "type": "sai_pointer_t sai_port_host_tx_ready_notification_fn",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_TUNNEL_TERM_TABLE_ENTRY_MINIMUM_PRIORITY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_TUNNEL_TERM_TABLE_ENTRY_MAXIMUM_PRIORITY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_TWAMP_SESSION_EVENT_NOTIFY": {
+        "type": "sai_pointer_t sai_twamp_session_event_notification_fn",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_TWAMP_SESSION": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_MAX_TWAMP_SESSION": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_IP_NEXT_HOP_GROUP_MEMBER_ENTRY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_SYSTEM_VOQS": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_ACL_STAGE_PRE_INGRESS": {
+        "type": "sai_acl_capability_t",
+        "def_value": "zeroed structure"
+      },
+      "SAI_SWITCH_ATTR_POE_DEVICE_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
+      "SAI_SWITCH_ATTR_ICMP_ECHO_SESSION_STATE_CHANGE_NOTIFY": {
+        "type": "sai_pointer_t sai_icmp_echo_session_state_change_notification_fn",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_AVAILABLE_ICMP_ECHO_SESSION": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_MAX_ICMP_ECHO_SESSION": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_STATS_COUNT_MODE": {
+        "type": "sai_stats_count_mode_t",
+        "def_value": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE"
+      },
+      "SAI_SWITCH_ATTR_SELECTIVE_COUNTER_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
+      "SAI_SWITCH_ATTR_EXTENDED_PORT_STATE_CHANGE_NOTIFY": {
+        "type": "sai_pointer_t sai_extended_port_state_change_notification_fn",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_TAM_ST_REPORT_CHUNK_SIZE": {
+        "type": "sai_uint32_t",
+        "def_value": "65535"
+      },
+      "SAI_SWITCH_ATTR_TAM_ST_CHUNK_COUNT": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_TAM_TEL_TYPE_CONFIG_CHANGE_NOTIFY": {
+        "type": "sai_pointer_t sai_tam_tel_type_config_change_notification_fn",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_PACKET_TRIM_SIZE": {
+        "type": "sai_uint32_t",
+        "def_value": "128"
+      },
       "SAI_SWITCH_ATTR_PACKET_TRIM_DSCP_VALUE": {
-        "validonly": [
-          {
-            "SAI_SWITCH_ATTR_PACKET_TRIM_DSCP_RESOLUTION_MODE": "SAI_PACKET_TRIM_DSCP_RESOLUTION_MODE_DSCP_VALUE"
-          }
-        ],
+        "type": "sai_uint8_t",
         "def_value": "0"
       },
-      "SAI_SWITCH_ATTR_PACKET_TRIM_QUEUE_RESOLUTION_MODE": "SAI_PACKET_TRIM_QUEUE_RESOLUTION_MODE_STATIC",
+      "SAI_SWITCH_ATTR_PACKET_TRIM_QUEUE_RESOLUTION_MODE": {
+        "type": "sai_packet_trim_queue_resolution_mode_t",
+        "def_value": "SAI_PACKET_TRIM_QUEUE_RESOLUTION_MODE_STATIC"
+      },
       "SAI_SWITCH_ATTR_PACKET_TRIM_QUEUE_INDEX": {
-        "validonly": [
-          {
-            "SAI_SWITCH_ATTR_PACKET_TRIM_QUEUE_RESOLUTION_MODE": "SAI_PACKET_TRIM_QUEUE_RESOLUTION_MODE_STATIC"
-          }
-        ],
+        "type": "sai_uint8_t",
         "def_value": "0"
       },
-      "SAI_SWITCH_ATTR_SHARED_BUFFER_CELL_SIZE": "",
-      "SAI_SWITCH_ATTR_PORT_PTP_MODE": "SAI_PORT_PTP_MODE_NONE",
-      "SAI_SWITCH_ATTR_ECMP_HASH_IPV4_RDMA": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_ECMP_HASH_IPV6_RDMA": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_LAG_HASH_IPV4_RDMA": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_LAG_HASH_IPV6_RDMA": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_ATTR_MAX_SYNCE_CLOCK_COUNT": "",
-      "SAI_SWITCH_ATTR_SYNCE_CLOCK_LIST": "internal",
+      "SAI_SWITCH_ATTR_SHARED_BUFFER_CELL_SIZE": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_PORT_PTP_MODE": {
+        "type": "sai_port_ptp_mode_t",
+        "def_value": "SAI_PORT_PTP_MODE_NONE"
+      },
+      "SAI_SWITCH_ATTR_ECMP_HASH_IPV4_RDMA": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_ECMP_HASH_IPV6_RDMA": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_LAG_HASH_IPV4_RDMA": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_LAG_HASH_IPV6_RDMA": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_ATTR_MAX_SYNCE_CLOCK_COUNT": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SWITCH_ATTR_SYNCE_CLOCK_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "internal"
+      },
       "SAI_SWITCH_ATTR_PACKET_TRIM_TC_VALUE": {
-        "validonly": [
-          {
-            "SAI_SWITCH_ATTR_PACKET_TRIM_DSCP_RESOLUTION_MODE": "SAI_PACKET_TRIM_DSCP_RESOLUTION_MODE_FROM_TC"
-          }
-        ],
+        "type": "sai_uint8_t",
         "def_value": "0"
       },
-      "SAI_SWITCH_ATTR_PACKET_TRIM_DSCP_RESOLUTION_MODE": "SAI_PACKET_TRIM_DSCP_RESOLUTION_MODE_DSCP_VALUE",
-      "SAI_SWITCH_ATTR_MACSEC_POST_STATUS_NOTIFY": "NULL",
-      "SAI_SWITCH_ATTR_IPSEC_POST_STATUS_NOTIFY": "NULL",
-      "SAI_SWITCH_ATTR_MACSEC_POST_STATUS": "SAI_SWITCH_MACSEC_POST_STATUS_UNKNOWN",
-      "SAI_SWITCH_ATTR_IPSEC_POST_STATUS": "SAI_SWITCH_IPSEC_POST_STATUS_UNKNOWN",
-      "SAI_SWITCH_ATTR_MACSEC_ENABLE_POST": "false",
-      "SAI_SWITCH_ATTR_IPSEC_ENABLE_POST": "false",
-      "SAI_SWITCH_ATTR_SWITCH_MACSEC_POST_STATUS_NOTIFY": "NULL",
-      "SAI_SWITCH_ATTR_SWITCH_IPSEC_POST_STATUS_NOTIFY": "NULL",
-      "SAI_SWITCH_ATTR_DEFAULT_CPU_INGRESS_BUFFER_POOL": "internal",
-      "SAI_SWITCH_ATTR_DEFAULT_CPU_EGRESS_BUFFER_POOL": "internal",
-      "SAI_SWITCH_ATTR_NEXT_HOP_USER_META_DATA_RANGE": "",
-      "SAI_SWITCH_ATTR_FAST_LINKUP_POLLING_TIMEOUT_RANGE": "",
-      "SAI_SWITCH_ATTR_FAST_LINKUP_POLLING_TIMEOUT": "60",
-      "SAI_SWITCH_ATTR_FAST_LINKUP_GUARD_TIMEOUT_RANGE": "",
-      "SAI_SWITCH_ATTR_FAST_LINKUP_GUARD_TIMEOUT": "10",
-      "SAI_SWITCH_ATTR_FAST_LINKUP_BER_THRESHOLD": "12",
-      "SAI_SWITCH_ATTR_EXTENSIONS_RANGE_BASE": ""
+      "SAI_SWITCH_ATTR_PACKET_TRIM_DSCP_RESOLUTION_MODE": {
+        "type": "sai_packet_trim_dscp_resolution_mode_t",
+        "def_value": "SAI_PACKET_TRIM_DSCP_RESOLUTION_MODE_DSCP_VALUE"
+      },
+      "SAI_SWITCH_ATTR_MACSEC_POST_STATUS_NOTIFY": {
+        "type": "sai_pointer_t sai_macsec_post_status_notification_fn",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_IPSEC_POST_STATUS_NOTIFY": {
+        "type": "sai_pointer_t sai_ipsec_post_status_notification_fn",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_MACSEC_POST_STATUS": {
+        "type": "sai_switch_macsec_post_status_t",
+        "def_value": "SAI_SWITCH_MACSEC_POST_STATUS_UNKNOWN"
+      },
+      "SAI_SWITCH_ATTR_IPSEC_POST_STATUS": {
+        "type": "sai_switch_ipsec_post_status_t",
+        "def_value": "SAI_SWITCH_IPSEC_POST_STATUS_UNKNOWN"
+      },
+      "SAI_SWITCH_ATTR_MACSEC_ENABLE_POST": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_SWITCH_ATTR_IPSEC_ENABLE_POST": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_SWITCH_ATTR_SWITCH_MACSEC_POST_STATUS_NOTIFY": {
+        "type": "sai_pointer_t sai_switch_macsec_post_status_notification_fn",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_SWITCH_IPSEC_POST_STATUS_NOTIFY": {
+        "type": "sai_pointer_t sai_switch_ipsec_post_status_notification_fn",
+        "def_value": "NULL"
+      },
+      "SAI_SWITCH_ATTR_DEFAULT_CPU_INGRESS_BUFFER_POOL": {
+        "type": "sai_object_id_t",
+        "def_value": "internal"
+      },
+      "SAI_SWITCH_ATTR_DEFAULT_CPU_EGRESS_BUFFER_POOL": {
+        "type": "sai_object_id_t",
+        "def_value": "internal"
+      },
+      "SAI_SWITCH_ATTR_NEXT_HOP_USER_META_DATA_RANGE": {
+        "type": "sai_u32_range_t",
+        "def_value": "0-0"
+      },
+      "SAI_SWITCH_ATTR_FAST_LINKUP_POLLING_TIMEOUT_RANGE": {
+        "type": "sai_u16_range_t",
+        "def_value": "0-0"
+      },
+      "SAI_SWITCH_ATTR_FAST_LINKUP_POLLING_TIMEOUT": {
+        "type": "sai_uint16_t",
+        "def_value": "60"
+      },
+      "SAI_SWITCH_ATTR_FAST_LINKUP_GUARD_TIMEOUT_RANGE": {
+        "type": "sai_u16_range_t",
+        "def_value": "0-0"
+      },
+      "SAI_SWITCH_ATTR_FAST_LINKUP_GUARD_TIMEOUT": {
+        "type": "sai_uint8_t",
+        "def_value": "10"
+      },
+      "SAI_SWITCH_ATTR_FAST_LINKUP_BER_THRESHOLD": {
+        "type": "sai_uint8_t",
+        "def_value": "12"
+      },
+      "SAI_SWITCH_ATTR_EXTENSIONS_RANGE_BASE": {
+        "type": "NA",
+        "def_value": ""
+      }
     }
   },
   "SAI_OBJECT_TYPE_SWITCH_TUNNEL": {
@@ -425,49 +1160,61 @@
       "sai_thrift_set_switch_tunnel_attribute"
     ],
     "attributes": {
-      "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_TYPE": "SAI_TUNNEL_TYPE_IPINIP",
-      "SAI_SWITCH_TUNNEL_ATTR_LOOPBACK_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD",
-      "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_ENCAP_ECN_MODE": "SAI_TUNNEL_ENCAP_ECN_MODE_STANDARD",
-      "SAI_SWITCH_TUNNEL_ATTR_ENCAP_MAPPERS": "empty",
-      "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_DECAP_ECN_MODE": "SAI_TUNNEL_DECAP_ECN_MODE_STANDARD",
-      "SAI_SWITCH_TUNNEL_ATTR_DECAP_MAPPERS": "empty",
-      "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_VXLAN_UDP_SPORT_MODE": "SAI_TUNNEL_VXLAN_UDP_SPORT_MODE_EPHEMERAL",
+      "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_TYPE": {
+        "type": "sai_tunnel_type_t",
+        "def_value": "SAI_TUNNEL_TYPE_IPINIP"
+      },
+      "SAI_SWITCH_TUNNEL_ATTR_LOOPBACK_PACKET_ACTION": {
+        "type": "sai_packet_action_t",
+        "def_value": "SAI_PACKET_ACTION_FORWARD"
+      },
+      "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_ENCAP_ECN_MODE": {
+        "type": "sai_tunnel_encap_ecn_mode_t",
+        "def_value": "SAI_TUNNEL_ENCAP_ECN_MODE_STANDARD"
+      },
+      "SAI_SWITCH_TUNNEL_ATTR_ENCAP_MAPPERS": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
+      "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_DECAP_ECN_MODE": {
+        "type": "sai_tunnel_decap_ecn_mode_t",
+        "def_value": "SAI_TUNNEL_DECAP_ECN_MODE_STANDARD"
+      },
+      "SAI_SWITCH_TUNNEL_ATTR_DECAP_MAPPERS": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
+      "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_VXLAN_UDP_SPORT_MODE": {
+        "type": "sai_tunnel_vxlan_udp_sport_mode_t",
+        "def_value": "SAI_TUNNEL_VXLAN_UDP_SPORT_MODE_EPHEMERAL"
+      },
       "SAI_SWITCH_TUNNEL_ATTR_VXLAN_UDP_SPORT": {
-        "validonly": [
-          {
-            "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_TYPE": "SAI_TUNNEL_TYPE_VXLAN"
-          },
-          {
-            "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_VXLAN_UDP_SPORT_MODE": "SAI_TUNNEL_VXLAN_UDP_SPORT_MODE_USER_DEFINED"
-          }
-        ],
+        "type": "sai_uint16_t",
         "def_value": "0"
       },
       "SAI_SWITCH_TUNNEL_ATTR_VXLAN_UDP_SPORT_MASK": {
-        "validonly": [
-          {
-            "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_TYPE": "SAI_TUNNEL_TYPE_VXLAN"
-          },
-          {
-            "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_VXLAN_UDP_SPORT_MODE": "SAI_TUNNEL_VXLAN_UDP_SPORT_MODE_USER_DEFINED"
-          }
-        ],
+        "type": "sai_uint8_t",
         "def_value": "0"
       },
-      "SAI_SWITCH_TUNNEL_ATTR_ENCAP_QOS_TC_AND_COLOR_TO_DSCP_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_TUNNEL_ATTR_ENCAP_QOS_TC_TO_QUEUE_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_TUNNEL_ATTR_DECAP_QOS_DSCP_TO_TC_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_SWITCH_TUNNEL_ATTR_DECAP_QOS_TC_TO_PRIORITY_GROUP_MAP": "SAI_NULL_OBJECT_ID",
+      "SAI_SWITCH_TUNNEL_ATTR_ENCAP_QOS_TC_AND_COLOR_TO_DSCP_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_TUNNEL_ATTR_ENCAP_QOS_TC_TO_QUEUE_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_TUNNEL_ATTR_DECAP_QOS_DSCP_TO_TC_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SWITCH_TUNNEL_ATTR_DECAP_QOS_TC_TO_PRIORITY_GROUP_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
       "SAI_SWITCH_TUNNEL_ATTR_VXLAN_UDP_SPORT_SECURITY": {
-        "validonly": [
-          {
-            "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_TYPE": "SAI_TUNNEL_TYPE_VXLAN"
-          },
-          {
-            "SAI_SWITCH_TUNNEL_ATTR_TUNNEL_VXLAN_UDP_SPORT_MODE": "SAI_TUNNEL_VXLAN_UDP_SPORT_MODE_USER_DEFINED"
-          }
-        ],
-        "def_value": "false"
+        "type": "bool",
+        "def_value": "FALSE"
       }
     }
   }

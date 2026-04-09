@@ -10,9 +10,17 @@
       "sai_thrift_set_router_interface_attribute"
     ],
     "attributes": {
-      "SAI_ROUTER_INTERFACE_ATTR_VIRTUAL_ROUTER_ID": "",
-      "SAI_ROUTER_INTERFACE_ATTR_TYPE": "SAI_ROUTER_INTERFACE_TYPE_PORT",
+      "SAI_ROUTER_INTERFACE_ATTR_VIRTUAL_ROUTER_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_TYPE": {
+        "type": "sai_router_interface_type_t",
+        "def_value": "SAI_ROUTER_INTERFACE_TYPE_PORT"
+      },
       "SAI_ROUTER_INTERFACE_ATTR_PORT_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID",
         "condition": [
           {
             "SAI_ROUTER_INTERFACE_ATTR_TYPE": [
@@ -20,18 +28,20 @@
               "SAI_ROUTER_INTERFACE_TYPE_SUB_PORT"
             ]
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_ROUTER_INTERFACE_ATTR_VLAN_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID",
         "condition": [
           {
             "SAI_ROUTER_INTERFACE_ATTR_TYPE": "SAI_ROUTER_INTERFACE_TYPE_VLAN"
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_ROUTER_INTERFACE_ATTR_OUTER_VLAN_ID": {
+        "type": "sai_uint16_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_ROUTER_INTERFACE_ATTR_TYPE": [
@@ -39,43 +49,98 @@
               "SAI_ROUTER_INTERFACE_TYPE_SUB_PORT"
             ]
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_ROUTER_INTERFACE_ATTR_INNER_VLAN_ID": {
+        "type": "sai_uint16_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_ROUTER_INTERFACE_ATTR_TYPE": "SAI_ROUTER_INTERFACE_TYPE_QINQ_PORT"
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_ROUTER_INTERFACE_ATTR_BRIDGE_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID",
         "condition": [
           {
             "SAI_ROUTER_INTERFACE_ATTR_TYPE": "SAI_ROUTER_INTERFACE_TYPE_BRIDGE"
           }
-        ],
-        "def_value": ""
+        ]
       },
-      "SAI_ROUTER_INTERFACE_ATTR_SRC_MAC_ADDRESS": "attrvalue SAI_VIRTUAL_ROUTER_ATTR_SRC_MAC_ADDRESS",
-      "SAI_ROUTER_INTERFACE_ATTR_ADMIN_V4_STATE": "true",
-      "SAI_ROUTER_INTERFACE_ATTR_ADMIN_V6_STATE": "true",
-      "SAI_ROUTER_INTERFACE_ATTR_MTU": "1514",
-      "SAI_ROUTER_INTERFACE_ATTR_INGRESS_ACL": "SAI_NULL_OBJECT_ID",
-      "SAI_ROUTER_INTERFACE_ATTR_EGRESS_ACL": "SAI_NULL_OBJECT_ID",
-      "SAI_ROUTER_INTERFACE_ATTR_NEIGHBOR_MISS_PACKET_ACTION": "SAI_PACKET_ACTION_TRAP",
-      "SAI_ROUTER_INTERFACE_ATTR_V4_MCAST_ENABLE": "false",
-      "SAI_ROUTER_INTERFACE_ATTR_V6_MCAST_ENABLE": "false",
-      "SAI_ROUTER_INTERFACE_ATTR_LOOPBACK_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD",
-      "SAI_ROUTER_INTERFACE_ATTR_IS_VIRTUAL": "false",
-      "SAI_ROUTER_INTERFACE_ATTR_NAT_ZONE_ID": "0",
-      "SAI_ROUTER_INTERFACE_ATTR_DISABLE_DECREMENT_TTL": "false",
-      "SAI_ROUTER_INTERFACE_ATTR_ADMIN_MPLS_STATE": "false",
-      "SAI_ROUTER_INTERFACE_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
-      "SAI_ROUTER_INTERFACE_ATTR_SELECTIVE_COUNTER_LIST": "empty",
-      "SAI_ROUTER_INTERFACE_ATTR_LABEL": "\"\"",
-      "SAI_ROUTER_INTERFACE_ATTR_MY_MAC": "SAI_NULL_OBJECT_ID"
+      "SAI_ROUTER_INTERFACE_ATTR_SRC_MAC_ADDRESS": {
+        "type": "sai_mac_t",
+        "def_value": "attrvalue SAI_VIRTUAL_ROUTER_ATTR_SRC_MAC_ADDRESS"
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_ADMIN_V4_STATE": {
+        "type": "bool",
+        "def_value": "TRUE"
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_ADMIN_V6_STATE": {
+        "type": "bool",
+        "def_value": "TRUE"
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_MTU": {
+        "type": "sai_uint32_t",
+        "def_value": "1514"
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_INGRESS_ACL": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_EGRESS_ACL": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_NEIGHBOR_MISS_PACKET_ACTION": {
+        "type": "sai_packet_action_t",
+        "def_value": "SAI_PACKET_ACTION_TRAP"
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_V4_MCAST_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_V6_MCAST_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_LOOPBACK_PACKET_ACTION": {
+        "type": "sai_packet_action_t",
+        "def_value": "SAI_PACKET_ACTION_FORWARD"
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_IS_VIRTUAL": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_NAT_ZONE_ID": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_DISABLE_DECREMENT_TTL": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_ADMIN_MPLS_STATE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_STATS_COUNT_MODE": {
+        "type": "sai_stats_count_mode_t",
+        "def_value": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE"
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_SELECTIVE_COUNTER_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_LABEL": {
+        "type": "char",
+        "def_value": "\"\""
+      },
+      "SAI_ROUTER_INTERFACE_ATTR_MY_MAC": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      }
     }
   }
 }

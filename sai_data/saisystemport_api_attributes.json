@@ -7,13 +7,34 @@
       "sai_thrift_set_system_port_attribute"
     ],
     "attributes": {
-      "SAI_SYSTEM_PORT_ATTR_TYPE": "SAI_SYSTEM_PORT_TYPE_LOCAL",
-      "SAI_SYSTEM_PORT_ATTR_QOS_NUMBER_OF_VOQS": "",
-      "SAI_SYSTEM_PORT_ATTR_QOS_VOQ_LIST": "",
-      "SAI_SYSTEM_PORT_ATTR_PORT": "",
-      "SAI_SYSTEM_PORT_ATTR_ADMIN_STATE": "false",
-      "SAI_SYSTEM_PORT_ATTR_CONFIG_INFO": "",
-      "SAI_SYSTEM_PORT_ATTR_QOS_TC_TO_QUEUE_MAP": "SAI_NULL_OBJECT_ID"
+      "SAI_SYSTEM_PORT_ATTR_TYPE": {
+        "type": "sai_system_port_type_t",
+        "def_value": "SAI_SYSTEM_PORT_TYPE_LOCAL"
+      },
+      "SAI_SYSTEM_PORT_ATTR_QOS_NUMBER_OF_VOQS": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SYSTEM_PORT_ATTR_QOS_VOQ_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_SYSTEM_PORT_ATTR_PORT": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SYSTEM_PORT_ATTR_ADMIN_STATE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_SYSTEM_PORT_ATTR_CONFIG_INFO": {
+        "type": "sai_system_port_config_t",
+        "def_value": "zeroed structure"
+      },
+      "SAI_SYSTEM_PORT_ATTR_QOS_TC_TO_QUEUE_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      }
     }
   }
 }

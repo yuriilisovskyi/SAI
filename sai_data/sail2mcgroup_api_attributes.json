@@ -7,8 +7,14 @@
       "sai_thrift_set_l2mc_group_attribute"
     ],
     "attributes": {
-      "SAI_L2MC_GROUP_ATTR_L2MC_OUTPUT_COUNT": "",
-      "SAI_L2MC_GROUP_ATTR_L2MC_MEMBER_LIST": ""
+      "SAI_L2MC_GROUP_ATTR_L2MC_OUTPUT_COUNT": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_L2MC_GROUP_ATTR_L2MC_MEMBER_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      }
     }
   },
   "SAI_OBJECT_TYPE_L2MC_GROUP_MEMBER": {
@@ -19,9 +25,18 @@
       "sai_thrift_set_l2mc_group_member_attribute"
     ],
     "attributes": {
-      "SAI_L2MC_GROUP_MEMBER_ATTR_L2MC_GROUP_ID": "",
-      "SAI_L2MC_GROUP_MEMBER_ATTR_L2MC_OUTPUT_ID": "",
-      "SAI_L2MC_GROUP_MEMBER_ATTR_L2MC_ENDPOINT_IP": "0.0.0.0"
+      "SAI_L2MC_GROUP_MEMBER_ATTR_L2MC_GROUP_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_L2MC_GROUP_MEMBER_ATTR_L2MC_OUTPUT_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_L2MC_GROUP_MEMBER_ATTR_L2MC_ENDPOINT_IP": {
+        "type": "sai_ip_address_t",
+        "def_value": "0.0.0.0"
+      }
     }
   }
 }

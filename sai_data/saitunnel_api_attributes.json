@@ -10,8 +10,13 @@
       "sai_thrift_set_tunnel_attribute"
     ],
     "attributes": {
-      "SAI_TUNNEL_ATTR_TYPE": "SAI_TUNNEL_TYPE_IPINIP",
+      "SAI_TUNNEL_ATTR_TYPE": {
+        "type": "sai_tunnel_type_t",
+        "def_value": "SAI_TUNNEL_TYPE_IPINIP"
+      },
       "SAI_TUNNEL_ATTR_UNDERLAY_INTERFACE": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID",
         "condition": [
           {
             "SAI_TUNNEL_ATTR_TYPE": [
@@ -25,10 +30,11 @@
               "SAI_TUNNEL_TYPE_VXLAN_UDP_ESP"
             ]
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TUNNEL_ATTR_OVERLAY_INTERFACE": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID",
         "condition": [
           {
             "SAI_TUNNEL_ATTR_TYPE": [
@@ -38,107 +44,124 @@
               "SAI_TUNNEL_TYPE_IPINIP_UDP_ESP"
             ]
           }
-        ],
-        "def_value": ""
+        ]
       },
-      "SAI_TUNNEL_ATTR_PEER_MODE": "SAI_TUNNEL_PEER_MODE_P2MP",
-      "SAI_TUNNEL_ATTR_ENCAP_SRC_IP": "0.0.0.0",
-      "SAI_TUNNEL_ATTR_ENCAP_DST_IP": {
-        "validonly": [
-          {
-            "SAI_TUNNEL_ATTR_PEER_MODE": "SAI_TUNNEL_PEER_MODE_P2P"
-          }
-        ],
+      "SAI_TUNNEL_ATTR_PEER_MODE": {
+        "type": "sai_tunnel_peer_mode_t",
+        "def_value": "SAI_TUNNEL_PEER_MODE_P2MP"
+      },
+      "SAI_TUNNEL_ATTR_ENCAP_SRC_IP": {
+        "type": "sai_ip_address_t",
         "def_value": "0.0.0.0"
       },
-      "SAI_TUNNEL_ATTR_ENCAP_TTL_MODE": "SAI_TUNNEL_TTL_MODE_UNIFORM_MODEL",
+      "SAI_TUNNEL_ATTR_ENCAP_DST_IP": {
+        "type": "sai_ip_address_t",
+        "def_value": "0.0.0.0"
+      },
+      "SAI_TUNNEL_ATTR_ENCAP_TTL_MODE": {
+        "type": "sai_tunnel_ttl_mode_t",
+        "def_value": "SAI_TUNNEL_TTL_MODE_UNIFORM_MODEL"
+      },
       "SAI_TUNNEL_ATTR_ENCAP_TTL_VAL": {
-        "validonly": [
-          {
-            "SAI_TUNNEL_ATTR_ENCAP_TTL_MODE": "SAI_TUNNEL_TTL_MODE_PIPE_MODEL"
-          }
-        ],
+        "type": "sai_uint8_t",
         "def_value": "255"
       },
-      "SAI_TUNNEL_ATTR_ENCAP_DSCP_MODE": "SAI_TUNNEL_DSCP_MODE_UNIFORM_MODEL",
+      "SAI_TUNNEL_ATTR_ENCAP_DSCP_MODE": {
+        "type": "sai_tunnel_dscp_mode_t",
+        "def_value": "SAI_TUNNEL_DSCP_MODE_UNIFORM_MODEL"
+      },
       "SAI_TUNNEL_ATTR_ENCAP_DSCP_VAL": {
-        "validonly": [
-          {
-            "SAI_TUNNEL_ATTR_ENCAP_DSCP_MODE": "SAI_TUNNEL_DSCP_MODE_PIPE_MODEL"
-          }
-        ],
+        "type": "sai_uint8_t",
         "def_value": "0"
       },
-      "SAI_TUNNEL_ATTR_ENCAP_GRE_KEY_VALID": "false",
+      "SAI_TUNNEL_ATTR_ENCAP_GRE_KEY_VALID": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
       "SAI_TUNNEL_ATTR_ENCAP_GRE_KEY": {
-        "validonly": [
-          {
-            "SAI_TUNNEL_ATTR_ENCAP_GRE_KEY_VALID": "true"
-          }
-        ],
+        "type": "sai_uint32_t",
         "def_value": "0"
       },
-      "SAI_TUNNEL_ATTR_ENCAP_ECN_MODE": "SAI_TUNNEL_ENCAP_ECN_MODE_STANDARD",
-      "SAI_TUNNEL_ATTR_ENCAP_MAPPERS": "empty",
-      "SAI_TUNNEL_ATTR_DECAP_ECN_MODE": "SAI_TUNNEL_DECAP_ECN_MODE_STANDARD",
-      "SAI_TUNNEL_ATTR_DECAP_MAPPERS": "empty",
-      "SAI_TUNNEL_ATTR_DECAP_TTL_MODE": "SAI_TUNNEL_TTL_MODE_UNIFORM_MODEL",
-      "SAI_TUNNEL_ATTR_DECAP_DSCP_MODE": "SAI_TUNNEL_DSCP_MODE_UNIFORM_MODEL",
-      "SAI_TUNNEL_ATTR_TERM_TABLE_ENTRY_LIST": "",
-      "SAI_TUNNEL_ATTR_LOOPBACK_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD",
-      "SAI_TUNNEL_ATTR_VXLAN_UDP_SPORT_MODE": "SAI_TUNNEL_VXLAN_UDP_SPORT_MODE_EPHEMERAL",
+      "SAI_TUNNEL_ATTR_ENCAP_ECN_MODE": {
+        "type": "sai_tunnel_encap_ecn_mode_t",
+        "def_value": "SAI_TUNNEL_ENCAP_ECN_MODE_STANDARD"
+      },
+      "SAI_TUNNEL_ATTR_ENCAP_MAPPERS": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
+      "SAI_TUNNEL_ATTR_DECAP_ECN_MODE": {
+        "type": "sai_tunnel_decap_ecn_mode_t",
+        "def_value": "SAI_TUNNEL_DECAP_ECN_MODE_STANDARD"
+      },
+      "SAI_TUNNEL_ATTR_DECAP_MAPPERS": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
+      "SAI_TUNNEL_ATTR_DECAP_TTL_MODE": {
+        "type": "sai_tunnel_ttl_mode_t",
+        "def_value": "SAI_TUNNEL_TTL_MODE_UNIFORM_MODEL"
+      },
+      "SAI_TUNNEL_ATTR_DECAP_DSCP_MODE": {
+        "type": "sai_tunnel_dscp_mode_t",
+        "def_value": "SAI_TUNNEL_DSCP_MODE_UNIFORM_MODEL"
+      },
+      "SAI_TUNNEL_ATTR_TERM_TABLE_ENTRY_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_TUNNEL_ATTR_LOOPBACK_PACKET_ACTION": {
+        "type": "sai_packet_action_t",
+        "def_value": "SAI_PACKET_ACTION_FORWARD"
+      },
+      "SAI_TUNNEL_ATTR_VXLAN_UDP_SPORT_MODE": {
+        "type": "sai_tunnel_vxlan_udp_sport_mode_t",
+        "def_value": "SAI_TUNNEL_VXLAN_UDP_SPORT_MODE_EPHEMERAL"
+      },
       "SAI_TUNNEL_ATTR_VXLAN_UDP_SPORT": {
-        "validonly": [
-          {
-            "SAI_TUNNEL_ATTR_TYPE": "SAI_TUNNEL_TYPE_VXLAN"
-          },
-          {
-            "SAI_TUNNEL_ATTR_VXLAN_UDP_SPORT_MODE": "SAI_TUNNEL_VXLAN_UDP_SPORT_MODE_USER_DEFINED"
-          }
-        ],
+        "type": "sai_uint16_t",
         "def_value": "0"
       },
       "SAI_TUNNEL_ATTR_VXLAN_UDP_SPORT_MASK": {
-        "validonly": [
-          {
-            "SAI_TUNNEL_ATTR_TYPE": "SAI_TUNNEL_TYPE_VXLAN"
-          },
-          {
-            "SAI_TUNNEL_ATTR_VXLAN_UDP_SPORT_MODE": "SAI_TUNNEL_VXLAN_UDP_SPORT_MODE_USER_DEFINED"
-          }
-        ],
+        "type": "sai_uint8_t",
         "def_value": "0"
       },
       "SAI_TUNNEL_ATTR_SA_INDEX": {
-        "validonly": [
-          {
-            "SAI_TUNNEL_ATTR_TYPE": [
-              "SAI_TUNNEL_TYPE_IPINIP_ESP",
-              "SAI_TUNNEL_TYPE_IPINIP_UDP_ESP",
-              "SAI_TUNNEL_TYPE_VXLAN_UDP_ESP"
-            ]
-          }
-        ],
+        "type": "sai_uint32_t",
         "def_value": "0"
       },
-      "SAI_TUNNEL_ATTR_IPSEC_SA_PORT_LIST": "empty",
-      "SAI_TUNNEL_ATTR_ENCAP_QOS_TC_AND_COLOR_TO_DSCP_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_TUNNEL_ATTR_ENCAP_QOS_TC_TO_QUEUE_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_TUNNEL_ATTR_DECAP_QOS_DSCP_TO_TC_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_TUNNEL_ATTR_DECAP_QOS_TC_TO_PRIORITY_GROUP_MAP": "SAI_NULL_OBJECT_ID",
-      "SAI_TUNNEL_ATTR_VXLAN_UDP_SPORT_SECURITY": {
-        "validonly": [
-          {
-            "SAI_TUNNEL_ATTR_TYPE": "SAI_TUNNEL_TYPE_VXLAN"
-          },
-          {
-            "SAI_TUNNEL_ATTR_VXLAN_UDP_SPORT_MODE": "SAI_TUNNEL_VXLAN_UDP_SPORT_MODE_USER_DEFINED"
-          }
-        ],
-        "def_value": "false"
+      "SAI_TUNNEL_ATTR_IPSEC_SA_PORT_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
       },
-      "SAI_TUNNEL_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
-      "SAI_TUNNEL_ATTR_SELECTIVE_COUNTER_LIST": "empty"
+      "SAI_TUNNEL_ATTR_ENCAP_QOS_TC_AND_COLOR_TO_DSCP_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_TUNNEL_ATTR_ENCAP_QOS_TC_TO_QUEUE_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_TUNNEL_ATTR_DECAP_QOS_DSCP_TO_TC_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_TUNNEL_ATTR_DECAP_QOS_TC_TO_PRIORITY_GROUP_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_TUNNEL_ATTR_VXLAN_UDP_SPORT_SECURITY": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_TUNNEL_ATTR_STATS_COUNT_MODE": {
+        "type": "sai_stats_count_mode_t",
+        "def_value": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE"
+      },
+      "SAI_TUNNEL_ATTR_SELECTIVE_COUNTER_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      }
     }
   },
   "SAI_OBJECT_TYPE_TUNNEL_MAP": {
@@ -149,8 +172,14 @@
       "sai_thrift_set_tunnel_map_attribute"
     ],
     "attributes": {
-      "SAI_TUNNEL_MAP_ATTR_TYPE": "SAI_TUNNEL_MAP_TYPE_OECN_TO_UECN",
-      "SAI_TUNNEL_MAP_ATTR_ENTRY_LIST": ""
+      "SAI_TUNNEL_MAP_ATTR_TYPE": {
+        "type": "sai_tunnel_map_type_t",
+        "def_value": "SAI_TUNNEL_MAP_TYPE_OECN_TO_UECN"
+      },
+      "SAI_TUNNEL_MAP_ATTR_ENTRY_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      }
     }
   },
   "SAI_OBJECT_TYPE_TUNNEL_MAP_ENTRY": {
@@ -161,9 +190,17 @@
       "sai_thrift_set_tunnel_map_entry_attribute"
     ],
     "attributes": {
-      "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": "SAI_TUNNEL_MAP_TYPE_OECN_TO_UECN",
-      "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP": "",
+      "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": {
+        "type": "sai_tunnel_map_type_t",
+        "def_value": "SAI_TUNNEL_MAP_TYPE_OECN_TO_UECN"
+      },
+      "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
       "SAI_TUNNEL_MAP_ENTRY_ATTR_OECN_KEY": {
+        "type": "sai_uint8_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
@@ -171,34 +208,38 @@
               "SAI_TUNNEL_MAP_TYPE_UECN_OECN_TO_OECN"
             ]
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TUNNEL_MAP_ENTRY_ATTR_OECN_VALUE": {
+        "type": "sai_uint8_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": "SAI_TUNNEL_MAP_TYPE_UECN_OECN_TO_OECN"
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TUNNEL_MAP_ENTRY_ATTR_UECN_KEY": {
+        "type": "sai_uint8_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": "SAI_TUNNEL_MAP_TYPE_UECN_OECN_TO_OECN"
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TUNNEL_MAP_ENTRY_ATTR_UECN_VALUE": {
+        "type": "sai_uint8_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": "SAI_TUNNEL_MAP_TYPE_OECN_TO_UECN"
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TUNNEL_MAP_ENTRY_ATTR_VLAN_ID_KEY": {
+        "type": "sai_uint16_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
@@ -206,10 +247,11 @@
               "SAI_TUNNEL_MAP_TYPE_VLAN_ID_TO_VSID"
             ]
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TUNNEL_MAP_ENTRY_ATTR_VLAN_ID_VALUE": {
+        "type": "sai_uint16_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
@@ -217,10 +259,11 @@
               "SAI_TUNNEL_MAP_TYPE_VSID_TO_VLAN_ID"
             ]
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TUNNEL_MAP_ENTRY_ATTR_VNI_ID_KEY": {
+        "type": "sai_uint32_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
@@ -229,10 +272,11 @@
               "SAI_TUNNEL_MAP_TYPE_VNI_TO_VIRTUAL_ROUTER_ID"
             ]
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TUNNEL_MAP_ENTRY_ATTR_VNI_ID_VALUE": {
+        "type": "sai_uint32_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
@@ -241,10 +285,11 @@
               "SAI_TUNNEL_MAP_TYPE_VIRTUAL_ROUTER_ID_TO_VNI"
             ]
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TUNNEL_MAP_ENTRY_ATTR_BRIDGE_ID_KEY": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID",
         "condition": [
           {
             "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
@@ -252,10 +297,11 @@
               "SAI_TUNNEL_MAP_TYPE_BRIDGE_IF_TO_VSID"
             ]
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TUNNEL_MAP_ENTRY_ATTR_BRIDGE_ID_VALUE": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID",
         "condition": [
           {
             "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
@@ -263,10 +309,11 @@
               "SAI_TUNNEL_MAP_TYPE_VSID_TO_BRIDGE_IF"
             ]
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TUNNEL_MAP_ENTRY_ATTR_VIRTUAL_ROUTER_ID_KEY": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID",
         "condition": [
           {
             "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
@@ -274,18 +321,20 @@
               "SAI_TUNNEL_MAP_TYPE_VIRTUAL_ROUTER_ID_TO_VPN_SID"
             ]
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TUNNEL_MAP_ENTRY_ATTR_VIRTUAL_ROUTER_ID_VALUE": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID",
         "condition": [
           {
             "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": "SAI_TUNNEL_MAP_TYPE_VNI_TO_VIRTUAL_ROUTER_ID"
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TUNNEL_MAP_ENTRY_ATTR_VSID_ID_KEY": {
+        "type": "sai_uint32_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
@@ -293,10 +342,11 @@
               "SAI_TUNNEL_MAP_TYPE_VSID_TO_BRIDGE_IF"
             ]
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TUNNEL_MAP_ENTRY_ATTR_VSID_ID_VALUE": {
+        "type": "sai_uint32_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
@@ -304,18 +354,20 @@
               "SAI_TUNNEL_MAP_TYPE_BRIDGE_IF_TO_VSID"
             ]
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TUNNEL_MAP_ENTRY_ATTR_PREFIX_AGG_ID_KEY": {
+        "type": "sai_uint32_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": "SAI_TUNNEL_MAP_TYPE_PREFIX_AGG_ID_TO_SRV6_VPN_SID"
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TUNNEL_MAP_ENTRY_ATTR_SRV6_VPN_SID_VALUE": {
+        "type": "sai_ip6_t",
+        "def_value": "zeroed array",
         "condition": [
           {
             "SAI_TUNNEL_MAP_ENTRY_ATTR_TUNNEL_MAP_TYPE": [
@@ -323,8 +375,7 @@
               "SAI_TUNNEL_MAP_TYPE_VIRTUAL_ROUTER_ID_TO_VPN_SID"
             ]
           }
-        ],
-        "def_value": ""
+        ]
       }
     }
   },
@@ -336,9 +387,17 @@
       "sai_thrift_set_tunnel_term_table_entry_attribute"
     ],
     "attributes": {
-      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_VR_ID": "",
-      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_TYPE": "SAI_TUNNEL_TERM_TABLE_ENTRY_TYPE_P2P",
+      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_VR_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_TYPE": {
+        "type": "sai_tunnel_term_table_entry_type_t",
+        "def_value": "SAI_TUNNEL_TERM_TABLE_ENTRY_TYPE_P2P"
+      },
       "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_DST_IP": {
+        "type": "sai_ip_address_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_TYPE": [
@@ -346,21 +405,15 @@
               "SAI_TUNNEL_TERM_TABLE_ENTRY_TYPE_P2MP"
             ]
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_DST_IP_MASK": {
-        "validonly": [
-          {
-            "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_TYPE": [
-              "SAI_TUNNEL_TERM_TABLE_ENTRY_TYPE_MP2P",
-              "SAI_TUNNEL_TERM_TABLE_ENTRY_TYPE_MP2MP"
-            ]
-          }
-        ],
+        "type": "sai_ip_address_t",
         "def_value": "0.0.0.0"
       },
       "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_SRC_IP": {
+        "type": "sai_ip_address_t",
+        "def_value": "0",
         "condition": [
           {
             "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_TYPE": [
@@ -368,25 +421,32 @@
               "SAI_TUNNEL_TERM_TABLE_ENTRY_TYPE_MP2P"
             ]
           }
-        ],
-        "def_value": ""
+        ]
       },
       "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_SRC_IP_MASK": {
-        "validonly": [
-          {
-            "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_TYPE": [
-              "SAI_TUNNEL_TERM_TABLE_ENTRY_TYPE_P2MP",
-              "SAI_TUNNEL_TERM_TABLE_ENTRY_TYPE_MP2MP"
-            ]
-          }
-        ],
+        "type": "sai_ip_address_t",
         "def_value": "0.0.0.0"
       },
-      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_TUNNEL_TYPE": "SAI_TUNNEL_TYPE_IPINIP",
-      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_ACTION_TUNNEL_ID": "",
-      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_IP_ADDR_FAMILY": "SAI_IP_ADDR_FAMILY_IPV4",
-      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_IPSEC_VERIFIED": "true",
-      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_PRIORITY": "0"
+      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_TUNNEL_TYPE": {
+        "type": "sai_tunnel_type_t",
+        "def_value": "SAI_TUNNEL_TYPE_IPINIP"
+      },
+      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_ACTION_TUNNEL_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_IP_ADDR_FAMILY": {
+        "type": "sai_ip_addr_family_t",
+        "def_value": "SAI_IP_ADDR_FAMILY_IPV4"
+      },
+      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_IPSEC_VERIFIED": {
+        "type": "bool",
+        "def_value": "TRUE"
+      },
+      "SAI_TUNNEL_TERM_TABLE_ENTRY_ATTR_PRIORITY": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      }
     }
   }
 }

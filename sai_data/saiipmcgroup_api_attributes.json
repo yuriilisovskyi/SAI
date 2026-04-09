@@ -7,15 +7,20 @@
       "sai_thrift_set_ipmc_group_attribute"
     ],
     "attributes": {
-      "SAI_IPMC_GROUP_ATTR_IPMC_OUTPUT_COUNT": "",
-      "SAI_IPMC_GROUP_ATTR_IPMC_MEMBER_LIST": "",
-      "SAI_IPMC_GROUP_ATTR_IPMC_GROUP_WITH_MEMBERS": "false",
+      "SAI_IPMC_GROUP_ATTR_IPMC_OUTPUT_COUNT": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_IPMC_GROUP_ATTR_IPMC_MEMBER_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_IPMC_GROUP_ATTR_IPMC_GROUP_WITH_MEMBERS": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
       "SAI_IPMC_GROUP_ATTR_IPMC_OUTPUT_LIST": {
-        "validonly": [
-          {
-            "SAI_IPMC_GROUP_ATTR_IPMC_GROUP_WITH_MEMBERS": "true"
-          }
-        ],
+        "type": "sai_object_list_t",
         "def_value": "empty"
       }
     }
@@ -28,8 +33,14 @@
       "sai_thrift_set_ipmc_group_member_attribute"
     ],
     "attributes": {
-      "SAI_IPMC_GROUP_MEMBER_ATTR_IPMC_GROUP_ID": "",
-      "SAI_IPMC_GROUP_MEMBER_ATTR_IPMC_OUTPUT_ID": ""
+      "SAI_IPMC_GROUP_MEMBER_ATTR_IPMC_GROUP_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_IPMC_GROUP_MEMBER_ATTR_IPMC_OUTPUT_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      }
     }
   }
 }

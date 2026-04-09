@@ -7,9 +7,18 @@
       "sai_thrift_set_stp_attribute"
     ],
     "attributes": {
-      "SAI_STP_ATTR_VLAN_LIST": "",
-      "SAI_STP_ATTR_BRIDGE_ID": "",
-      "SAI_STP_ATTR_PORT_LIST": ""
+      "SAI_STP_ATTR_VLAN_LIST": {
+        "type": "sai_vlan_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_STP_ATTR_BRIDGE_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_STP_ATTR_PORT_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      }
     }
   },
   "SAI_OBJECT_TYPE_STP_PORT": {
@@ -20,9 +29,18 @@
       "sai_thrift_set_stp_port_attribute"
     ],
     "attributes": {
-      "SAI_STP_PORT_ATTR_STP": "",
-      "SAI_STP_PORT_ATTR_BRIDGE_PORT": "",
-      "SAI_STP_PORT_ATTR_STATE": "SAI_STP_PORT_STATE_LEARNING"
+      "SAI_STP_PORT_ATTR_STP": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_STP_PORT_ATTR_BRIDGE_PORT": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_STP_PORT_ATTR_STATE": {
+        "type": "sai_stp_port_state_t",
+        "def_value": "SAI_STP_PORT_STATE_LEARNING"
+      }
     }
   }
 }

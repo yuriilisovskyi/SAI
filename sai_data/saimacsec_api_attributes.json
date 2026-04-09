@@ -7,34 +7,118 @@
       "sai_thrift_set_macsec_attribute"
     ],
     "attributes": {
-      "SAI_MACSEC_ATTR_DIRECTION": "SAI_MACSEC_DIRECTION_EGRESS",
-      "SAI_MACSEC_ATTR_SWITCHING_MODE_CUT_THROUGH_SUPPORTED": "",
-      "SAI_MACSEC_ATTR_SWITCHING_MODE_STORE_AND_FORWARD_SUPPORTED": "",
-      "SAI_MACSEC_ATTR_STATS_MODE_READ_SUPPORTED": "",
-      "SAI_MACSEC_ATTR_STATS_MODE_READ_CLEAR_SUPPORTED": "",
-      "SAI_MACSEC_ATTR_SCI_IN_INGRESS_MACSEC_ACL": "",
-      "SAI_MACSEC_ATTR_SUPPORTED_CIPHER_SUITE_LIST": "",
-      "SAI_MACSEC_ATTR_PN_32BIT_SUPPORTED": "",
-      "SAI_MACSEC_ATTR_XPN_64BIT_SUPPORTED": "",
-      "SAI_MACSEC_ATTR_GCM_AES128_SUPPORTED": "",
-      "SAI_MACSEC_ATTR_GCM_AES256_SUPPORTED": "",
-      "SAI_MACSEC_ATTR_SECTAG_OFFSETS_SUPPORTED": "",
-      "SAI_MACSEC_ATTR_SYSTEM_SIDE_MTU": "",
-      "SAI_MACSEC_ATTR_WARM_BOOT_SUPPORTED": "",
-      "SAI_MACSEC_ATTR_WARM_BOOT_ENABLE": "false",
-      "SAI_MACSEC_ATTR_CTAG_TPID": "0x8100",
-      "SAI_MACSEC_ATTR_STAG_TPID": "0x88A8",
-      "SAI_MACSEC_ATTR_MAX_VLAN_TAGS_PARSED": "0",
-      "SAI_MACSEC_ATTR_STATS_MODE": "SAI_STATS_MODE_READ_AND_CLEAR",
-      "SAI_MACSEC_ATTR_PHYSICAL_BYPASS_ENABLE": "false",
-      "SAI_MACSEC_ATTR_SUPPORTED_PORT_LIST": "",
-      "SAI_MACSEC_ATTR_AVAILABLE_MACSEC_FLOW": "",
-      "SAI_MACSEC_ATTR_FLOW_LIST": "",
-      "SAI_MACSEC_ATTR_AVAILABLE_MACSEC_SC": "",
-      "SAI_MACSEC_ATTR_AVAILABLE_MACSEC_SA": "",
-      "SAI_MACSEC_ATTR_MAX_SECURE_ASSOCIATIONS_PER_SC": "SAI_MACSEC_MAX_SECURE_ASSOCIATIONS_PER_SC_TWO",
-      "SAI_MACSEC_ATTR_POST_STATUS": "SAI_MACSEC_POST_STATUS_UNKNOWN",
-      "SAI_MACSEC_ATTR_ENABLE_POST": "false"
+      "SAI_MACSEC_ATTR_DIRECTION": {
+        "type": "sai_macsec_direction_t",
+        "def_value": "SAI_MACSEC_DIRECTION_EGRESS"
+      },
+      "SAI_MACSEC_ATTR_SWITCHING_MODE_CUT_THROUGH_SUPPORTED": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_MACSEC_ATTR_SWITCHING_MODE_STORE_AND_FORWARD_SUPPORTED": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_MACSEC_ATTR_STATS_MODE_READ_SUPPORTED": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_MACSEC_ATTR_STATS_MODE_READ_CLEAR_SUPPORTED": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_MACSEC_ATTR_SCI_IN_INGRESS_MACSEC_ACL": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_MACSEC_ATTR_SUPPORTED_CIPHER_SUITE_LIST": {
+        "type": "sai_s32_list_t sai_macsec_cipher_suite_t",
+        "def_value": "empty list"
+      },
+      "SAI_MACSEC_ATTR_PN_32BIT_SUPPORTED": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_MACSEC_ATTR_XPN_64BIT_SUPPORTED": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_MACSEC_ATTR_GCM_AES128_SUPPORTED": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_MACSEC_ATTR_GCM_AES256_SUPPORTED": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_MACSEC_ATTR_SECTAG_OFFSETS_SUPPORTED": {
+        "type": "sai_u8_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_MACSEC_ATTR_SYSTEM_SIDE_MTU": {
+        "type": "sai_uint16_t",
+        "def_value": "0"
+      },
+      "SAI_MACSEC_ATTR_WARM_BOOT_SUPPORTED": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_MACSEC_ATTR_WARM_BOOT_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_MACSEC_ATTR_CTAG_TPID": {
+        "type": "sai_uint16_t",
+        "def_value": "0x8100"
+      },
+      "SAI_MACSEC_ATTR_STAG_TPID": {
+        "type": "sai_uint16_t",
+        "def_value": "0x88A8"
+      },
+      "SAI_MACSEC_ATTR_MAX_VLAN_TAGS_PARSED": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_MACSEC_ATTR_STATS_MODE": {
+        "type": "sai_stats_mode_t",
+        "def_value": "SAI_STATS_MODE_READ_AND_CLEAR"
+      },
+      "SAI_MACSEC_ATTR_PHYSICAL_BYPASS_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_MACSEC_ATTR_SUPPORTED_PORT_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_MACSEC_ATTR_AVAILABLE_MACSEC_FLOW": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_MACSEC_ATTR_FLOW_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_MACSEC_ATTR_AVAILABLE_MACSEC_SC": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_MACSEC_ATTR_AVAILABLE_MACSEC_SA": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_MACSEC_ATTR_MAX_SECURE_ASSOCIATIONS_PER_SC": {
+        "type": "sai_macsec_max_secure_associations_per_sc_t",
+        "def_value": "SAI_MACSEC_MAX_SECURE_ASSOCIATIONS_PER_SC_TWO"
+      },
+      "SAI_MACSEC_ATTR_POST_STATUS": {
+        "type": "sai_macsec_post_status_t",
+        "def_value": "SAI_MACSEC_POST_STATUS_UNKNOWN"
+      },
+      "SAI_MACSEC_ATTR_ENABLE_POST": {
+        "type": "bool",
+        "def_value": "FALSE"
+      }
     }
   },
   "SAI_OBJECT_TYPE_MACSEC_FLOW": {
@@ -48,11 +132,26 @@
       "sai_thrift_set_macsec_flow_attribute"
     ],
     "attributes": {
-      "SAI_MACSEC_FLOW_ATTR_MACSEC_DIRECTION": "SAI_MACSEC_DIRECTION_EGRESS",
-      "SAI_MACSEC_FLOW_ATTR_ACL_ENTRY_LIST": "",
-      "SAI_MACSEC_FLOW_ATTR_SC_LIST": "",
-      "SAI_MACSEC_FLOW_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
-      "SAI_MACSEC_FLOW_ATTR_SELECTIVE_COUNTER_LIST": "empty"
+      "SAI_MACSEC_FLOW_ATTR_MACSEC_DIRECTION": {
+        "type": "sai_macsec_direction_t",
+        "def_value": "SAI_MACSEC_DIRECTION_EGRESS"
+      },
+      "SAI_MACSEC_FLOW_ATTR_ACL_ENTRY_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_MACSEC_FLOW_ATTR_SC_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_MACSEC_FLOW_ATTR_STATS_COUNT_MODE": {
+        "type": "sai_stats_count_mode_t",
+        "def_value": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE"
+      },
+      "SAI_MACSEC_FLOW_ATTR_SELECTIVE_COUNTER_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      }
     }
   },
   "SAI_OBJECT_TYPE_MACSEC_PORT": {
@@ -66,14 +165,38 @@
       "sai_thrift_set_macsec_port_attribute"
     ],
     "attributes": {
-      "SAI_MACSEC_PORT_ATTR_MACSEC_DIRECTION": "SAI_MACSEC_DIRECTION_EGRESS",
-      "SAI_MACSEC_PORT_ATTR_PORT_ID": "",
-      "SAI_MACSEC_PORT_ATTR_CTAG_ENABLE": "false",
-      "SAI_MACSEC_PORT_ATTR_STAG_ENABLE": "false",
-      "SAI_MACSEC_PORT_ATTR_SWITCH_SWITCHING_MODE": "SAI_SWITCH_SWITCHING_MODE_CUT_THROUGH",
-      "SAI_MACSEC_PORT_ATTR_STATS_COUNT_MODE": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE",
-      "SAI_MACSEC_PORT_ATTR_SELECTIVE_COUNTER_LIST": "empty",
-      "SAI_MACSEC_PORT_ATTR_POST_STATUS": "SAI_MACSEC_PORT_POST_STATUS_UNKNOWN"
+      "SAI_MACSEC_PORT_ATTR_MACSEC_DIRECTION": {
+        "type": "sai_macsec_direction_t",
+        "def_value": "SAI_MACSEC_DIRECTION_EGRESS"
+      },
+      "SAI_MACSEC_PORT_ATTR_PORT_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_MACSEC_PORT_ATTR_CTAG_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_MACSEC_PORT_ATTR_STAG_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_MACSEC_PORT_ATTR_SWITCH_SWITCHING_MODE": {
+        "type": "sai_switch_switching_mode_t",
+        "def_value": "SAI_SWITCH_SWITCHING_MODE_CUT_THROUGH"
+      },
+      "SAI_MACSEC_PORT_ATTR_STATS_COUNT_MODE": {
+        "type": "sai_stats_count_mode_t",
+        "def_value": "SAI_STATS_COUNT_MODE_PACKET_AND_BYTE"
+      },
+      "SAI_MACSEC_PORT_ATTR_SELECTIVE_COUNTER_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty"
+      },
+      "SAI_MACSEC_PORT_ATTR_POST_STATUS": {
+        "type": "sai_macsec_port_post_status_t",
+        "def_value": "SAI_MACSEC_PORT_POST_STATUS_UNKNOWN"
+      }
     }
   },
   "SAI_OBJECT_TYPE_MACSEC_SA": {
@@ -87,32 +210,54 @@
       "sai_thrift_set_macsec_sa_attribute"
     ],
     "attributes": {
-      "SAI_MACSEC_SA_ATTR_MACSEC_DIRECTION": "SAI_MACSEC_DIRECTION_EGRESS",
-      "SAI_MACSEC_SA_ATTR_SC_ID": "",
-      "SAI_MACSEC_SA_ATTR_AN": "",
-      "SAI_MACSEC_SA_ATTR_SAK": "",
-      "SAI_MACSEC_SA_ATTR_SALT": "",
-      "SAI_MACSEC_SA_ATTR_AUTH_KEY": "",
-      "SAI_MACSEC_SA_ATTR_CONFIGURED_EGRESS_XPN": {
-        "validonly": [
-          {
-            "SAI_MACSEC_SA_ATTR_MACSEC_DIRECTION": "SAI_MACSEC_DIRECTION_EGRESS"
-          }
-        ],
+      "SAI_MACSEC_SA_ATTR_MACSEC_DIRECTION": {
+        "type": "sai_macsec_direction_t",
+        "def_value": "SAI_MACSEC_DIRECTION_EGRESS"
+      },
+      "SAI_MACSEC_SA_ATTR_SC_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_MACSEC_SA_ATTR_AN": {
+        "type": "sai_uint8_t",
         "def_value": "0"
       },
-      "SAI_MACSEC_SA_ATTR_CURRENT_XPN": "",
-      "SAI_MACSEC_SA_ATTR_XPN": "",
+      "SAI_MACSEC_SA_ATTR_SAK": {
+        "type": "sai_macsec_sak_t",
+        "def_value": "zeroed array"
+      },
+      "SAI_MACSEC_SA_ATTR_SALT": {
+        "type": "sai_macsec_salt_t",
+        "def_value": "zeroed array"
+      },
+      "SAI_MACSEC_SA_ATTR_AUTH_KEY": {
+        "type": "sai_macsec_auth_key_t",
+        "def_value": "zeroed array"
+      },
+      "SAI_MACSEC_SA_ATTR_CONFIGURED_EGRESS_XPN": {
+        "type": "sai_uint64_t",
+        "def_value": "0"
+      },
+      "SAI_MACSEC_SA_ATTR_CURRENT_XPN": {
+        "type": "sai_uint64_t",
+        "def_value": "0"
+      },
+      "SAI_MACSEC_SA_ATTR_XPN": {
+        "type": "sai_uint64_t",
+        "def_value": "0"
+      },
       "SAI_MACSEC_SA_ATTR_MINIMUM_INGRESS_XPN": {
-        "validonly": [
-          {
-            "SAI_MACSEC_SA_ATTR_MACSEC_DIRECTION": "SAI_MACSEC_DIRECTION_INGRESS"
-          }
-        ],
+        "type": "sai_uint64_t",
         "def_value": "1"
       },
-      "SAI_MACSEC_SA_ATTR_MINIMUM_XPN": "",
-      "SAI_MACSEC_SA_ATTR_MACSEC_SSCI": ""
+      "SAI_MACSEC_SA_ATTR_MINIMUM_XPN": {
+        "type": "sai_uint64_t",
+        "def_value": "1"
+      },
+      "SAI_MACSEC_SA_ATTR_MACSEC_SSCI": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      }
     }
   },
   "SAI_OBJECT_TYPE_MACSEC_SC": {
@@ -126,39 +271,54 @@
       "sai_thrift_set_macsec_sc_attribute"
     ],
     "attributes": {
-      "SAI_MACSEC_SC_ATTR_MACSEC_DIRECTION": "SAI_MACSEC_DIRECTION_EGRESS",
-      "SAI_MACSEC_SC_ATTR_FLOW_ID": "",
-      "SAI_MACSEC_SC_ATTR_MACSEC_SCI": "",
-      "SAI_MACSEC_SC_ATTR_MACSEC_EXPLICIT_SCI_ENABLE": {
-        "validonly": [
-          {
-            "SAI_MACSEC_SC_ATTR_MACSEC_DIRECTION": "SAI_MACSEC_DIRECTION_EGRESS"
-          }
-        ],
-        "def_value": "false"
+      "SAI_MACSEC_SC_ATTR_MACSEC_DIRECTION": {
+        "type": "sai_macsec_direction_t",
+        "def_value": "SAI_MACSEC_DIRECTION_EGRESS"
       },
-      "SAI_MACSEC_SC_ATTR_MACSEC_SECTAG_OFFSET": "0",
-      "SAI_MACSEC_SC_ATTR_ACTIVE_EGRESS_SA_ID": "",
-      "SAI_MACSEC_SC_ATTR_MACSEC_REPLAY_PROTECTION_ENABLE": {
-        "validonly": [
-          {
-            "SAI_MACSEC_SC_ATTR_MACSEC_DIRECTION": "SAI_MACSEC_DIRECTION_INGRESS"
-          }
-        ],
-        "def_value": "true"
+      "SAI_MACSEC_SC_ATTR_FLOW_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
       },
-      "SAI_MACSEC_SC_ATTR_MACSEC_REPLAY_PROTECTION_WINDOW": {
-        "validonly": [
-          {
-            "SAI_MACSEC_SC_ATTR_MACSEC_DIRECTION": "SAI_MACSEC_DIRECTION_INGRESS"
-          }
-        ],
+      "SAI_MACSEC_SC_ATTR_MACSEC_SCI": {
+        "type": "sai_uint64_t",
         "def_value": "0"
       },
-      "SAI_MACSEC_SC_ATTR_SA_LIST": "",
-      "SAI_MACSEC_SC_ATTR_MACSEC_CIPHER_SUITE": "SAI_MACSEC_CIPHER_SUITE_GCM_AES_128",
-      "SAI_MACSEC_SC_ATTR_ENCRYPTION_ENABLE": "true",
-      "SAI_MACSEC_SC_ATTR_MACSEC_PORT_ID": "SAI_NULL_OBJECT_ID"
+      "SAI_MACSEC_SC_ATTR_MACSEC_EXPLICIT_SCI_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
+      "SAI_MACSEC_SC_ATTR_MACSEC_SECTAG_OFFSET": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_MACSEC_SC_ATTR_ACTIVE_EGRESS_SA_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_MACSEC_SC_ATTR_MACSEC_REPLAY_PROTECTION_ENABLE": {
+        "type": "bool",
+        "def_value": "TRUE"
+      },
+      "SAI_MACSEC_SC_ATTR_MACSEC_REPLAY_PROTECTION_WINDOW": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_MACSEC_SC_ATTR_SA_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_MACSEC_SC_ATTR_MACSEC_CIPHER_SUITE": {
+        "type": "sai_macsec_cipher_suite_t",
+        "def_value": "SAI_MACSEC_CIPHER_SUITE_GCM_AES_128"
+      },
+      "SAI_MACSEC_SC_ATTR_ENCRYPTION_ENABLE": {
+        "type": "bool",
+        "def_value": "TRUE"
+      },
+      "SAI_MACSEC_SC_ATTR_MACSEC_PORT_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      }
     }
   }
 }

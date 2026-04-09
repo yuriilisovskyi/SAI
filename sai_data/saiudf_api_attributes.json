@@ -7,11 +7,26 @@
       "sai_thrift_set_udf_attribute"
     ],
     "attributes": {
-      "SAI_UDF_ATTR_MATCH_ID": "",
-      "SAI_UDF_ATTR_GROUP_ID": "",
-      "SAI_UDF_ATTR_BASE": "SAI_UDF_BASE_L2",
-      "SAI_UDF_ATTR_OFFSET": "",
-      "SAI_UDF_ATTR_HASH_MASK": "const"
+      "SAI_UDF_ATTR_MATCH_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_UDF_ATTR_GROUP_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_UDF_ATTR_BASE": {
+        "type": "sai_udf_base_t",
+        "def_value": "SAI_UDF_BASE_L2"
+      },
+      "SAI_UDF_ATTR_OFFSET": {
+        "type": "sai_uint16_t",
+        "def_value": "0"
+      },
+      "SAI_UDF_ATTR_HASH_MASK": {
+        "type": "sai_u8_list_t",
+        "def_value": "const"
+      }
     }
   },
   "SAI_OBJECT_TYPE_UDF_GROUP": {
@@ -22,10 +37,22 @@
       "sai_thrift_set_udf_group_attribute"
     ],
     "attributes": {
-      "SAI_UDF_GROUP_ATTR_UDF_LIST": "",
-      "SAI_UDF_GROUP_ATTR_TYPE": "SAI_UDF_GROUP_TYPE_GENERIC",
-      "SAI_UDF_GROUP_ATTR_LENGTH": "",
-      "SAI_UDF_GROUP_ATTR_LABEL": "\"\""
+      "SAI_UDF_GROUP_ATTR_UDF_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_UDF_GROUP_ATTR_TYPE": {
+        "type": "sai_udf_group_type_t",
+        "def_value": "SAI_UDF_GROUP_TYPE_GENERIC"
+      },
+      "SAI_UDF_GROUP_ATTR_LENGTH": {
+        "type": "sai_uint16_t",
+        "def_value": "0"
+      },
+      "SAI_UDF_GROUP_ATTR_LABEL": {
+        "type": "char",
+        "def_value": "\"\""
+      }
     }
   },
   "SAI_OBJECT_TYPE_UDF_MATCH": {
@@ -36,11 +63,26 @@
       "sai_thrift_set_udf_match_attribute"
     ],
     "attributes": {
-      "SAI_UDF_MATCH_ATTR_L2_TYPE": "0",
-      "SAI_UDF_MATCH_ATTR_L3_TYPE": "0",
-      "SAI_UDF_MATCH_ATTR_GRE_TYPE": "0",
-      "SAI_UDF_MATCH_ATTR_PRIORITY": "0",
-      "SAI_UDF_MATCH_ATTR_L4_DST_PORT_TYPE": "0"
+      "SAI_UDF_MATCH_ATTR_L2_TYPE": {
+        "type": "sai_acl_field_data_t sai_uint16_t",
+        "def_value": "0"
+      },
+      "SAI_UDF_MATCH_ATTR_L3_TYPE": {
+        "type": "sai_acl_field_data_t sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_UDF_MATCH_ATTR_GRE_TYPE": {
+        "type": "sai_acl_field_data_t sai_uint16_t",
+        "def_value": "0"
+      },
+      "SAI_UDF_MATCH_ATTR_PRIORITY": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_UDF_MATCH_ATTR_L4_DST_PORT_TYPE": {
+        "type": "sai_acl_field_data_t sai_uint16_t",
+        "def_value": "0"
+      }
     }
   }
 }

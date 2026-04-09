@@ -7,16 +7,24 @@
       "sai_thrift_set_samplepacket_attribute"
     ],
     "attributes": {
-      "SAI_SAMPLEPACKET_ATTR_SAMPLE_RATE": "",
-      "SAI_SAMPLEPACKET_ATTR_TYPE": "SAI_SAMPLEPACKET_TYPE_SLOW_PATH",
-      "SAI_SAMPLEPACKET_ATTR_MODE": "SAI_SAMPLEPACKET_MODE_EXCLUSIVE",
-      "SAI_SAMPLEPACKET_ATTR_TRUNCATE_ENABLE": "false",
+      "SAI_SAMPLEPACKET_ATTR_SAMPLE_RATE": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SAMPLEPACKET_ATTR_TYPE": {
+        "type": "sai_samplepacket_type_t",
+        "def_value": "SAI_SAMPLEPACKET_TYPE_SLOW_PATH"
+      },
+      "SAI_SAMPLEPACKET_ATTR_MODE": {
+        "type": "sai_samplepacket_mode_t",
+        "def_value": "SAI_SAMPLEPACKET_MODE_EXCLUSIVE"
+      },
+      "SAI_SAMPLEPACKET_ATTR_TRUNCATE_ENABLE": {
+        "type": "bool",
+        "def_value": "FALSE"
+      },
       "SAI_SAMPLEPACKET_ATTR_TRUNCATE_SIZE": {
-        "validonly": [
-          {
-            "SAI_SAMPLEPACKET_ATTR_TRUNCATE_ENABLE": "true"
-          }
-        ],
+        "type": "sai_uint32_t",
         "def_value": "internal"
       }
     }

@@ -12,20 +12,37 @@
       "sai_thrift_set_fdb_entry_attribute"
     ],
     "attributes": {
-      "SAI_FDB_ENTRY_ATTR_TYPE": "SAI_FDB_ENTRY_TYPE_DYNAMIC",
-      "SAI_FDB_ENTRY_ATTR_PACKET_ACTION": "SAI_PACKET_ACTION_FORWARD",
-      "SAI_FDB_ENTRY_ATTR_USER_TRAP_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_FDB_ENTRY_ATTR_BRIDGE_PORT_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_FDB_ENTRY_ATTR_META_DATA": "0",
-      "SAI_FDB_ENTRY_ATTR_ENDPOINT_IP": "0.0.0.0",
-      "SAI_FDB_ENTRY_ATTR_COUNTER_ID": "SAI_NULL_OBJECT_ID",
+      "SAI_FDB_ENTRY_ATTR_TYPE": {
+        "type": "sai_fdb_entry_type_t",
+        "def_value": "SAI_FDB_ENTRY_TYPE_DYNAMIC"
+      },
+      "SAI_FDB_ENTRY_ATTR_PACKET_ACTION": {
+        "type": "sai_packet_action_t",
+        "def_value": "SAI_PACKET_ACTION_FORWARD"
+      },
+      "SAI_FDB_ENTRY_ATTR_USER_TRAP_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_FDB_ENTRY_ATTR_BRIDGE_PORT_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_FDB_ENTRY_ATTR_META_DATA": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_FDB_ENTRY_ATTR_ENDPOINT_IP": {
+        "type": "sai_ip_address_t",
+        "def_value": "0.0.0.0"
+      },
+      "SAI_FDB_ENTRY_ATTR_COUNTER_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
       "SAI_FDB_ENTRY_ATTR_ALLOW_MAC_MOVE": {
-        "validonly": [
-          {
-            "SAI_FDB_ENTRY_ATTR_TYPE": "SAI_FDB_ENTRY_TYPE_STATIC"
-          }
-        ],
-        "def_value": "false"
+        "type": "bool",
+        "def_value": "FALSE"
       }
     }
   }

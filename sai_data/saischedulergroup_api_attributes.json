@@ -7,13 +7,34 @@
       "sai_thrift_set_scheduler_group_attribute"
     ],
     "attributes": {
-      "SAI_SCHEDULER_GROUP_ATTR_CHILD_COUNT": "",
-      "SAI_SCHEDULER_GROUP_ATTR_CHILD_LIST": "",
-      "SAI_SCHEDULER_GROUP_ATTR_PORT_ID": "",
-      "SAI_SCHEDULER_GROUP_ATTR_LEVEL": "",
-      "SAI_SCHEDULER_GROUP_ATTR_MAX_CHILDS": "",
-      "SAI_SCHEDULER_GROUP_ATTR_SCHEDULER_PROFILE_ID": "SAI_NULL_OBJECT_ID",
-      "SAI_SCHEDULER_GROUP_ATTR_PARENT_NODE": ""
+      "SAI_SCHEDULER_GROUP_ATTR_CHILD_COUNT": {
+        "type": "sai_uint32_t",
+        "def_value": "0"
+      },
+      "SAI_SCHEDULER_GROUP_ATTR_CHILD_LIST": {
+        "type": "sai_object_list_t",
+        "def_value": "empty list"
+      },
+      "SAI_SCHEDULER_GROUP_ATTR_PORT_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SCHEDULER_GROUP_ATTR_LEVEL": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_SCHEDULER_GROUP_ATTR_MAX_CHILDS": {
+        "type": "sai_uint8_t",
+        "def_value": "0"
+      },
+      "SAI_SCHEDULER_GROUP_ATTR_SCHEDULER_PROFILE_ID": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      },
+      "SAI_SCHEDULER_GROUP_ATTR_PARENT_NODE": {
+        "type": "sai_object_id_t",
+        "def_value": "SAI_NULL_OBJECT_ID"
+      }
     }
   }
 }
