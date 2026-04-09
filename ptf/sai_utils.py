@@ -525,3 +525,54 @@ def restore_api_error_code():
     global capture_status, expected_code
     adapter.CATCH_EXCEPTIONS = capture_status
     adapter.EXPECTED_ERROR_CODE = expected_code
+
+
+# ---------------------------------------------------------------------------
+# Attribute defaults loader
+# ---------------------------------------------------------------------------
+
+def load_attr_defaults(csv_path=None):
+    """
+    Load sai_attr_defaults.csv and return a dict mapping attribute name to
+    a dict with 'type', 'default_value', and 'mandatory' fields.
+
+    Handles both the original column names (lowercase, underscores) and the
+    updated column names (title-case with spaces):
+        Old: attribute_name, type, default_value, mandatory
+        New: Attribute name, Type, Default value, mandatory
+
+    Args:
+        csv_path: path to the CSV file; defaults to
+                  <repo_root>/sai_attr_defaults.csv resolved relative to
+                  this file's location (ptf/../sai_attr_defaults.csv).
+
+    Returns:
+        dict: {attr_name: {'type': str, 'default_value': str, 'mandatory': str}}
+    """
+    import csv as _csv
+    import os as _os
+
+    if csv_path is None:
+        csv_path = _os.path.join(
+            _os.path.dirname(_os.path.abspath(__file__)),
+            '..', 'sai_attr_defaults.csv',
+        )
+        csv_path = _os.path.normpath(csv_path)
+
+    result = {}
+    with open(csv_path, newline='') as f:
+        reader = _csv.DictReader(f)
+        # Normalise header names to lowercase with underscores so the function
+        # works regardless of whether the CSV uses "Type" or "type", etc.
+        norm = {h: h.strip().lower().replace(' ', '_') for h in (reader.fieldnames or [])}
+        for row in reader:
+            row_n = {norm[k]: v.strip() for k, v in row.items()}
+            attr_name = row_n.get('attribute_name', '')
+            if not attr_name:
+                continue
+            result[attr_name] = {
+                'type':          row_n.get('type', ''),
+                'default_value': row_n.get('default_value', ''),
+                'mandatory':     row_n.get('mandatory', ''),
+            }
+    return result

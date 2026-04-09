@@ -79,6 +79,7 @@ if _PTF_DIR not in sys.path:
 from sai_base_test import ThriftInterface
 from sai_thrift.sai_headers import *
 import sai_thrift.sai_adapter as _adapter
+import sai_thrift.sai_headers as _sai_headers
 import sai_thrift.ttypes as _ttypes
 
 # Default JSON: repo_root/sai_api_attributes.json
@@ -172,6 +173,10 @@ def _render_default(raw: str, sai_type: str = ''):
 
     "empty" / "empty list" → Thrift empty list/object built from sai_type;
                               None if no Thrift constructor is known for the type.
+    SAI_* constant strings  → resolved to their enum/integer value via
+                              sai_thrift.sai_headers; returned as-is if not found
+                              (the adapter will handle the name lookup itself for
+                              string-accepting fields).
     """
     if not raw or raw in ('internal',) or raw.startswith('attrvalue'):
         return None
@@ -188,7 +193,12 @@ def _render_default(raw: str, sai_type: str = ''):
         return int(raw)
     if re.fullmatch(r'0[xX][0-9a-fA-F]+', raw):
         return int(raw, 16)
-    # SAI enum constant, IP address, MAC, vendor string, etc.
+    # SAI enum constant name: resolve to the actual enum/integer via sai_headers
+    if raw.startswith('SAI_'):
+        resolved = getattr(_sai_headers, raw, None)
+        if resolved is not None:
+            return resolved
+    # IP address, MAC, vendor string, or unknown SAI name — pass through as string
     return raw
 
 
@@ -384,7 +394,7 @@ class SaiApiTestBase(ThriftInterface):
         """Return the callable from sai_adapter, or None if not present."""
         return getattr(_adapter, fn_name, None)
 
-    def _create_kwargs(self, attributes: dict) -> dict:
+    def _create_kwargs(self, attributes: dict, fn_callable=None) -> dict:
         """
         Build kwargs dict for a create call from the attributes JSON.
 
@@ -393,13 +403,23 @@ class SaiApiTestBase(ThriftInterface):
             depends on other attribute values that may not hold here.
           - "empty" / "empty list" defaults are replaced with the appropriate
             Thrift empty list/object constructed from the "type" field.
+          - If fn_callable is provided, kwargs are filtered to only the
+            parameters the function actually accepts (avoids passing read-only
+            attributes like port_list that are not in the create signature).
         """
+        accepted = None
+        if fn_callable is not None:
+            accepted = set(_fn_params(fn_callable))
+
         kwargs = {}
         for attr_name, attr_val in attributes.items():
             # Skip conditional attributes in create calls
             if isinstance(attr_val, dict) and 'condition' in attr_val:
                 continue
             param = _attr_to_param(attr_name)
+            # Skip params the target function does not accept
+            if accepted is not None and param not in accepted:
+                continue
             value = _attr_default(attr_val)
             if value is not None:
                 kwargs[param] = value
@@ -442,7 +462,7 @@ class SaiApiTestBase(ThriftInterface):
                          'SKIP: entry-type create requires a pre-built entry struct')
             return
 
-        kwargs = self._create_kwargs(attributes)
+        kwargs = self._create_kwargs(attributes, fn_callable=fn)
         result, err = self._call(fn, **kwargs)
         if err:
             self._record(obj_type, fn_name, f'FAIL: {err}')
