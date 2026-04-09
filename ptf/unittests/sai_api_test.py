@@ -120,6 +120,140 @@ def _build_empty_list_type_map() -> dict:
 # sai_<X>_list_t → (ThriftClass, list_field_name)
 _EMPTY_LIST_MAP: dict[str, tuple] = _build_empty_list_type_map()
 
+# attribute_value_t field names that are scalar (True/integer is safe to pass)
+_SCALAR_ATTR_VALUE_FIELDS = frozenset({
+    'booldata', 's32', 'u32', 'u64', 'u8', 'u16', 's8', 's16', 's64', 'ptr',
+    'oid', 'objid', 'mac', 'ip4', 'ip6', 'ipaddr', 'ipprefix', 'chardata',
+    'u128', 'u16data', 'encrypt_key', 'auth_key', 'authkey',
+    'macsecsak', 'macsecauthkey', 'macsecsalt',
+    'latchstatus', 'sysportconfig', 'timespec', 'json', 'reachability',
+    'portpowerconsumption', 'rx_state', 'u32range', 's32range', 'u16range',
+    'prbs_ber', 'aclfield', 'aclaction', 'aclmask',
+})
+
+# attribute_value_t field name → Thrift empty-object factory for non-scalar types.
+# For *list fields we use _EMPTY_LIST_MAP via sai_type.  The entries here cover
+# the non-list complex types that appear in get_*_attribute functions.
+def _build_attr_value_field_to_empty():
+    t = _ttypes
+    def _list_factory(cls_name, list_field):
+        cls = getattr(t, cls_name, None)
+        if cls is None:
+            return None
+        return lambda: cls(count=0, **{list_field: []})
+
+    mapping = {}
+    # List types
+    for field, cls_name, lf in [
+        ('objlist',              'sai_thrift_object_list_t',              'idlist'),
+        ('s32list',              'sai_thrift_s32_list_t',                 'int32list'),
+        ('u32list',              'sai_thrift_u32_list_t',                 'uint32list'),
+        ('u8list',               'sai_thrift_u8_list_t',                  'uint8list'),
+        ('s8list',               'sai_thrift_s8_list_t',                  'int8list'),
+        ('u16list',              'sai_thrift_u16_list_t',                 'uint16list'),
+        ('s16list',              'sai_thrift_s16_list_t',                 'int16list'),
+        ('u64list',              'sai_thrift_u64_list_t',                 'uint64list') if hasattr(t, 'sai_thrift_u64_list_t') else ('u64list', None, None),
+        ('maplist',              'sai_thrift_map_list_t',                 'maplist'),
+        ('vlanlist',             'sai_thrift_vlan_list_t',                'idlist'),
+        ('ipaddrlist',           'sai_thrift_ip_address_list_t',          'addresslist'),
+        ('segmentlist',          'sai_thrift_segment_list_t',             'ip6list'),
+        ('tlvlist',              'sai_thrift_tlv_list_t',                 'tlvlist'),
+        ('sysportconfiglist',    'sai_thrift_system_port_config_list_t',  'configlist'),
+        ('aclresource',          'sai_thrift_acl_resource_list_t',        'resourcelist'),
+        ('aclchainlist',         'sai_thrift_acl_chain_list_t',           'chainlist'),
+        ('u16rangelist',         'sai_thrift_u16_range_list_t',           'rangelist'),
+        ('ipprefixlist',         'sai_thrift_ip_prefix_list_t',           'prefixlist') if hasattr(t, 'sai_thrift_ip_prefix_list_t') else ('ipprefixlist', None, None),
+        ('portlanelatchstatuslist', 'sai_thrift_port_lane_latch_status_list_t', 'statuslist'),
+        ('portfrequencyoffsetppmlist', 'sai_thrift_port_frequency_offset_ppm_list_t', 'valueslist'),
+        ('portsnrlist',          'sai_thrift_port_snr_list_t',            'valueslist'),
+        ('porteyevalues',        'sai_thrift_port_eye_values_list_t',     'valueslist'),
+        ('portpam4eyevalues',    'sai_thrift_port_pam4_eye_values_list_t','valueslist'),
+        ('prbs_rx_status_list',  'sai_thrift_prbs_per_lane_rx_status_list_t', 'statuslist'),
+        ('prbs_rx_state_list',   'sai_thrift_prbs_per_lane_rx_state_list_t',  'statelist'),
+        ('prbs_ber_list',        'sai_thrift_prbs_per_lane_bit_error_rate_list_t', 'ratelist'),
+        ('porterror',            'sai_thrift_port_err_status_list_t',     'statuslist'),
+        ('portserdestaps',       'sai_thrift_taps_list_t',                'listlist') if hasattr(t, 'sai_thrift_taps_list_t') else ('portserdestaps', None, None),
+    ]:
+        if cls_name is None:
+            continue
+        factory = _list_factory(cls_name, lf)
+        if factory:
+            mapping[field] = factory
+
+    # Non-list complex types: construct with all-None/defaults
+    acl_cap_cls = getattr(t, 'sai_thrift_acl_capability_t', None)
+    if acl_cap_cls:
+        mapping['aclcapability'] = lambda: acl_cap_cls(
+            is_action_list_mandatory=False,
+            action_list=_ttypes.sai_thrift_s32_list_t(count=0, int32list=[]),
+        )
+    return mapping
+
+
+_ATTR_VALUE_FIELD_TO_EMPTY = _build_attr_value_field_to_empty()
+
+# Cache: fn_callable → {param_name: attr_value_field}
+_GET_PARAM_VTYPE_CACHE: dict = {}
+
+# Sentinel used as the vtype for scalar get params
+_SCALAR = '__scalar__'
+
+def _get_param_value_types(fn_callable) -> dict:
+    """
+    Parse the adapter function source and return a mapping:
+        {param_name: vtype}
+
+    where vtype is either:
+      _SCALAR            — param uses a bare attribute_t (pass True)
+      '<field_name>'     — param uses attribute_value_t(field=...) (pass empty obj)
+
+    Two adapter patterns exist:
+      Scalar:    if X is not None:\n    attribute = sai_thrift_attribute_t(...)
+      Non-scalar: if X is not None:\n    attribute_value = sai_thrift_attribute_value_t(field=X)
+    """
+    fn_id = id(fn_callable)
+    if fn_id in _GET_PARAM_VTYPE_CACHE:
+        return _GET_PARAM_VTYPE_CACHE[fn_id]
+    try:
+        src = inspect.getsource(fn_callable)
+    except (OSError, TypeError):
+        return {}
+
+    result = {}
+    # Non-scalar: attribute_value_t used
+    for param, vtype in re.findall(
+        r'if (\w+) is not None:\s*\n\s*attribute_value = sai_thrift_attribute_value_t\((\w+)\s*=',
+        src,
+    ):
+        result[param] = vtype
+
+    # Scalar: no attribute_value, just attribute_t directly
+    for param in re.findall(
+        r'if (\w+) is not None:\s*\n\s*attribute = sai_thrift_attribute_t\(',
+        src,
+    ):
+        if param not in result:   # non-scalar takes priority if both matched
+            result[param] = _SCALAR
+
+    _GET_PARAM_VTYPE_CACHE[fn_id] = result
+    return result
+
+
+def _make_get_value_for_param(param: str, vtype: str):
+    """
+    Return the appropriate value to pass for a get_*_attribute parameter:
+      - True  for scalar params (tells adapter to retrieve the attribute)
+      - an empty Thrift list/struct object for non-scalar types
+      - None  if no factory is known (param will be skipped)
+    """
+    if vtype is _SCALAR or vtype in _SCALAR_ATTR_VALUE_FIELDS:
+        return True
+    factory = _ATTR_VALUE_FIELD_TO_EMPTY.get(vtype)
+    if factory:
+        return factory()
+    # Unknown complex type — skip
+    return None
+
 
 def _make_empty_thrift_object(sai_type: str):
     """
@@ -425,9 +559,34 @@ class SaiApiTestBase(ThriftInterface):
                 kwargs[param] = value
         return kwargs
 
-    def _get_kwargs(self, attributes: dict) -> dict:
-        """Build kwargs dict for a get call: every attr as param=True."""
-        return {_attr_to_param(attr_name): True for attr_name in attributes}
+    def _get_kwargs(self, attributes: dict, fn_callable=None) -> dict:
+        """
+        Build kwargs dict for a get call.
+
+        For scalar attribute value types (bool, s32, u32, …) pass True to tell
+        the adapter to retrieve that attribute.
+        For list/struct types (objlist, s32list, maplist, …) the adapter
+        serialises the argument as-is, so we must pass an empty Thrift object
+        instead of True to avoid 'bool has no attribute write' errors.
+
+        fn_callable, if provided, is used to look up the per-param value type.
+        Without it every param falls back to True (safe for scalar-only objects).
+        """
+        if fn_callable is None:
+            return {_attr_to_param(attr_name): True for attr_name in attributes}
+
+        param_vtypes = _get_param_value_types(fn_callable)
+        kwargs = {}
+        for attr_name in attributes:
+            param = _attr_to_param(attr_name)
+            vtype = param_vtypes.get(param)
+            if vtype is None:
+                # Param not found in adapter source (read-only or unknown): skip
+                continue
+            value = _make_get_value_for_param(param, vtype)
+            if value is not None:
+                kwargs[param] = value
+        return kwargs
 
     def _set_kwargs_list(self, attributes: dict) -> list[tuple[str, object]]:
         """Return a list of (param, value) pairs for individual set calls."""
@@ -493,7 +652,8 @@ class SaiApiTestBase(ThriftInterface):
                 return
             pos_args = [ctx['oid']]
 
-        kwargs = self._get_kwargs(attributes)
+        kwargs = self._get_kwargs(attributes, fn_callable=fn)
+        # Belt-and-suspenders: only keep params the function accepts
         accepted = set(params)
         kwargs = {k: v for k, v in kwargs.items() if k in accepted}
 
@@ -548,7 +708,14 @@ class SaiApiTestBase(ThriftInterface):
             print(f'  [PASS] {fn_name} ({len(pairs)} attribute(s) set)')
 
     def _exec_keyed(self, fn_name: str, ctx: dict, obj_type: str):
-        """Execute a stats_get or stats_clear — only needs the OID."""
+        """
+        Execute a stats_get or stats_clear call.
+
+        Positional args after client:
+          1. OID (or entry) — required for non-global objects
+          2. mode           — required by stats_ext functions; supplied as
+                             SAI_STATS_MODE_READ when present with no default
+        """
         fn = self._resolve(fn_name)
         if fn is None:
             self._record(obj_type, fn_name, 'SKIP: not in sai_adapter')
@@ -568,6 +735,23 @@ class SaiApiTestBase(ThriftInterface):
                              'SKIP: no OID available (create skipped/failed)')
                 return
             pos_args = [ctx['oid']]
+
+        # Detect required positional params with no default (e.g. 'mode' in stats_ext)
+        try:
+            sig = inspect.signature(fn)
+        except (ValueError, TypeError):
+            sig = None
+        if sig:
+            for pname, p in sig.parameters.items():
+                if pname in ('client', key_param):
+                    continue
+                if (p.kind in (inspect.Parameter.POSITIONAL_ONLY,
+                               inspect.Parameter.POSITIONAL_OR_KEYWORD)
+                        and p.default is inspect.Parameter.empty):
+                    # Required positional — supply SAI_STATS_MODE_READ
+                    mode_val = getattr(_sai_headers, 'SAI_STATS_MODE_READ', 1)
+                    pos_args.append(mode_val)
+                    break  # only one such param expected
 
         result, err = self._call(fn, *pos_args)
         if err:
