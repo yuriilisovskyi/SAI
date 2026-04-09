@@ -642,6 +642,13 @@ class SaiApiTestBase(ThriftInterface):
             value = _attr_default(attr_val)
             if value is None:
                 continue
+            # Empty Thrift list/struct objects (from "empty"/"empty list" defaults)
+            # must NOT be passed to create calls.  They are only valid as receive
+            # buffers in get calls.  Passing them to create causes the SAI server
+            # to return SAI_STATUS_NOT_SUPPORTED for those attributes.
+            if hasattr(value, 'write'):
+                continue
+
             # Thrift serialises unsigned integer fields using signed wire types:
             #   u8  → TType.BYTE  / struct 'b'  (signed  8-bit, max  127)
             #   u16 → TType.I16   / struct 'h'  (signed 16-bit, max 32767)
