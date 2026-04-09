@@ -8,8 +8,9 @@ Scope:
   - Only inc/ headers (experimental/ is excluded)
   - SAI API column has the _fn suffix removed
   - Python Thrift function column contains the matching function name from
-    test/saithrift/src/switch_sai.thrift (sai_thrift_<op>), or empty if no
-    match exists in the Thrift service definition.
+    test/saithriftv2/build/lib/sai_thrift/sai_adapter.py (sai_thrift_<op>),
+    derived by replacing the "sai_" prefix with "sai_thrift_".
+    The column is empty when no matching function exists in sai_adapter.py.
 """
 
 import csv
@@ -19,7 +20,9 @@ import re
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 INC_DIR = os.path.join(SCRIPT_DIR, 'inc')
-THRIFT_FILE = os.path.join(SCRIPT_DIR, 'test', 'saithrift', 'src', 'switch_sai.thrift')
+SAI_ADAPTER_PY = os.path.join(
+    SCRIPT_DIR, 'test', 'saithriftv2', 'build', 'lib', 'sai_thrift', 'sai_adapter.py'
+)
 OUTPUT_CSV = os.path.join(SCRIPT_DIR, 'sai_api_list.csv')
 
 EXCLUDE_OBJECT_TYPE_SUFFIXES = {
@@ -83,18 +86,18 @@ def infer_object_type(fn_name, sorted_names, obj_map):
     return '(unknown)'
 
 
-def load_thrift_functions(thrift_file):
+def load_thrift_functions(sai_adapter_py):
     """
-    Parse the Thrift service definition and return a set of method names
-    (e.g. {'sai_thrift_create_vlan', 'sai_thrift_set_port_attribute', ...}).
+    Parse sai_adapter.py and return a set of top-level function names
+    of the form sai_thrift_* (e.g. {'sai_thrift_create_vlan', ...}).
     """
     thrift_fns = set()
-    if not os.path.isfile(thrift_file):
+    if not os.path.isfile(sai_adapter_py):
         return thrift_fns
-    with open(thrift_file, 'r', errors='replace') as f:
+    with open(sai_adapter_py, 'r', errors='replace') as f:
         content = f.read()
-    # Match method names inside the service block: <return_type> <method_name>(
-    thrift_fns = set(re.findall(r'\b(sai_thrift_\w+)\s*\(', content))
+    # Top-level function definitions: ^def sai_thrift_<name>(
+    thrift_fns = set(re.findall(r'^def (sai_thrift_\w+)\s*\(', content, re.MULTILINE))
     return thrift_fns
 
 
@@ -122,7 +125,7 @@ def main():
     # Sort longest-first so greedy matching prefers the most specific object name
     sorted_names = sorted(obj_map.keys(), key=len, reverse=True)
 
-    thrift_fns = load_thrift_functions(THRIFT_FILE)
+    thrift_fns = load_thrift_functions(SAI_ADAPTER_PY)
 
     rows = []
     for filepath in headers:
