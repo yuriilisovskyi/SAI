@@ -24,7 +24,11 @@ For each SAI object type in the JSON the engine:
 3. Classifies functions as create / get / set / remove / stats / bulk / other.
 
 4. Executes the full CRUD lifecycle:
-     create  -- attribute kwargs derived from "attributes" defaults in JSON
+     create  -- attribute defaults from JSON as kwargs, with two special rules:
+                  * attributes carrying a "condition" field are skipped
+                  * "empty" / "empty list" defaults are replaced with the
+                    appropriate Thrift empty list/object constructed from the
+                    attribute's "type" field (e.g. sai_thrift_object_list_t(count=0, idlist=[]))
      get     -- every attribute passed as <param>=True
      set     -- each settable attribute individually (SAI allows one at a time)
      stats   -- OID / entry only (counter_ids use adapter defaults)
@@ -37,14 +41,17 @@ Attribute-name ↔ kwarg-name mapping
 
 Default-value rendering
 -----------------------
-  ""             → skipped  (no default)
-  "empty"        → skipped
-  "internal"     → skipped
-  "attrvalue …"  → skipped
-  "true/false"   → True / False
+  ""              → skipped  (no default)
+  "empty"         → Thrift empty list object constructed from "type"
+  "empty list"    → Thrift empty list object constructed from "type"
+  "internal"      → skipped
+  "attrvalue …"   → skipped
+  "true/false"    → True / False
   "0" / SAI_NULL_OBJECT_ID → 0
-  integer string → int literal
-  anything else  → passed as a string constant (SAI enum name, IP, …)
+  integer string  → int literal
+  anything else   → passed as a string constant (SAI enum name, IP, …)
+
+  Attributes with "condition" are excluded from create calls entirely.
 
 Layout note
 -----------
@@ -72,9 +79,66 @@ if _PTF_DIR not in sys.path:
 from sai_base_test import ThriftInterface
 from sai_thrift.sai_headers import *
 import sai_thrift.sai_adapter as _adapter
+import sai_thrift.ttypes as _ttypes
 
 # Default JSON: repo_root/sai_api_attributes.json
 _DEFAULT_JSON = os.path.join(_REPO_DIR, 'sai_api_attributes.json')
+
+
+# ---------------------------------------------------------------------------
+# Empty SAI object / list construction
+# ---------------------------------------------------------------------------
+
+def _build_empty_list_type_map() -> dict:
+    """
+    Scan sai_thrift.ttypes at import time and build a mapping:
+        sai_<X>_list_t  →  sai_thrift_<X>_list_t  (the Thrift class)
+
+    Every such class has the constructor signature
+        __init__(self, count, <listfield>)
+    where <listfield> is the name of the list argument (idlist, int32list, …).
+    We record (cls, listfield_name) so we can call cls(count=0, listfield=[]).
+    """
+    mapping: dict[str, tuple] = {}
+    for attr_name in dir(_ttypes):
+        cls = getattr(_ttypes, attr_name)
+        if not (isinstance(cls, type) and attr_name.endswith('_list_t')):
+            continue
+        try:
+            sig = inspect.signature(cls.__init__)
+            params = [p for p in sig.parameters if p != 'self']
+            # Expected: ['count', '<listfield>']
+            if len(params) == 2 and params[0] == 'count':
+                sai_name = attr_name.replace('sai_thrift_', 'sai_', 1)
+                mapping[sai_name] = (cls, params[1])
+        except (ValueError, TypeError):
+            pass
+    return mapping
+
+
+# sai_<X>_list_t → (ThriftClass, list_field_name)
+_EMPTY_LIST_MAP: dict[str, tuple] = _build_empty_list_type_map()
+
+
+def _make_empty_thrift_object(sai_type: str):
+    """
+    Construct an appropriate empty Thrift object for a SAI attribute type
+    whose default value is "empty" or "empty list".
+
+    The SAI type string may be compound (e.g. "sai_s32_list_t sai_port_fec_mode_t");
+    only the first token is used for lookup.
+
+    Returns None if no matching Thrift constructor is found (the caller will
+    then skip the attribute).
+    """
+    base_type = sai_type.split()[0].strip()   # first token only
+
+    entry = _EMPTY_LIST_MAP.get(base_type)
+    if entry:
+        cls, list_field = entry
+        return cls(count=0, **{list_field: []})
+
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -101,14 +165,19 @@ def _attr_to_param(attr_name: str) -> str:
 # Default value rendering
 # ---------------------------------------------------------------------------
 
-def _render_default(raw: str):
+def _render_default(raw: str, sai_type: str = ''):
     """
     Convert a raw default string from the JSON into a Python value suitable
     as a keyword argument.  Returns None when no usable default is available.
+
+    "empty" / "empty list" → Thrift empty list/object built from sai_type;
+                              None if no Thrift constructor is known for the type.
     """
-    if not raw or raw in ('internal', 'empty') or raw.startswith('attrvalue'):
+    if not raw or raw in ('internal',) or raw.startswith('attrvalue'):
         return None
     low = raw.lower()
+    if low in ('empty', 'empty list'):
+        return _make_empty_thrift_object(sai_type)
     if low == 'true':
         return True
     if low == 'false':
@@ -126,11 +195,13 @@ def _render_default(raw: str):
 def _attr_default(attr_val) -> object:
     """
     Extract and render the default value from a JSON attribute entry.
-    attr_val is either a plain string or a dict with a "def_value" key.
+    attr_val is a dict with keys "type", "def_value", and optionally "condition".
     """
     if isinstance(attr_val, dict):
-        return _render_default(attr_val.get('def_value', ''))
-    return _render_default(attr_val)
+        return _render_default(attr_val.get('def_value', ''),
+                               attr_val.get('type', ''))
+    # Legacy plain-string fallback (should not occur with current JSON)
+    return _render_default(str(attr_val))
 
 
 # ---------------------------------------------------------------------------
@@ -314,9 +385,20 @@ class SaiApiTestBase(ThriftInterface):
         return getattr(_adapter, fn_name, None)
 
     def _create_kwargs(self, attributes: dict) -> dict:
-        """Build kwargs dict for a create call from the attributes JSON."""
+        """
+        Build kwargs dict for a create call from the attributes JSON.
+
+        Rules:
+          - Attributes with a "condition" field are skipped; their validity
+            depends on other attribute values that may not hold here.
+          - "empty" / "empty list" defaults are replaced with the appropriate
+            Thrift empty list/object constructed from the "type" field.
+        """
         kwargs = {}
         for attr_name, attr_val in attributes.items():
+            # Skip conditional attributes in create calls
+            if isinstance(attr_val, dict) and 'condition' in attr_val:
+                continue
             param = _attr_to_param(attr_name)
             value = _attr_default(attr_val)
             if value is not None:
