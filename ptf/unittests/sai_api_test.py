@@ -642,13 +642,24 @@ class SaiApiTestBase(ThriftInterface):
             value = _attr_default(attr_val)
             if value is None:
                 continue
-            # u8 fields (sai_uint8_t, range 0..255) are serialised by Thrift as
-            # TType.BYTE (signed, -128..127).  Convert values 128..255 to their
-            # two's complement signed form so the wire format is correct.
-            # The SAI device interprets the byte as unsigned again on receipt.
-            if (isinstance(value, int) and not isinstance(value, bool)
-                    and param_vtypes.get(param) == 'u8' and value > 127):
-                value = value - 256
+            # Thrift serialises unsigned integer fields using signed wire types:
+            #   u8  → TType.BYTE  / struct 'b'  (signed  8-bit, max  127)
+            #   u16 → TType.I16   / struct 'h'  (signed 16-bit, max 32767)
+            #   u32 → TType.I32   / struct 'i'  (signed 32-bit, max 2^31-1)
+            #   u64 → TType.I64   / struct 'q'  (signed 64-bit, max 2^63-1)
+            # Values that exceed the signed maximum are converted to their two's
+            # complement signed equivalent.  The SAI device re-interprets the
+            # received bits as unsigned, so the correct value is delivered.
+            if isinstance(value, int) and not isinstance(value, bool):
+                vtype = param_vtypes.get(param)
+                if vtype == 'u8'  and value > 0x7F:
+                    value = value - 0x100
+                elif vtype == 'u16' and value > 0x7FFF:
+                    value = value - 0x10000
+                elif vtype == 'u32' and value > 0x7FFFFFFF:
+                    value = value - 0x100000000
+                elif vtype == 'u64' and value > 0x7FFFFFFFFFFFFFFF:
+                    value = value - 0x10000000000000000
             kwargs[param] = value
         return kwargs
 
