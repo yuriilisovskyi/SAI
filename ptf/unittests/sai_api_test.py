@@ -597,6 +597,51 @@ class SaiApiTestBase(ThriftInterface):
                 pairs.append((_attr_to_param(attr_name), value))
         return pairs
 
+    # ------------------------------------------------------------------
+    # Logging helpers
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _fmt_value(v) -> str:
+        """Format a single argument value for the pre-call log line."""
+        if isinstance(v, bool):
+            return str(v)
+        # Thrift struct with __repr__ that shows type name
+        cls_name = type(v).__name__
+        if cls_name.startswith('sai_thrift_'):
+            # Show class name + count for list types, full repr otherwise
+            if hasattr(v, 'count'):
+                return f'{cls_name}(count={v.count})'
+            return repr(v)
+        # Enum-like objects (SAI constants after resolution)
+        if hasattr(v, 'name') and hasattr(v, 'value'):
+            return f'{v.name}({v.value})'
+        return repr(v)
+
+    def _log_call(self, fn_name: str, pos_args: list, kwargs: dict) -> None:
+        """
+        Print a structured pre-call log block, e.g.::
+
+          Calling sai_thrift_create_bridge(
+            type                          = SAI_BRIDGE_TYPE_1Q(0)
+            max_learned_addresses         = 0
+            learn_disable                 = False
+            selective_counter_list        = sai_thrift_object_list_t(count=0)
+          )
+        """
+        parts = []
+        for v in pos_args:
+            parts.append(f'    {self._fmt_value(v)}')
+        for k, v in kwargs.items():
+            parts.append(f'    {k:<36s} = {self._fmt_value(v)}')
+        if parts:
+            print(f'  Calling {fn_name}(')
+            for p in parts:
+                print(p)
+            print('  )')
+        else:
+            print(f'  Calling {fn_name}()')
+
     def _call(self, fn_callable, *args, **kwargs):
         """Invoke the Thrift function and return (result, error_string_or_None)."""
         try:
@@ -622,6 +667,7 @@ class SaiApiTestBase(ThriftInterface):
             return
 
         kwargs = self._create_kwargs(attributes, fn_callable=fn)
+        self._log_call(fn_name, [], kwargs)
         result, err = self._call(fn, **kwargs)
         if err:
             self._record(obj_type, fn_name, f'FAIL: {err}')
@@ -657,6 +703,7 @@ class SaiApiTestBase(ThriftInterface):
         accepted = set(params)
         kwargs = {k: v for k, v in kwargs.items() if k in accepted}
 
+        self._log_call(fn_name, pos_args, kwargs)
         result, err = self._call(fn, *pos_args, **kwargs)
         if err:
             self._record(obj_type, fn_name, f'FAIL: {err}')
@@ -697,6 +744,7 @@ class SaiApiTestBase(ThriftInterface):
         # SAI set_*_attribute accepts only one attribute at a time
         all_pass = True
         for param, value in pairs:
+            self._log_call(fn_name, pos_args, {param: value})
             result, err = self._call(fn, *pos_args, **{param: value})
             if err:
                 self._record(obj_type, fn_name, f'FAIL: {param}={value!r}: {err}')
@@ -753,6 +801,7 @@ class SaiApiTestBase(ThriftInterface):
                     pos_args.append(mode_val)
                     break  # only one such param expected
 
+        self._log_call(fn_name, pos_args, {})
         result, err = self._call(fn, *pos_args)
         if err:
             self._record(obj_type, fn_name, f'FAIL: {err}')
@@ -781,6 +830,7 @@ class SaiApiTestBase(ThriftInterface):
                 return
             pos_args = [ctx['oid']]
 
+        self._log_call(fn_name, pos_args, {})
         result, err = self._call(fn, *pos_args)
         if err:
             self._record(obj_type, fn_name, f'FAIL: {err}')
