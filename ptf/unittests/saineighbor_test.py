@@ -107,6 +107,22 @@ class SaiNeighborTest(SaiApiTestBase):
                 self._record(ot, 'sai_thrift_remove_neighbor_entry', 'PASS')
                 print(f'  [PASS] sai_thrift_remove_neighbor_entry')
 
+            # remove_all_neighbor_entries — removes every neighbor in the switch
+            self._log_call('sai_thrift_remove_all_neighbor_entries', [], {})
+            _, err = self._call(sai_thrift_remove_all_neighbor_entries)
+            if err:
+                self._record(ot, 'sai_thrift_remove_all_neighbor_entries', f'FAIL: {err}')
+            else:
+                self._record(ot, 'sai_thrift_remove_all_neighbor_entries', 'PASS')
+                print(f'  [PASS] sai_thrift_remove_all_neighbor_entries')
+
+            # bulk operations require custom entry lists
+            for bulk_fn in ['sai_thrift_bulk_create_neighbor_entry',
+                            'sai_thrift_bulk_get_neighbor_entry_attribute',
+                            'sai_thrift_bulk_set_neighbor_entry_attribute',
+                            'sai_thrift_bulk_remove_neighbor_entry']:
+                self._record(ot, bulk_fn, 'SKIP: bulk operations require custom entry lists')
+
         finally:
             # Remove the temporary RIF
             self._log_call('sai_thrift_remove_router_interface', [rif_oid], {})

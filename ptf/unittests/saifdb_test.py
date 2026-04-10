@@ -78,3 +78,23 @@ class SaiFdbTest(SaiApiTestBase):
         else:
             self._record(ot, 'sai_thrift_remove_fdb_entry', 'PASS')
             print(f'  [PASS] sai_thrift_remove_fdb_entry')
+
+        # flush_fdb_entries — flush all dynamic entries on the default VLAN
+        flush_kwargs = {
+            'bv_id':      sw_ctx['default_vlan_id'],
+            'entry_type': SAI_FDB_FLUSH_ENTRY_TYPE_DYNAMIC,
+        }
+        self._log_call('sai_thrift_flush_fdb_entries', [], flush_kwargs)
+        _, err = self._call(sai_thrift_flush_fdb_entries, **flush_kwargs)
+        if err:
+            self._record(ot, 'sai_thrift_flush_fdb_entries', f'FAIL: {err}')
+        else:
+            self._record(ot, 'sai_thrift_flush_fdb_entries', 'PASS')
+            print(f'  [PASS] sai_thrift_flush_fdb_entries')
+
+        # bulk operations require custom entry lists
+        for bulk_fn in ['sai_thrift_bulk_create_fdb_entry',
+                        'sai_thrift_bulk_get_fdb_entry_attribute',
+                        'sai_thrift_bulk_set_fdb_entry_attribute',
+                        'sai_thrift_bulk_remove_fdb_entry']:
+            self._record(ot, bulk_fn, 'SKIP: bulk operations require custom entry lists')

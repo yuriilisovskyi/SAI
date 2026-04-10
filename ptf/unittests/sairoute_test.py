@@ -88,3 +88,10 @@ class SaiRouteTest(SaiApiTestBase):
         else:
             self._record(ot, 'sai_thrift_remove_route_entry', 'PASS')
             print(f'  [PASS] sai_thrift_remove_route_entry')
+
+        # bulk operations require custom entry lists
+        for bulk_fn in ['sai_thrift_bulk_create_route_entry',
+                        'sai_thrift_bulk_get_route_entry_attribute',
+                        'sai_thrift_bulk_set_route_entry_attribute',
+                        'sai_thrift_bulk_remove_route_entry']:
+            self._record(ot, bulk_fn, 'SKIP: bulk operations require custom entry lists')
