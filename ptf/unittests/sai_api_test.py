@@ -707,12 +707,21 @@ class SaiApiTestBase(ThriftInterface):
         return kwargs
 
     def _set_kwargs_list(self, attributes: dict) -> list[tuple[str, object]]:
-        """Return a list of (param, value) pairs for individual set calls."""
+        """
+        Return a list of (param, value) pairs for individual set calls.
+
+        Plain strings (e.g. 'disabled' for ACL action/field attrs) and Thrift
+        struct/list objects are excluded — the adapter would call .write() on
+        them which fails for str, and empty structs are not meaningful set values.
+        """
         pairs = []
         for attr_name, attr_val in attributes.items():
             value = _attr_default(attr_val)
-            if value is not None:
-                pairs.append((_attr_to_param(attr_name), value))
+            if value is None:
+                continue
+            if isinstance(value, str) or hasattr(value, 'write'):
+                continue
+            pairs.append((_attr_to_param(attr_name), value))
         return pairs
 
     # ------------------------------------------------------------------
