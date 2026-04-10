@@ -556,6 +556,51 @@ class SaiApiTestBase(ThriftInterface):
         with open(path) as f:
             self._data = json.load(f)
 
+    def _discover_switch_context(self) -> dict:
+        """
+        Discover key switch context OIDs needed to build entry key structs.
+
+        Returns a dict with:
+          switch_id           – OID of the switch object
+          default_vlan_id     – OID of the default 1Q VLAN
+          default_vrf         – OID of the default virtual router
+          default_1q_bridge   – OID of the default 1Q bridge
+
+        The switch_id is derived from the default_vlan OID using the standard
+        SAI OID encoding (bits 55:32 carry the switch index; the switch object
+        OID is reconstructed as (SAI_OBJECT_TYPE_SWITCH << 56) | switch_bits).
+        Falls back to 0 for single-switch environments that accept 0 as a wildcard.
+        """
+        ctx = {
+            'switch_id': 0,
+            'default_vlan_id': 0,
+            'default_vrf': 0,
+            'default_1q_bridge': 0,
+        }
+        try:
+            attr = _adapter.sai_thrift_get_switch_attribute(
+                self.client,
+                default_vlan_id=True,
+                default_virtual_router_id=True,
+                default_1q_bridge_id=True,
+            )
+            if attr:
+                ctx['default_vlan_id']   = attr.get('default_vlan_id', 0)
+                ctx['default_vrf']       = attr.get('default_virtual_router_id', 0)
+                ctx['default_1q_bridge'] = attr.get('default_1q_bridge_id', 0)
+
+            # Reconstruct switch OID from any known OID using SAI OID encoding.
+            # Standard SAI: bits [63:56] = object_type, bits [55:32] = switch index,
+            # bits [31:0] = object index.  switch_id = (type_switch << 56) | switch_bits.
+            _SAI_OBJECT_TYPE_SWITCH = 33   # value of SAI_OBJECT_TYPE_SWITCH enum
+            ref_oid = ctx['default_vlan_id'] or ctx['default_vrf'] or ctx['default_1q_bridge']
+            if ref_oid:
+                switch_bits = ref_oid & 0x00FFFFFF00000000
+                ctx['switch_id'] = (_SAI_OBJECT_TYPE_SWITCH << 56) | switch_bits
+        except Exception:
+            pass
+        return ctx
+
     def _test_object_type(self, obj_type: str, obj_data: dict):
         """Run the full lifecycle for one SAI object type."""
         functions = obj_data.get('functions', [])
@@ -611,6 +656,94 @@ class SaiApiTestBase(ThriftInterface):
     def _resolve(self, fn_name: str):
         """Return the callable from sai_adapter, or None if not present."""
         return getattr(_adapter, fn_name, None)
+
+    def _exec_entry_get(self, fn_name: str, attrs: dict, entry, obj_type: str):
+        """
+        Execute a get_*_entry_attribute call using a pre-built entry key struct.
+        Handles param-vtype introspection the same way as _exec_get.
+        """
+        fn = self._resolve(fn_name)
+        if fn is None:
+            self._record(obj_type, fn_name, 'SKIP: not in sai_adapter')
+            return
+        params = _fn_params(fn)
+        param_vtypes = _get_param_value_types(fn)
+        accepted = set(params)
+        kwargs = {}
+        for attr_name in attrs:
+            param = _attr_to_param(attr_name)
+            if param not in accepted:
+                continue
+            vtype = param_vtypes.get(param)
+            if vtype is None:
+                continue
+            value = _make_get_value_for_param(param, vtype)
+            if value is not None:
+                kwargs[param] = value
+        self._log_call(fn_name, [entry], kwargs)
+        result, err = self._call(fn, entry, **kwargs)
+        if err:
+            self._record(obj_type, fn_name, f'FAIL: {err}')
+        else:
+            # Verify returned scalar values against JSON defaults
+            mismatches = []
+            if isinstance(result, dict):
+                return_fields = _get_param_return_fields(fn)
+                for attr_name, attr_val in attrs.items():
+                    param = _attr_to_param(attr_name)
+                    ret_field = return_fields.get(param)
+                    if ret_field is None:
+                        continue
+                    if ret_field not in _INT_COMPARABLE_FIELDS and ret_field not in _BOOL_COMPARABLE_FIELDS:
+                        continue
+                    returned = result.get(param)
+                    if returned is None:
+                        continue
+                    expected = _expected_comparable(attr_val)
+                    if expected is None:
+                        continue
+                    actual = _to_comparable(returned)
+                    if actual is None:
+                        continue
+                    if actual != expected:
+                        mismatches.append(
+                            f'{attr_name}: expected {expected!r}, got {actual!r}')
+                    else:
+                        print(f'    [OK] {param} = {actual!r}')
+            if mismatches:
+                self._record(obj_type, fn_name,
+                             f'FAIL: default value mismatch: {"; ".join(mismatches)}')
+            else:
+                self._record(obj_type, fn_name, 'PASS')
+                print(f'  [PASS] {fn_name}')
+
+    def _exec_entry_set(self, fn_name: str, attrs: dict, entry, obj_type: str):
+        """
+        Execute set_*_entry_attribute calls (one attribute at a time) using a
+        pre-built entry key struct.
+        """
+        fn = self._resolve(fn_name)
+        if fn is None:
+            self._record(obj_type, fn_name, 'SKIP: not in sai_adapter')
+            return
+        params = _fn_params(fn)
+        accepted = set(params)
+        pairs = [(k, v) for k, v in self._set_kwargs_list(attrs) if k in accepted]
+        if not pairs:
+            self._record(obj_type, fn_name, 'SKIP: no settable attributes with defaults')
+            return
+        all_pass = True
+        for param, value in pairs:
+            self._log_call(fn_name, [entry], {param: value})
+            _, err = self._call(fn, entry, **{param: value})
+            if err:
+                self._record(obj_type, fn_name, f'FAIL: {param}={value!r}: {err}')
+                all_pass = False
+                if self.stop_on_fail:
+                    return
+        if all_pass:
+            self._record(obj_type, fn_name, 'PASS')
+            print(f'  [PASS] {fn_name} ({len(pairs)} attribute(s) set)')
 
     def _create_kwargs(self, attributes: dict, fn_callable=None) -> dict:
         """
