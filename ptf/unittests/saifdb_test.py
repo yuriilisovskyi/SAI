@@ -44,15 +44,11 @@ class SaiFdbTest(SaiApiTestBase):
         print(f'\n=== {ot} ===')
 
         sw_ctx = self._discover_switch_context()
-        if not sw_ctx['default_vlan_id']:
-            self._record(ot, 'sai_thrift_create_fdb_entry',
-                         'SKIP: cannot discover default_vlan_id')
-            return
 
         fdb_entry = _ttypes.sai_thrift_fdb_entry_t(
             switch_id=sw_ctx['switch_id'],
             mac_address=_TEST_MAC,
-            bv_id=sw_ctx['default_vlan_id'],
+            bv_id=sw_ctx['default_vlan_id'],   # SAI_NULL_OBJECT_ID (0) if not found
         )
 
         # create
