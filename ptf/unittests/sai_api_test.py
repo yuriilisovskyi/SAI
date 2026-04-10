@@ -642,11 +642,18 @@ class SaiApiTestBase(ThriftInterface):
             value = _attr_default(attr_val)
             if value is None:
                 continue
-            # Empty Thrift list/struct objects (from "empty"/"empty list" defaults)
-            # must NOT be passed to create calls.  They are only valid as receive
-            # buffers in get calls.  Passing them to create causes the SAI server
-            # to return SAI_STATUS_NOT_SUPPORTED for those attributes.
-            if hasattr(value, 'write'):
+            # Skip values that cannot be meaningfully serialised as create arguments:
+            #
+            # • Thrift struct/list objects (from "empty"/"empty list" defaults):
+            #   valid only as receive buffers in get calls; cause SAI_STATUS_NOT_SUPPORTED
+            #   when passed to create.
+            #
+            # • Plain strings that reached this point without being resolved to an
+            #   integer/enum (e.g. 'disabled' for ACL field/action attrs, '0-0' for
+            #   u32_range attrs, IPv6 mask strings for aclmask attrs):
+            #   the adapter calls attribute_value_t(aclfield=value) etc. which invokes
+            #   value.write() — a method that strings do not have.
+            if hasattr(value, 'write') or isinstance(value, str):
                 continue
 
             # Thrift serialises unsigned integer fields using signed wire types:
