@@ -51,10 +51,6 @@ class SaiRouteTest(SaiApiTestBase):
         print(f'\n=== {ot} ===')
 
         sw_ctx = self._discover_switch_context()
-        if not sw_ctx['default_vrf']:
-            self._record(ot, 'sai_thrift_create_route_entry',
-                         'SKIP: cannot discover default_vrf')
-            return
 
         route_entry = _ttypes.sai_thrift_route_entry_t(
             switch_id=sw_ctx['switch_id'],

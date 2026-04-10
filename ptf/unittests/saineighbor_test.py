@@ -53,10 +53,6 @@ class SaiNeighborTest(SaiApiTestBase):
         print(f'\n=== {ot} ===')
 
         sw_ctx = self._discover_switch_context()
-        if not sw_ctx['default_vrf'] or not sw_ctx['default_vlan_id']:
-            self._record(ot, 'sai_thrift_create_neighbor_entry',
-                         'SKIP: cannot discover default_vrf or default_vlan_id')
-            return
 
         # Create a VLAN router interface on the default VLAN to provide rif_id
         rif_kwargs = {
